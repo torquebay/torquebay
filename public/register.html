@@ -12,6 +12,9 @@
       margin: auto;
       background: #111;
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     button {
       background: red;
@@ -55,45 +58,59 @@
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
+    a {
+      color: red;
+      text-decoration: none;
+    }
+    footer {
+      margin-top: auto;
+      font-size: 0.8rem;
+      text-align: center;
+      color: #666;
+      padding: 1rem 0;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Banner -->
   <div class="banner" role="region" aria-live="polite">
     <img src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="TorqueBay Banner" />
     <div class="banner-text">
-      <span>🚗 Register below to start listing your cars on TorqueBay! 🚀</span>
+      <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries & membership info. Stay tuned! 🚀</span>
     </div>
   </div>
 
   <center>
     <h1>Register</h1>
     <form id="registerForm">
-      <input name="email" type="email" placeholder="Email" required /><br>
-      <input name="password" type="password" placeholder="Password" required /><br>
+      <input name="email" type="email" placeholder="Email" required /><br />
+      <input name="password" type="password" placeholder="Password" required /><br />
       <button type="submit">Register</button>
     </form>
 
-    <p>Already have an account? <a href="login.html" style="color:red">Login here</a></p>
-
-    <script>
-      document.getElementById('registerForm').onsubmit = async (e) => {
-        e.preventDefault();
-        const form = e.target;
-        const res = await fetch('/api/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: form.email.value, password: form.password.value })
-        });
-        const data = await res.json();
-        if (data.message) {
-          alert('Registered successfully!');
-          window.location.href = 'login.html';
-        } else {
-          alert(data.error || 'Registration failed');
-        }
-      };
-    </script>
+    <p>Already have an account? <a href="login.html">Login here</a></p>
   </center>
+
+  <footer>© TorqueBay</footer>
+
+  <script>
+    document.getElementById('registerForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email.value, password: form.password.value })
+      });
+      const data = await res.json();
+      if (data.message) {
+        alert('Registered successfully!');
+        window.location.href = 'login.html';
+      } else {
+        alert(data.error || 'Registration failed');
+      }
+    };
+  </script>
 </body>
 </html>
