@@ -6,6 +6,7 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/server.js" },
+    { "handle": "filesystem" },                 // 👈 This allows normal HTML routing
     { "src": "/(.*)", "dest": "/public/index.html" }
   ]
 }
