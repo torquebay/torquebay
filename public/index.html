@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Torque Bay – Accelerate Your Dreams</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: sans-serif; padding: 1rem; max-width: 700px; margin: auto; }
+    header { background: #0a74da; color: white; padding: 1rem; text-align: center; }
+    img { max-width: 100%; }
+    .listing { border: 1px solid #ccc; margin-bottom: 10px; padding: 10px; }
+    button { background: #0a74da; color: white; padding: 8px 15px; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Torque Bay</h1>
+    <p>Accelerate Your Dreams</p>
+  </header>
+
+  <section id="listings">Loading listings...</section>
+
+  <h2>Upload Listing</h2>
+  <form id="listingForm">
+    <input name="title" placeholder="Title" required /><br>
+    <textarea name="description" placeholder="Description" required></textarea><br>
+    <input name="price" placeholder="Starting Price" type="number" required /><br>
+    <input name="buyNowPrice" placeholder="Buy Now Price" type="number" required /><br>
+    <input name="image" type="file" required /><br>
+    <button type="submit">Upload</button>
+  </form>
+
+  <h2>Login</h2>
+  <form id="loginForm">
+    <input name="email" type="email" placeholder="Email" required /><br>
+    <input name="password" type="password" placeholder="Password" required /><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    let token = null;
+
+    const listingsEl = document.getElementById('listings');
+
+    async function fetchListings() {
+      const res = await fetch('/api/listings');
+      const listings = await res.json();
+      listingsEl.innerHTML = '';
+      listings.forEach(listing => {
+        const div = document.createElement('div');
+        div.className = 'listing';
+        div.innerHTML = `
+          <h3>${listing.title}</h3>
+          <img src="${listing.image_url}" alt="car" />
+          <p>${listing.description}</p>
+          <p>Price: £${listing.price}</p>
+          <p>Buy Now: £${listing.buy_now_price}</p>
+          <button onclick="buyNow('${listing.id}')">Buy It Now</button>
+        `;
+        listingsEl.appendChild(div);
+      });
+    }
+
+    document.getElementById('listingForm').onsubmit = async (e) => {
+      e.preventDefault();
+      if (!token) return alert('Login first!');
+      const form = e.target;
+      const formData = new FormData(form);
+      const res = await fetch('/api/listings', {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + token },
+        body: formData
+      });
+      const data = await res.json();
+      if (data.error) return alert(data.error);
+      alert('Listing uploaded!');
+      form.reset();
+      fetchListings();
+    };
+
+    document.getElementById('loginForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email.value, password: form.password.value })
+      });
+      const data = await res.json();
+      if (data.token) {
+        token = data.token;
+        alert('Logged in');
+      } else {
+        alert(data.error || 'Login failed');
+      }
+    };
+
+    async function buyNow(id) {
+      if (!token) return alert('Login first!');
+      const res = await fetch('/api/buy/' + id, {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + token }
+      });
+      const data = await res.json();
+      alert(data.message);
+    }
+
+    fetchListings();
+  </script>
+</body>
+</html>
