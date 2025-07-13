@@ -12,12 +12,9 @@
       margin: auto;
       background: #111;
       color: #fff;
-    }
-    header {
-      background: #0a74da;
-      color: white;
-      padding: 1rem;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     button {
       background: red;
@@ -61,49 +58,60 @@
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
+    a {
+      color: red;
+      text-decoration: none;
+    }
+    footer {
+      margin-top: auto;
+      font-size: 0.8rem;
+      text-align: center;
+      color: #666;
+      padding: 1rem 0;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Banner -->
   <div class="banner" role="region" aria-live="polite">
     <img src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="TorqueBay Banner" />
     <div class="banner-text">
-      <span>🚗 Welcome to TorqueBay – Login to access listings! 🚀</span>
+      <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries & membership info. Stay tuned! 🚀</span>
     </div>
   </div>
 
   <center>
     <h1>Login</h1>
     <form id="loginForm">
-      <input name="email" type="email" placeholder="Email" required /><br>
-      <input name="password" type="password" placeholder="Password" required /><br>
+      <input name="email" type="email" placeholder="Email" required /><br />
+      <input name="password" type="password" placeholder="Password" required /><br />
       <button type="submit">Login</button>
     </form>
 
-    <p>Don't have an account? <a href="register.html" style="color:red">Register here</a></p>
-
-    <script>
-      let token = null;
-
-      document.getElementById('loginForm').onsubmit = async (e) => {
-        e.preventDefault();
-        const form = e.target;
-        const res = await fetch('/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: form.email.value, password: form.password.value })
-        });
-        const data = await res.json();
-        if (data.token) {
-          token = data.token;
-          localStorage.setItem('token', token);
-          alert('Logged in!');
-          window.location.href = '/'; // redirect to homepage
-        } else {
-          alert(data.error || 'Login failed');
-        }
-      };
-    </script>
+    <p>Don't have an account? <a href="register.html">Register here</a></p>
   </center>
+
+  <footer>© TorqueBay</footer>
+
+  <script>
+    document.getElementById('loginForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email.value, password: form.password.value })
+      });
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        alert('Logged in!');
+        window.location.href = '/';
+      } else {
+        alert(data.error || 'Login failed');
+      }
+    };
+  </script>
 </body>
 </html>
