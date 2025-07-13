@@ -13,7 +13,9 @@
       background: #111;
       color: #fff;
     }
-    img { max-width: 100%; }
+    img {
+      max-width: 100%;
+    }
     .listing {
       border: 1px solid #ccc;
       margin-bottom: 10px;
@@ -56,81 +58,4 @@
     .banner-text span {
       display: inline-block;
       padding-left: 100%;
-      animation: scroll 12s linear infinite;
-    }
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-    #logoutBtn {
-      margin-top: 10px;
-      background: #444;
-    }
-    footer {
-      margin-top: 2rem;
-      font-size: 0.8rem;
-      text-align: center;
-      color: #888;
-    }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
-</head>
-<body>
-
-  <!-- Banner -->
-  <div class="banner" role="region" aria-live="polite">
-    <img src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="TorqueBay Banner" />
-    <div class="banner-text">
-      <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for Enquiries & Membership Info. Stay tuned! 🚀</span>
-    </div>
-  </div>
-
-  <center>
-    <h1>Welcome to TorqueBay</h1>
-    <div id="userStatus">
-      <p>
-        <a href="/login.html" style="color:red">Login</a> or
-        <a href="/register.html" style="color:red">Register</a> to upload listings and buy cars.
-      </p>
-    </div>
-
-    <section id="listings">Loading listings...</section>
-
-    <div id="uploadSection" style="display:none;">
-      <h2>Upload Listing</h2>
-      <form id="listingForm">
-        <input name="title" placeholder="Title" required /><br />
-        <textarea name="description" placeholder="Description" required></textarea><br />
-        <input name="price" placeholder="Starting Price" type="number" required /><br />
-        <input name="buyNowPrice" placeholder="Buy Now Price" type="number" required /><br />
-        <input name="image" type="file" accept="image/*" required /><br />
-        <button type="submit">Upload</button>
-      </form>
-      <button id="logoutBtn" style="display:none;">Logout</button>
-    </div>
-  </center>
-
-  <footer>© 2025 TorqueBay</footer>
-
-  <script>
-    const supabaseUrl = 'https://jyejmnszfbkyeacbhbez.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5ZWptbnN6ZmJreWVhY2JoYmV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyNDc1NzcsImV4cCI6MjA2NzgyMzU3N30.72yNaR3DJd30hiMZvJwN_KCOBgdBjhE1kGBAuq4ZvSQ';
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-    const listingsEl = document.getElementById('listings');
-    const uploadSection = document.getElementById('uploadSection');
-    const userStatus = document.getElementById('userStatus');
-    const logoutBtn = document.getElementById('logoutBtn');
-
-    async function fetchListings() {
-      const { data: listings, error } = await supabase
-        .from('listings')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        listingsEl.innerHTML = `<p>Error loading listings: ${error.message}</p>`;
-        return;
-      }
-
-      listingsEl.innerHTML =
+      animation: scroll 12
