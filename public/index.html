@@ -35,8 +35,11 @@
       border: none;
       cursor: pointer;
     }
-
-    /* Banner Styles */
+    input, textarea {
+      margin: 5px 0;
+      padding: 8px;
+      width: 80%;
+    }
     .banner {
       display: flex;
       align-items: center;
@@ -45,12 +48,10 @@
       padding: 10px 20px;
       margin-bottom: 1rem;
     }
-
     .banner img {
       max-height: 60px;
       margin-right: 15px;
     }
-
     .banner-text {
       color: red;
       font-weight: bold;
@@ -60,22 +61,24 @@
       flex: 1;
       position: relative;
     }
-
     .banner-text span {
       display: inline-block;
       padding-left: 100%;
       animation: scroll 12s linear infinite;
     }
-
     @keyframes scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
+    }
+    #logoutBtn {
+      margin-top: 10px;
+      background: #444;
     }
   </style>
 </head>
 <body>
 
-  <!-- Your Banner -->
+  <!-- Banner -->
   <div class="banner" role="region" aria-live="polite">
     <img src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="TorqueBay Banner" />
     <div class="banner-text">
@@ -84,29 +87,34 @@
   </div>
 
   <center>
+    <h1>Welcome to TorqueBay</h1>
+    <div id="userStatus">
+      <p><a href="login.html" style="color:red">Login</a> or <a href="register.html" style="color:red">Register</a> to upload listings and buy cars.</p>
+    </div>
 
-    <h1>LOGIN</h1>
-    <form id="loginForm">
-      <input name="email" type="email" placeholder="Email" required /><br>
-      <input name="password" type="password" placeholder="Password" required /><br>
-      <button type="submit">Login</button>
-    </form>
     <section id="listings">Loading listings...</section>
 
-    <h2>Upload Listing (Membership Required)</h2>
-    <form id="listingForm">
-      <input name="title" placeholder="Title" required /><br>
-      <textarea name="description" placeholder="Description" required></textarea><br>
-      <input name="price" placeholder="Starting Price" type="number" required /><br>
-      <input name="buyNowPrice" placeholder="Buy Now Price" type="number" required /><br>
-      <input name="image" type="file" required /><br>
-      <button type="submit">Upload</button>
-    </form>
+    <div id="uploadSection" style="display:none;">
+      <h2>Upload Listing</h2>
+      <form id="listingForm">
+        <input name="title" placeholder="Title" required /><br>
+        <textarea name="description" placeholder="Description" required></textarea><br>
+        <input name="price" placeholder="Starting Price" type="number" required /><br>
+        <input name="buyNowPrice" placeholder="Buy Now Price" type="number" required /><br>
+        <input name="image" type="file" required /><br>
+        <button type="submit">Upload</button>
+      </form>
+      <button id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
+    </div>
 
     <script>
-      let token = null;
-
       const listingsEl = document.getElementById('listings');
+      const uploadSection = document.getElementById('uploadSection');
+      const userStatus = document.getElementById('userStatus');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      let token = localStorage.getItem('token');
+      let userEmail = null;
 
       async function fetchListings() {
         const res = await fetch('/api/listings');
@@ -127,9 +135,21 @@
         });
       }
 
+      async function buyNow(id) {
+        if (!token) {
+          alert('Please login first!');
+          return location.href = '/login.html';
+        }
+        const res = await fetch('/api/buy/' + id, {
+          method: 'POST',
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        const data = await res.json();
+        alert(data.message);
+      }
+
       document.getElementById('listingForm').onsubmit = async (e) => {
         e.preventDefault();
-        if (!token) return alert('Please Login First! - To Register Please Email us at TorqueBay@Gmail.com');
         const form = e.target;
         const formData = new FormData(form);
         const res = await fetch('/api/listings', {
@@ -139,36 +159,32 @@
         });
         const data = await res.json();
         if (data.error) return alert(data.error);
-        alert('Listing uploaded sucessfully!');
+        alert('Listing uploaded successfully!');
         form.reset();
         fetchListings();
       };
 
-      document.getElementById('loginForm').onsubmit = async (e) => {
-        e.preventDefault();
-        const form = e.target;
-        const res = await fetch('/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: form.email.value, password: form.password.value })
-        });
-        const data = await res.json();
-        if (data.token) {
-          token = data.token;
-          alert('Logged in');
-        } else {
-          alert(data.error || 'Login failed! Please email TorqueBay@Gmail.com for further assistance.');
-        }
-      };
+      function logout() {
+        localStorage.removeItem('token');
+        alert('Logged out!');
+        location.reload();
+      }
 
-      async function buyNow(id) {
-        if (!token) return alert('Please Login First! - To Register Please Email us at TorqueBay@Gmail.com');
-        const res = await fetch('/api/buy/' + id, {
-          method: 'POST',
-          headers: { Authorization: 'Bearer ' + token }
-        });
-        const data = await res.json();
-        alert(data.message);
+      // Try to decode the token to show user email (optional)
+      function getEmailFromToken(token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          return payload.email || '(User)';
+        } catch {
+          return null;
+        }
+      }
+
+      if (token) {
+        userEmail = getEmailFromToken(token);
+        uploadSection.style.display = 'block';
+        logoutBtn.style.display = 'inline-block';
+        userStatus.innerHTML = `<p>Welcome back, <strong style="color:red">${userEmail || 'Member'}</strong>! 👋</p>`;
       }
 
       fetchListings();
