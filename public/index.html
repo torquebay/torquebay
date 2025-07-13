@@ -93,7 +93,7 @@
     </form>
     <section id="listings">Loading listings...</section>
 
-    <h2>Upload Listing</h2>
+    <h2>Upload Listing (Membership Required)</h2>
     <form id="listingForm">
       <input name="title" placeholder="Title" required /><br>
       <textarea name="description" placeholder="Description" required></textarea><br>
@@ -129,7 +129,7 @@
 
       document.getElementById('listingForm').onsubmit = async (e) => {
         e.preventDefault();
-        if (!token) return alert('Login first!');
+        if (!token) return alert('Please Login First! - To Register Please Email us at TorqueBay@Gmail.com');
         const form = e.target;
         const formData = new FormData(form);
         const res = await fetch('/api/listings', {
@@ -139,7 +139,7 @@
         });
         const data = await res.json();
         if (data.error) return alert(data.error);
-        alert('Listing uploaded!');
+        alert('Listing uploaded sucessfully!');
         form.reset();
         fetchListings();
       };
@@ -157,12 +157,12 @@
           token = data.token;
           alert('Logged in');
         } else {
-          alert(data.error || 'Login failed');
+          alert(data.error || 'Login failed! Please email TorqueBay@Gmail.com for further assistance.');
         }
       };
 
       async function buyNow(id) {
-        if (!token) return alert('Login first!');
+        if (!token) return alert('Please Login First! - To Register Please Email us at TorqueBay@Gmail.com');
         const res = await fetch('/api/buy/' + id, {
           method: 'POST',
           headers: { Authorization: 'Bearer ' + token }
