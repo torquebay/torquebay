@@ -17,6 +17,38 @@
     <h1>Torque Bay</h1>
     <p>Accelerate Your Dreams</p>
   </header>
+  <style>
+  .rolling-text {
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: #111;            /* Dark black-grey */
+    color: #ff0000;              /* Bright red */
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 0.75rem 0;
+    border-top: 3px solid #ff0000;
+    border-bottom: 3px solid #ff0000;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .rolling-text span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: roll 15s linear infinite;
+  }
+  @keyframes roll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+</style>
+
+<div class="rolling-text" role="region" aria-live="polite" aria-label="Site updates">
+  <span>
+    🚗 Updates coming soon! - Please email <strong>TorqueBay@gmail.com</strong> for enquiries & membership info. Stay tuned! 🚀
+  </span>
+</div>
+
 <center>
   <section id="listings">Loading listings...</section>
 
