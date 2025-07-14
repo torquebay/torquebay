@@ -18,14 +18,7 @@ header {
   padding: 10px 15px;
   border-radius: 6px;
   margin-bottom: 10px;
-}
-
-header div {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  max-width: 1100px;
-  margin: auto;
+  text-align: center;
 }
 
 #logo {
@@ -33,49 +26,19 @@ header div {
   user-select: none;
 }
 
-header h1 {
-  color: #FF3B3F;
-  font-weight: 900;
-  font-size: 1.8rem;
-  user-select: none;
-  margin: 0;
-  white-space: nowrap;
-  flex-shrink: 0;
+.auth-bar {
+  margin-top: 10px;
 }
 
-nav {
-  margin-left: auto;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-nav a {
-  margin-left: 18px;
+.auth-bar a {
+  margin: 0 10px;
   color: #FF3B3F;
   text-decoration: none;
+  font-weight: 700;
 }
 
-nav a:hover,
-nav a:focus {
+.auth-bar a:hover {
   text-decoration: underline;
-}
-
-.login-bar {
-  display: flex;
-  justify-content: center;
-  background: #000;
-  padding: 8px 0;
-  margin-top: 5px;
-  margin-bottom: 15px;
-  border-top: 1px solid #222;
-  border-bottom: 1px solid #222;
-}
-
-.login-bar a {
-  color: #FF3B3F;
-  font-weight: bold;
-  margin: 0 15px;
-  text-decoration: none;
 }
 
 .banner-text {
@@ -84,9 +47,6 @@ nav a:focus {
   border: 3px solid #FF3B3F;
   margin-bottom: 25px;
   padding: 8px 15px;
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
   font-weight: normal;
   font-size: 1.15rem;
   color: #FF3B3F;
@@ -95,6 +55,9 @@ nav a:focus {
   position: relative;
   height: 32px;
   user-select: none;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .banner-text span {
@@ -108,20 +71,21 @@ nav a:focus {
   100% { transform: translateX(-100%); }
 }
 
-.filter-bar {
+.filters {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
+  justify-content: center;
 }
 
-.filter-bar input,
-.filter-bar select {
-  padding: 6px 10px;
+.filters select,
+.filters input[type="text"] {
+  padding: 8px;
   border-radius: 4px;
   border: 1px solid #444;
-  background: #000;
-  color: #fff;
+  background: #222;
+  color: white;
 }
 
 .listing {
@@ -134,6 +98,7 @@ nav a:focus {
   border: 1px solid #444;
   color: #ddd;
   align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .gallery {
@@ -328,64 +293,73 @@ footer {
   user-select: none;
 }
 
+@media (max-width: 800px) {
+  .listing {
+    flex-direction: column;
+  }
+  .gallery,
+  .details {
+    flex: none;
+    width: 100%;
+  }
+}
+
   </style>
 </head>
-<body><header>
-  <div>
+<body>
+  <header>
     <img id="logo" src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" />
-  </div>
-</header>
-<div class="login-bar">
-  <a href="login.html">Login</a>
-  <a href="register.html">Register</a>
-</div><div class="banner-text">
-  <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries &amp; membership info. Stay tuned! 🚀</span>
-</div><!-- Insert Filter/Search bar here --><div class="filter-bar">
-  <input type="text" id="searchBar" placeholder="Search by title...">
-  <select id="mileageFilter">
-    <option value="">Mileage</option>
-    <option value="low">Under 100k</option>
-    <option value="high">100k+</option>
-  </select>
-  <select id="conditionFilter">
-    <option value="">Condition</option>
-    <option value="runner">Runner</option>
-    <option value="nonrunner">Non-runner</option>
-  </select>
-  <select id="categoryFilter">
-    <option value="">Category</option>
-    <option value="saloon">Saloon</option>
-    <option value="hatchback">Hatchback</option>
-    <option value="suv">SUV</option>
-  </select>
-</div><!-- Your Astra J Listing restored --><section class="listing" data-title="2010 Astra J 1.4 Turbo" data-condition="runner" data-miles="89905">
-  <div class="gallery">
-    <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" id="mainImage" alt="Astra J front view">
-    <div class="thumbs">
-      <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg">
-      <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg">
-      <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg">
+    <div class="auth-bar">
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
     </div>
-  </div>
-  <div class="details">
-    <h2>2010 Astra J 1.4 Turbo Low Miles</h2>
-    <div class="badges">
-      <div class="badge"><span class="tick"></span> Runner</div>
-      <div class="badge"><span class="tick"></span> MOT</div>
-    </div>
-    <div id="auctionEnds">Auction ends in: <span id="countdown">Loading...</span></div>
-    <div class="actions">
-      <label for="bidAmount">Your Bid (£):</label>
-      <input type="number" id="bidAmount" min="1500">
-      <button id="bidBtn">Place Bid</button>
-      <button id="buyNowBtn">Buy It Now - £1999</button>
-      <button id="contactSellerBtn">Organise Viewing</button>
-    </div>
-    <div class="description">
-      <strong>Description:</strong> The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm torque. Known for its impressive fuel economy of around 47-50 mpg and brisk acceleration, it's a perfect blend of performance and efficiency for everyday driving.
-    </div>
-  </div>
-</section><footer>
-  &copy; TorqueBay 2025 All Rights Reserved 
-</footer></body>
+  </header>  <div class="banner-text">
+    <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries & membership info. Stay tuned! 🚀</span>
+  </div>  <div class="filters">
+    <input type="text" placeholder="Search listings..." id="searchInput" />
+    <select id="mileageFilter">
+      <option value="">All Mileages</option>
+      <option value="lt100k">Under 100k</option>
+      <option value="gt100k">Over 100k</option>
+    </select>
+    <select id="conditionFilter">
+      <option value="">All Conditions</option>
+      <option value="runner">Runner</option>
+      <option value="non-runner">Non-runner</option>
+    </select>
+    <select id="categoryFilter">
+      <option value="">All Categories</option>
+      <option value="saloon">Saloon</option>
+      <option value="hatchback">Hatchback</option>
+      <option value="suv">SUV</option>
+    </select>
+  </div>  <!-- Listings go here -->  <div id="listingsContainer">
+    <!-- Listing HTML gets injected dynamically if needed -->
+  </div>  <footer>
+    &copy; TorqueBay 2025 All Rights Reserved
+  </footer>  <script>
+    // Zoom functionality
+    document.addEventListener('click', function(e) {
+      const mainImage = document.querySelector('#mainImage');
+      if (!mainImage) return;
+      if (e.target === mainImage) {
+        mainImage.classList.toggle('zoomed');
+      } else if (!mainImage.contains(e.target)) {
+        mainImage.classList.remove('zoomed');
+      }
+    });
+
+    // Gallery thumbnail switching
+    const galleryImages = document.querySelectorAll('.gallery .thumbs img');
+    const mainImage = document.getElementById('mainImage');
+
+    galleryImages.forEach(img => {
+      img.addEventListener('click', () => {
+        galleryImages.forEach(i => i.classList.remove('selected'));
+        img.classList.add('selected');
+        mainImage.src = img.src;
+        mainImage.alt = img.alt.replace('thumbnail', 'large');
+      });
+    });
+  </script></body>
 </html>
