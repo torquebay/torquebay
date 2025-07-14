@@ -374,11 +374,6 @@
         margin-left: 0;
       }
     }
-    .red-email {
-  color: #FF3B3F;           /* red brand color */
-  font-family: 'Oswald', 'Arial Black', Arial, sans-serif;
-  font-weight: 900;         /* boldest weight from Oswald */
-}
   </style>
 </head>
 <body>
@@ -394,7 +389,10 @@
   </div>
 </header>
 
-<span class="red-text">🚗 New auctions launching soon! – Email <span class="red-email">TorqueBay@gmail.com</span> for enquiries, membership info, and early access to exclusive listings 🚀</span>
+<div class="banner-text" role="region" aria-live="polite" aria-atomic="true">
+  <span>🚗 💨 Updates Coming Soon! – Email TorqueBay@gmail.com for enquiries & Membership Information . Stay tuned! 🚀</span>
+</div>
+
 <section class="listing" data-title="2010 Astra J 1.4 Turbo" data-condition="runner" data-miles="89905" id="listingsContainer">
   <div class="gallery" aria-label="Car image gallery">
     <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra J front view large image" id="mainImage" />
@@ -416,10 +414,11 @@
   <div class="badge" aria-label="MOT status">
     <span class="tick" aria-hidden="true"></span> MOT
   </div>
-  <div class="badge badge-blue" aria-label="Low mileage">
-    <span class="tick" aria-hidden="true"></span> Low Mileage
+  <div class="badge" aria-label="Low mileage status">
+    <span class="tick" aria-hidden="true"></span> Low mileage
   </div>
-    </div>
+</div>
+  
 
     <div id="auctionEnds" aria-live="polite" aria-atomic="true" aria-label="Auction countdown">
       Auction ends in: <span id="countdown">Loading...</span>
