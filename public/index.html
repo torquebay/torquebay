@@ -139,6 +139,7 @@
       position: relative;
       align-items: flex-start;
       font-size: 14px;
+      flex-direction: row;
     }
 
     article.listing h3 {
@@ -146,6 +147,16 @@
       color: #d32f2f;
       font-size: 1.4rem;
       flex-basis: 100%;
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      right: 20px;
+      user-select: none;
+      background: #111;
+      padding: 6px 10px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px #d32f2f;
+      z-index: 5;
     }
 
     .tag {
@@ -168,6 +179,7 @@
       flex-direction: column;
       gap: 10px;
       max-width: 220px;
+      margin-top: 40px; /* push down below title */
     }
 
     .gallery img {
@@ -187,6 +199,7 @@
       flex: 0 0 400px;
       max-width: 400px;
       position: relative;
+      margin-top: 40px; /* push down below title */
     }
 
     #mainImage {
@@ -197,6 +210,7 @@
       max-height: 300px;
       width: 100%;
       display: block;
+      user-select:none;
     }
 
     #mainImage.zoomed {
@@ -215,6 +229,7 @@
       color: #eee;
       max-width: 320px;
       min-width: 280px;
+      margin-top: 40px; /* push down below title */
     }
 
     .price {
@@ -288,14 +303,15 @@
     }
 
     .description {
-      margin-top: 15px;
+      margin-top: 10px;
       line-height: 1.4;
       font-size: 0.9rem;
       color: #ddd;
-      flex-grow: 1;
       max-height: 140px;
       overflow-y: auto;
       padding-right: 5px;
+      border-top: 1px solid #333;
+      padding-top: 12px;
     }
 
     footer {
@@ -318,10 +334,18 @@
         flex-direction: column;
         align-items: center;
       }
+      article.listing h3 {
+        position: static;
+        margin-bottom: 10px;
+        padding: 0;
+        box-shadow: none;
+        background: transparent;
+      }
       .gallery {
         max-width: 100%;
         flex-direction: row;
         overflow-x: auto;
+        margin-top: 0;
       }
       .gallery img {
         max-width: 100px;
@@ -332,10 +356,7 @@
       .description {
         max-width: 100%;
         width: 100%;
-      }
-
-      #filtersForm {
-        justify-content: center;
+        margin-top: 0;
       }
     }
   </style>
@@ -426,7 +447,6 @@
           'https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg'
         ]
       }
-      // Add more listings here later if needed
     ];
 
     // Authentication simulation (replace with real auth)
@@ -465,8 +485,6 @@
           </div>
           <p><strong>Mileage:</strong> ${formatNumber(listing.mileage)} miles</p>
           <p class="price">£${formatNumber(listing.price)}</p>
-          <p><strong>Buy It Now:</strong> £${formatNumber(listing.buyNowPrice)}</p>
-          <p class="description">${listing.description}</p>
           <div class="actions" aria-label="Bid and purchase actions">
             <form id="bidForm" aria-label="Place your bid">
               <label for="bidAmount">Your Bid (£):</label>
@@ -476,6 +494,7 @@
             <button class="buy-now-price" id="buyNowBtn">Buy It Now £${formatNumber(listing.buyNowPrice)}</button>
             <button class="contact-seller" id="contactSellerBtn">Contact Seller</button>
           </div>
+          <p class="description">${listing.description}</p>
         </section>
       `;
 
@@ -499,9 +518,14 @@
         });
       });
 
-      // Main image zoom toggle
+      // Main image zoom toggle and auto zoom off on mouseleave
       mainImg.addEventListener('click', () => {
         mainImg.classList.toggle('zoomed');
+      });
+      mainImg.addEventListener('mouseleave', () => {
+        if(mainImg.classList.contains('zoomed')) {
+          mainImg.classList.remove('zoomed');
+        }
       });
 
       // Bid form submit handler
