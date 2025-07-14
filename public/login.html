@@ -74,13 +74,6 @@
       font-size: 1rem;
       text-align: center;
     }
-    .captcha {
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.1rem;
-      margin: 10px 0;
-      color: #ccc;
-    }
     @media (max-width: 500px) {
       .logo { width: 150px; }
       form { padding: 2rem; }
@@ -100,8 +93,6 @@
     <h2>Login</h2>
     <input type="email" id="email" placeholder="Email" required autocomplete="email" />
     <input type="password" id="password" placeholder="Password" required autocomplete="current-password" />
-    <div class="captcha" id="captchaText"></div>
-    <input type="text" id="captchaInput" placeholder="Enter answer" required />
     <button type="submit">Login</button>
     <div class="message" id="msg"></div>
     <p style="text-align:center; margin-top: 10px;">
@@ -120,34 +111,10 @@
 
     const form = document.getElementById('loginForm')
     const msg = document.getElementById('msg')
-    const captchaText = document.getElementById('captchaText')
-    const captchaInput = document.getElementById('captchaInput')
-
-    let captchaAnswer
-
-    // Generate simple captcha on load
-    function generateCaptcha() {
-      const num1 = Math.floor(Math.random() * 10) + 1
-      const num2 = Math.floor(Math.random() * 10) + 1
-      captchaAnswer = num1 + num2
-      captchaText.textContent = `What is ${num1} + ${num2}?`
-    }
-
-    generateCaptcha()
 
     form.addEventListener('submit', async e => {
       e.preventDefault()
       msg.textContent = ''
-
-      // Check captcha first
-      if (parseInt(captchaInput.value.trim()) !== captchaAnswer) {
-        msg.textContent = 'Incorrect captcha answer'
-        msg.style.color = '#f44336'
-        generateCaptcha() // refresh captcha
-        captchaInput.value = ''
-        return
-      }
-
       const email = form.email.value.trim()
       const password = form.password.value
 
@@ -155,7 +122,6 @@
       if (error) {
         msg.textContent = error.message
         msg.style.color = '#f44336'
-        generateCaptcha() // refresh captcha on failed login
       } else {
         msg.textContent = 'Login successful! Redirecting...'
         msg.style.color = '#4caf50'
