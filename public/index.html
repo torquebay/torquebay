@@ -2,447 +2,458 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8" />
-  <title>Torque Bay – Accelerate Your Dreams</title>
+  <title>Torque Bay – Car Auctions & Sales</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* Base & reset */
+    /* Reset & base */
     body {
       margin: 0;
-      background: #1a1a1a;
+      background: #121212;
       color: #eee;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      user-select: none;
+    }
+    a {
+      color: #e53935;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    a:hover {
+      color: #ff6659;
     }
 
+    /* Banner */
     .banner {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 12px 24px;
-      background: #121212;
-      border-bottom: 4px solid #4caf50;
-    }
-
-    .banner img {
-      height: 60px;
+      gap: 16px;
+      padding: 14px 24px;
+      background: #1e1e1e;
+      border-bottom: 3px solid #e53935;
       user-select: none;
     }
-
+    .banner img {
+      height: 50px;
+      user-select: none;
+    }
     .banner h1 {
-      font-size: 1.8rem;
-      color: #4caf50;
+      color: #e53935;
+      font-weight: 900;
+      font-size: 1.7rem;
       margin: 0;
-      font-weight: 700;
-      text-shadow: 0 0 5px #4caf50aa;
+      text-shadow: 0 0 6px #e5393522;
+      user-select: text;
     }
 
+    /* Container */
     .container {
-      max-width: 960px;
+      max-width: 900px;
       margin: 2rem auto 6rem;
       padding: 0 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
 
-    /* Filters are disabled for single listing, placeholder */
-    .filters {
-      width: 100%;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-    }
-
-    .filters input, .filters select {
-      flex: 1;
-      min-width: 180px;
-      padding: 12px 16px;
-      background: #222;
-      border: 1px solid #444;
-      color: #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: not-allowed;
-      user-select: none;
-      box-shadow: inset 0 0 5px #111;
-      transition: background 0.3s ease;
-    }
-
-    .filters input:disabled, .filters select:disabled {
-      background: #2c2c2c;
-    }
-
+    /* Listing card */
     .listing {
-      width: 100%;
-      background: #242424;
-      border-radius: 12px;
+      background: #1b1b1b;
+      border-radius: 14px;
+      box-shadow: 0 0 18px #e5393511;
       padding: 24px;
-      box-shadow: 0 0 16px #4caf5033;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       text-align: center;
-      transition: box-shadow 0.3s ease;
+      user-select: text;
     }
     .listing:hover {
-      box-shadow: 0 0 24px #4caf5077;
+      box-shadow: 0 0 28px #e5393533;
+      transition: box-shadow 0.3s ease;
     }
-
     .listing h3 {
-      margin: 0 0 14px;
-      font-weight: 700;
+      color: #e53935;
+      font-weight: 900;
       font-size: 2rem;
-      color: #4caf50;
-      user-select: text;
-      text-shadow: 0 0 8px #4caf50aa;
+      margin-bottom: 0.3rem;
+      text-shadow: 0 0 6px #e5393533;
     }
 
-    /* Runner tag with checkmark */
+    /* Runner tag */
     .tag {
-      color: #fff;
-      padding: 6px 14px;
-      font-size: 0.9rem;
-      border-radius: 30px;
-      font-weight: 700;
-      margin-bottom: 20px;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      user-select: none;
+      gap: 6px;
       background: #4caf50;
-      box-shadow: 0 0 10px #4caf5077;
-      letter-spacing: 0.05em;
+      padding: 6px 18px;
+      font-weight: 700;
+      border-radius: 24px;
+      color: white;
+      font-size: 1rem;
+      box-shadow: 0 0 12px #4caf5066;
+      user-select: none;
+      margin-bottom: 1.5rem;
     }
     .tag svg {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       fill: white;
       flex-shrink: 0;
+    }
+
+    /* Price big above image */
+    .price {
+      font-size: 4rem;
+      font-weight: 900;
+      color: #e53935;
+      text-shadow:
+        0 0 10px #ff665599,
+        0 0 30px #e53935cc;
+      margin-bottom: 1rem;
+      user-select: text;
+    }
+    .buy-now-price {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      background: #b71c1c;
+      padding: 8px 20px;
+      border-radius: 30px;
+      display: inline-block;
+      margin-top: 6px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #b71c1ccc;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    .buy-now-price:hover {
+      background: #ff1744;
+      box-shadow: 0 0 20px #ff1744cc;
+    }
+
+    /* Countdown & auction end */
+    #countdown {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #ff8a65;
+      text-shadow: 0 0 8px #ff7043bb;
+      margin-bottom: 2rem;
+      user-select: none;
     }
 
     /* Gallery */
     .gallery {
       display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      padding-bottom: 12px;
-      max-width: 720px;
+      gap: 14px;
+      justify-content: center;
       margin-bottom: 28px;
-      user-select: none;
+      overflow-x: auto;
       scrollbar-width: thin;
-      scrollbar-color: #4caf50 #222;
+      scrollbar-color: #e53935 #222;
     }
     .gallery::-webkit-scrollbar {
       height: 8px;
     }
     .gallery::-webkit-scrollbar-thumb {
-      background-color: #4caf50;
+      background-color: #e53935;
       border-radius: 4px;
     }
-
     .gallery img {
-      flex: 0 0 140px;
+      width: 140px;
       height: 100px;
-      border-radius: 10px;
-      cursor: pointer;
       object-fit: cover;
+      border-radius: 12px;
+      cursor: pointer;
       border: 3px solid transparent;
+      box-shadow: 0 0 12px #7f0000cc;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 0 8px #2f7f32;
+      user-select: none;
     }
     .gallery img.selected {
-      border-color: #a5d6a7;
-      box-shadow: 0 0 18px #a5d6a7;
+      border-color: #ff6655;
+      box-shadow: 0 0 25px #ff6655cc;
     }
 
     /* Main image */
     #mainImage {
       max-width: 720px;
-      width: auto;
-      height: auto;
-      border-radius: 14px;
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 0 30px #e5393555;
       cursor: zoom-in;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
-      box-shadow: 0 0 20px #4caf5077;
       user-select: none;
-      margin-bottom: 24px;
+      margin-bottom: 2rem;
     }
     #mainImage:hover {
       transform: scale(1.15);
       cursor: zoom-out;
-      box-shadow: 0 0 28px #4caf50cc;
+      box-shadow: 0 0 38px #ff665599;
     }
 
+    /* Description */
     p {
-      max-width: 720px;
-      margin: 8px 0;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
+      color: #eee;
+      margin-bottom: 0.25rem;
       user-select: text;
-      line-height: 1.4;
-      color: #c8f5cb;
     }
-
     strong {
-      color: #a5d6a7;
+      color: #ff6655;
     }
 
-    /* Flashy price */
-    .price {
-      font-size: 3rem;
-      font-weight: 900;
-      color: #e53935; /* bright red */
-      text-shadow:
-        0 0 8px #ff5252,
-        0 0 15px #ff1744,
-        0 0 20px #b71c1c;
-      margin: 12px 0 6px;
-      user-select: text;
+    /* Bid & buttons */
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
     }
-    .buy-now {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #ff7961;
-      text-shadow: 0 0 6px #ff8a80;
-      margin-bottom: 24px;
-    }
-
-    /* Countdown timer style */
-    #countdown {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #4caf50;
-      text-shadow: 0 0 6px #81c784;
-      margin-bottom: 32px;
-      user-select: none;
-      font-family: 'Courier New', Courier, monospace;
-    }
-
     input[type=number] {
-      width: 140px;
+      font-size: 1.2rem;
       padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid #444;
-      background: #222;
-      color: #ddd;
-      margin-right: 12px;
-      font-size: 1.1rem;
+      border-radius: 12px;
+      border: 1.5px solid #555;
+      width: 200px;
+      background: #1e1e1e;
+      color: #eee;
       user-select: text;
-      transition: background 0.3s ease;
+      outline-offset: 2px;
+      transition: border-color 0.25s ease;
     }
     input[type=number]:focus {
+      border-color: #e53935;
+      box-shadow: 0 0 8px #e5393555;
       outline: none;
-      background: #2a4d2a;
-      border-color: #4caf50;
-      box-shadow: 0 0 8px #4caf50aa;
+    }
+    input[type=number]:disabled {
+      background: #444;
+      color: #999;
+      cursor: not-allowed;
     }
 
     button {
-      background: #4caf50;
-      color: #111;
-      padding: 10px 22px;
+      background: #e53935;
+      color: #fff;
       border: none;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 1.1rem;
+      padding: 12px 28px;
+      border-radius: 14px;
+      font-size: 1.25rem;
+      font-weight: 900;
       cursor: pointer;
-      transition: background 0.3s ease, color 0.3s ease;
       user-select: none;
-      box-shadow: 0 4px 6px #2f7f32cc;
+      box-shadow: 0 6px 12px #b71c1caa;
+      transition: background 0.3s ease;
     }
-    button:hover {
-      background: #81c784;
-      color: #0a0a0a;
-      box-shadow: 0 6px 12px #3b9a3bcc;
+    button:hover:not(:disabled) {
+      background: #ff6655;
+      box-shadow: 0 8px 18px #ff6655cc;
     }
-    button + button {
-      margin-left: 14px;
-    }
-
-    .actions {
-      margin-top: 24px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
+    button:disabled {
+      cursor: not-allowed;
+      background: #660000;
+      box-shadow: none;
     }
 
-    /* Rolling banner */
-    .rolling-banner {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: #121212;
-      color: #4caf50;
+    /* Info bar */
+    .info-bar {
+      background: #222;
+      padding: 12px 18px;
+      border-radius: 10px;
+      box-shadow: inset 0 0 8px #4d0000cc;
+      margin-bottom: 30px;
+      color: #ffaaaa;
       font-weight: 700;
-      border-top: 2px solid #4caf50;
-      padding: 12px 0;
-      white-space: nowrap;
-      overflow: hidden;
-      z-index: 9999;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       user-select: none;
-      text-shadow: 0 0 5px #4caf50aa;
+      text-align: center;
+      letter-spacing: 0.05em;
+      user-select:none;
     }
 
-    .rolling-banner span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: scroll 15s linear infinite;
-    }
-
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-
-    /* Responsive tweaks */
-    @media (max-width: 720px) {
+    /* Responsive */
+    @media (max-width: 740px) {
       #mainImage {
-        max-width: 90vw;
+        max-width: 100vw;
+        border-radius: 12px;
       }
       .gallery img {
-        flex: 0 0 110px;
-        height: 80px;
+        width: 100px;
+        height: 70px;
       }
-      .banner h1 {
-        font-size: 1.4rem;
+      input[type=number] {
+        width: 150px;
+      }
+      button {
+        padding: 10px 22px;
+        font-size: 1rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="banner" role="banner">
+  <header class="banner" role="banner">
     <img src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="Torque Bay Logo" />
-    <h1>Torque Bay – Accelerate Your Dreams</h1>
-  </div>
+    <h1>Torque Bay – Car Auctions & Sales</h1>
+  </header>
 
-  <main class="container" role="main" aria-label="Car listings and filters">
-    <section class="filters" aria-label="Search and filter options">
-      <input type="text" id="searchInput" placeholder="Search make, model, title..." disabled aria-disabled="true" title="Filter disabled for single listing" />
-      <select id="sortSelect" disabled aria-disabled="true" title="Sorting disabled for single listing">
-        <option>Sort options disabled</option>
-      </select>
-      <select id="conditionFilter" disabled aria-disabled="true" title="Filter disabled for single listing">
-        <option>Condition filter disabled</option>
-      </select>
-    </section>
+  <main class="container" role="main" aria-label="Car auction listing">
 
-    <article class="listing" aria-label="Listing for Vauxhall Astra J 2010">
-      <h3>Vauxhall Astra J 1.4 Turbo (2010)</h3>
-      <span class="tag" aria-label="Car condition: Runner">
+    <article class="listing" aria-labelledby="listingTitle" tabindex="0">
+      <h3 id="listingTitle">Vauxhall Astra J 1.4 Turbo (2010)</h3>
+
+      <div class="tag" aria-label="Condition: Runner">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path d="M9 16.17l-3.88-3.88-1.41 1.41L9 19 20.3 7.7l-1.41-1.41z"></path>
         </svg>
         Runner
-      </span>
-
-      <div class="gallery" id="gallery" role="list" aria-label="Car images thumbnails">
-        <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra front view" class="selected" role="listitem" />
-        <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg" alt="Astra side view" role="listitem" />
-        <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg" alt="Astra interior" role="listitem" />
-        <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg" alt="Astra engine bay" role="listitem" />
       </div>
 
-      <img id="mainImage" src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Main Astra car image" />
-
-      <p>89,905 miles | Full year MOT | Recently serviced</p>
-      <p>Runs and drives perfectly.</p>
-
-      <div class="price" aria-live="polite" aria-atomic="true" aria-label="Current price is three thousand eight hundred pounds">
+      <div class="price" aria-live="polite" aria-atomic="true" aria-label="Current bid price">
         £3,800
       </div>
-      <div class="buy-now" aria-label="Buy it now price is four thousand five hundred pounds">
-        Buy Now: £4,500
-      </div>
 
-      <div id="countdown" aria-live="polite" aria-atomic="true" aria-label="Auction ends in countdown timer">
+      <div id="countdown" aria-live="polite" aria-atomic="true" aria-label="Auction ends in">
         Auction ends in: 24:00:00
       </div>
 
-      <div class="actions" role="region" aria-label="Place bid and buy actions">
-        <input id="bid-1" type="number" aria-label="Enter your bid amount" placeholder="Enter your bid" min="3800" step="50" />
-        <button type="button" onclick="placeBid('1')">Place Bid</button>
-        <button type="button" onclick="buyNow('1')">Buy It Now</button>
-        <button type="button" onclick="watch('1')" aria-label="Add to watchlist">⭐ Watch</button>
+      <img id="mainImage" src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra front view" />
+
+      <div class="gallery" role="list" aria-label="Car image thumbnails">
+        <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra front view" class="selected" role="listitem" tabindex="0" />
+        <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg" alt="Astra side view" role="listitem" tabindex="0" />
+        <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg" alt="Astra interior" role="listitem" tabindex="0" />
+        <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg" alt="Astra engine bay" role="listitem" tabindex="0" />
+      </div>
+
+      <p><strong>Mileage:</strong> 89,905 miles</p>
+      <p><strong>Status:</strong> Runs & drives, full year MOT, recently serviced</p>
+
+      <div class="actions" aria-label="Place bid or buy the car">
+        <input
+          id="bidInput"
+          type="number"
+          min="3800"
+          step="50"
+          placeholder="Enter your bid (min £3,800)"
+          aria-label="Enter your bid amount"
+          disabled
+          title="Register or login to place bids"
+        />
+        <button id="placeBidBtn" disabled aria-disabled="true" title="Register or login to place bids">Place Bid</button>
+
+        <button id="buyNowBtn" aria-label="Buy this car now for £1,999" title="Buy Now for £1,999">Buy It Now: £1,999</button>
+      </div>
+
+      <div class="info-bar" role="alert" aria-live="polite" aria-atomic="true" id="infoBar">
+        You must <a href="register.html">register</a> or <a href="login.html">login</a> to place bids.
       </div>
     </article>
+
   </main>
 
-  <div class="rolling-banner" aria-live="polite" aria-atomic="true">
-    <span>🔥 Welcome to Torque Bay – UK’s Most Raw & Real Car Auction. Place Bids, Watch Listings, Own Dreams. Email: torquebay@gmail.com 🔧</span>
-  </div>
-
   <script>
+    // Elements
+    const gallery = document.querySelector('.gallery');
     const mainImage = document.getElementById('mainImage');
-    const gallery = document.getElementById('gallery');
+    const bidInput = document.getElementById('bidInput');
+    const placeBidBtn = document.getElementById('placeBidBtn');
+    const buyNowBtn = document.getElementById('buyNowBtn');
+    const infoBar = document.getElementById('infoBar');
+    const priceEl = document.querySelector('.price');
+    const countdownEl = document.getElementById('countdown');
 
-    // Thumbnail click to update main image & highlight selected
+    // User login status simulation (replace with real auth)
+    let loggedIn = false; // Change to true to simulate logged in user
+
+    // Update bid input and button based on login
+    function updateBidAccess() {
+      if (loggedIn) {
+        bidInput.disabled = false;
+        placeBidBtn.disabled = false;
+        placeBidBtn.setAttribute('aria-disabled', 'false');
+        infoBar.textContent = "You're logged in! Place your bids.";
+      } else {
+        bidInput.disabled = true;
+        placeBidBtn.disabled = true;
+        placeBidBtn.setAttribute('aria-disabled', 'true');
+        infoBar.innerHTML = `You must <a href="register.html">register</a> or <a href="login.html">login</a> to place bids.`;
+      }
+    }
+    updateBidAccess();
+
+    // Gallery click - swap main image & highlight
     gallery.addEventListener('click', e => {
-      if(e.target.tagName !== 'IMG') return;
+      if (e.target.tagName !== 'IMG') return;
       [...gallery.children].forEach(img => img.classList.remove('selected'));
       e.target.classList.add('selected');
       mainImage.src = e.target.src;
       mainImage.alt = e.target.alt;
     });
 
-    // Zoom toggle on main image click
+    // Zoom toggle on main image
     let zoomed = false;
     mainImage.addEventListener('click', () => {
-      if(zoomed) {
+      if (zoomed) {
         mainImage.style.transform = 'scale(1)';
         zoomed = false;
       } else {
-        mainImage.style.transform = 'scale(1.5)';
+        mainImage.style.transform = 'scale(1.4)';
         zoomed = true;
       }
     });
 
-    // Countdown timer logic - 24h countdown from page load for demo
-    const countdownEl = document.getElementById('countdown');
-    const auctionDuration = 24 * 60 * 60 * 1000; // 24 hours in ms
-    const auctionEndTime = Date.now() + auctionDuration;
+    // Countdown timer - 24h from page load
+    const auctionDuration = 24 * 60 * 60 * 1000;
+    const auctionEnd = Date.now() + auctionDuration;
 
     function updateCountdown() {
-      const now = Date.now();
-      let diff = auctionEndTime - now;
-      if(diff < 0) diff = 0;
+      let diff = auctionEnd - Date.now();
+      if (diff < 0) diff = 0;
 
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      const h = Math.floor(diff / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-      countdownEl.textContent = `Auction ends in: ${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+      countdownEl.textContent = `Auction ends in: ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 
-      if(diff === 0) {
+      if (diff === 0) {
         clearInterval(timerInterval);
         countdownEl.textContent = 'Auction ended';
+        placeBidBtn.disabled = true;
+        bidInput.disabled = true;
       }
     }
     updateCountdown();
     const timerInterval = setInterval(updateCountdown, 1000);
 
-    // Placeholder action handlers
-    function placeBid(id) {
-      const bidInput = document.getElementById(`bid-${id}`);
-      const bidAmount = parseFloat(bidInput.value);
-      if(isNaN(bidAmount) || bidAmount < 3800) {
-        alert('Please enter a valid bid amount of £3800 or higher.');
+    // Bid placing
+    placeBidBtn.addEventListener('click', () => {
+      if (!loggedIn) {
+        alert('Please register or login to place bids.');
         return;
       }
-      alert(`Bid of £${bidAmount.toFixed(2)} placed on listing ${id}!`);
+      const bidVal = parseFloat(bidInput.value);
+      const currentPrice = parseFloat(priceEl.textContent.replace(/[^0-9\.]+/g, ''));
+      if (isNaN(bidVal) || bidVal < currentPrice + 50) {
+        alert(`Bid must be at least £${(currentPrice + 50).toLocaleString()}`);
+        return;
+      }
+      priceEl.textContent = `£${bidVal.toLocaleString()}`;
+      alert(`Bid of £${bidVal.toLocaleString()} placed! Good luck!`);
       bidInput.value = '';
-    }
-    function buyNow(id) {
-      alert(`'Buy It Now' clicked for listing ${id}. Proceed to checkout.`);
-    }
-    function watch(id) {
-      alert(`Listing ${id} added to your watchlist.`);
-    }
-  </script>
+    });
 
+    // Buy now
+    buyNowBtn.addEventListener('click', () => {
+      if (!loggedIn) {
+        alert('Please register or login to buy the car immediately.');
+        return;
+      }
+      const buyNowPrice = 1999;
+      if (confirm(`Are you sure you want to buy this car now for £${buyNowPrice}?`)) {
+        alert('Congrats! Proceeding to checkout...');
+        // Add actual buy now logic here
+      }
+    });
+  </script>
 </body>
 </html>
