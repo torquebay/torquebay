@@ -18,7 +18,14 @@ header {
   padding: 10px 15px;
   border-radius: 6px;
   margin-bottom: 10px;
-  text-align: center;
+}
+
+header div {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  max-width: 1100px;
+  margin: auto;
 }
 
 #logo {
@@ -26,115 +33,109 @@ header {
   user-select: none;
 }
 
-.auth-bar {
-  margin-top: 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
+header h1 {
+  color: #FF3B3F;
+  font-weight: 900;
+  font-size: 1.8rem;
+  user-select: none;
+  margin: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.auth-bar a {
-  margin: 0 12px;
+nav.auth-nav {
+  width: 100%;
+  background: #222;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+nav.auth-nav a {
   color: #FF3B3F;
   text-decoration: none;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
-.auth-bar a:hover,
-.auth-bar a:focus {
+nav.auth-nav a:hover {
   text-decoration: underline;
 }
 
+.banner-text {
+  font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+  background: black;
+  border: 3px solid #FF3B3F;
+  margin-bottom: 25px;
+  padding: 8px 15px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: normal;
+  font-size: 1.15rem;
+  color: #FF3B3F;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  height: 32px;
+  user-select: none;
+}
+
+.banner-text span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scroll 14s linear infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
 .filters {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
+  background: #222;
   padding: 15px;
+  border-radius: 6px;
   margin-bottom: 25px;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
+  gap: 15px;
+  align-items: center;
+}
+
+.filters label {
+  font-weight: bold;
+  margin-right: 5px;
 }
 
 .filters input,
-.filters select,
-.filters button {
-  padding: 8px;
-  font-size: 0.9rem;
-  border-radius: 4px;
-  border: 1px solid #444;
+.filters select {
+  padding: 6px 10px;
   background: #111;
-  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: white;
 }
-
-.filters button {
-  background: #FF3B3F;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.filters button:hover {
-  background: #e63338;
-}
-
-/* rest of your CSS remains unchanged... */
 
   </style>
 </head>
 <body><header>
-  <img id="logo" src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" />
-  <div class="auth-bar">
-    <a href="login.html">Login</a>
-    <a href="register.html">Register</a>
+  <div>
+    <img id="logo" src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" />
   </div>
-</header><div class="filters">
-  <input type="text" id="searchInput" placeholder="Search by title..." />
-  <select id="mileageFilter">
-    <option value="">All Mileage</option>
-    <option value="under50k">Under 50,000</option>
-    <option value="50to100k">50,000 - 100,000</option>
-    <option value="over100k">Over 100,000</option>
-  </select>
-  <select id="conditionFilter">
-    <option value="">All Conditions</option>
-    <option value="runner">Runner</option>
-    <option value="non-runner">Non-Runner</option>
-  </select>
-  <select id="categoryFilter">
-    <option value="">All Categories</option>
-    <option value="Hatchback">Hatchback</option>
-    <option value="Saloon">Saloon</option>
-    <option value="SUV">SUV</option>
-    <option value="Coupe">Coupe</option>
-  </select>
-  <button onclick="applyFilters()">Apply Filters</button>
-</div><!-- rest of your HTML content remains unchanged, including listings --><script>
-  function applyFilters() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const mileageVal = document.getElementById('mileageFilter').value;
-    const conditionVal = document.getElementById('conditionFilter').value;
-    const categoryVal = document.getElementById('categoryFilter').value;
+</header><nav class="auth-nav">
+  <a href="login.html">Login</a>
+  <a href="register.html">Register</a>
+</nav><div class="banner-text" role="region" aria-live="polite" aria-atomic="true">
+  <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries &amp; membership info. Stay tuned! 🚀</span>
+</div><div class="filters">
+  <label for="searchInput">Search:</label>
+  <input type="text" id="searchInput" placeholder="Search by title..." /><label for="mileageFilter">Mileage:</label> <select id="mileageFilter"> <option value="all">All</option> <option value="under50k">Under 50k</option> <option value="50kto100k">50k–100k</option> <option value="over100k">Over 100k</option> </select>
 
-    const listings = document.querySelectorAll('.listing');
+<label for="conditionFilter">Condition:</label> <select id="conditionFilter"> <option value="all">All</option> <option value="runner">Runner</option> <option value="non-runner">Non-Runner</option> </select>
 
-    listings.forEach(listing => {
-      const title = listing.dataset.title.toLowerCase();
-      const miles = parseInt(listing.dataset.miles || 0);
-      const condition = listing.dataset.condition;
-      const category = listing.dataset.category || '';
+<label for="categoryFilter">Category:</label> <select id="categoryFilter"> <option value="all">All</option> <option value="Hatchback">Hatchback</option> <option value="Saloon">Saloon</option> <option value="SUV">SUV</option> <option value="Coupe">Coupe</option> </select>
 
-      let show = true;
-
-      if (searchInput && !title.includes(searchInput)) show = false;
-      if (conditionVal && condition !== conditionVal) show = false;
-      if (categoryVal && category !== categoryVal) show = false;
-      if (mileageVal) {
-        if (mileageVal === 'under50k' && miles >= 50000) show = false;
-        if (mileageVal === '50to100k' && (miles < 50000 || miles > 100000)) show = false;
-        if (mileageVal === 'over100k' && miles <= 100000) show = false;
-      }
-
-      listing.style.display = show ? '' : 'none';
-    });
-  }
-</script><!-- keep the rest of your HTML unchanged --></body>
-</html>
+</div><!-- Your existing listings, countdown, and content remain below untouched -->
