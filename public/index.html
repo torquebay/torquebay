@@ -78,7 +78,7 @@
   overflow: hidden;
   white-space: nowrap;
   position: relative;
-  height: 32px; 
+  height: 32px;
   user-select: none;
     }
 
@@ -422,12 +422,13 @@
 
     <div id="auctionEnds" aria-live="polite" aria-atomic="true" aria-label="Auction countdown">
       Auction ends in: <span id="countdown">Loading...</span>
-      <button id="contactSellerBtn">Contact Seller Directly</button>
     </div>
 
     <div class="actions" aria-label="Bidding and buying options">
       <label for="bidAmount">Your Bid (£):</label>
-      <input type="number" id="bidAmount" min="1500" step="10" aria-describedby="bidHelp" />
+      <input type="number" id="bidAmount" min="750" step="10" aria-describedby="bidHelp" />
+     <button id="contactSellerBtn">Contact Seller Directly</button>
+      
       <button id="bidBtn" aria-describedby="bidHelp">Place Bid</button>
 
       <button id="buyNowBtn" aria-describedby="buyNowHelp">Buy It Now - £1999</button>
@@ -435,10 +436,10 @@
       
     </div>
     <p id="bidHelp" style="font-size:0.8rem;color:#aaa;margin-top:-8px;margin-bottom:6px;">
-      Minimum bid £1500. Must be logged in to bid or buy.
+      Minimum bid £750. Must be logged in to bid or buy.
     </p>
     <p id="buyNowHelp" style="font-size:0.8rem;color:#aaa;margin-top:-12px;margin-bottom:12px;">
-      Buy now price: £1999
+      Buy now price: £2000
     </p>
 
     <div class="description" tabindex="0">
