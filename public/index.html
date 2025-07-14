@@ -13,12 +13,12 @@
       max-width: 1000px;
       margin: auto;
       background: #111;
-      color: #fff;
+      color: #eee;
+      font-size: 14px;
+      line-height: 1.4;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      font-size: 14px;
-      line-height: 1.4;
     }
 
     img {
@@ -92,20 +92,40 @@
     }
 
     main.container {
-      role: main;
-      ariaLabel: "Car auction and sales listings";
+      flex-grow: 1;
     }
 
-    /* Hide filters if only 1 listing */
+    /* Filters */
     #filtersForm {
-      display: none;
       margin-bottom: 20px;
-      color: #fff;
-      align-items: center;
+      display: flex;
+      gap: 15px;
       flex-wrap: wrap;
-      gap: 10px;
+      align-items: center;
+      color: #eee;
     }
 
+    #filtersForm label {
+      font-weight: 600;
+      user-select: none;
+    }
+
+    #filtersForm select,
+    #filtersForm input[type="text"] {
+      padding: 5px 8px;
+      font-size: 0.9rem;
+      border-radius: 5px;
+      border: 1px solid #555;
+      background: #222;
+      color: #eee;
+      min-width: 120px;
+    }
+    #filtersForm input[type="text"] {
+      flex-grow: 1;
+      min-width: 150px;
+    }
+
+    /* Listings */
     article.listing {
       border: 1px solid #444;
       border-radius: 8px;
@@ -192,7 +212,7 @@
       flex-direction: column;
       justify-content: flex-start;
       gap: 15px;
-      color: #fff;
+      color: #eee;
       max-width: 320px;
       min-width: 280px;
     }
@@ -240,7 +260,7 @@
       border-radius: 6px;
       border: 1px solid #444;
       background: #222;
-      color: #fff;
+      color: #eee;
       box-sizing: border-box;
     }
 
@@ -313,6 +333,10 @@
         max-width: 100%;
         width: 100%;
       }
+
+      #filtersForm {
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -335,14 +359,35 @@
     </div>
   </div>
 
+  <form id="filtersForm" aria-label="Filter car listings">
+    <label for="searchInput">Search:</label>
+    <input type="text" id="searchInput" placeholder="Search by title or model" aria-describedby="searchHelp" />
+    <label for="modelFilter">Model:</label>
+    <select id="modelFilter">
+      <option value="">All</option>
+      <option value="Astra">Astra</option>
+      <option value="Corsa">Corsa</option>
+      <option value="Insignia">Insignia</option>
+    </select>
+    <label for="conditionFilter">Condition:</label>
+    <select id="conditionFilter">
+      <option value="">All</option>
+      <option value="runner">Runner</option>
+      <option value="non-runner">Non-runner</option>
+    </select>
+    <label for="mileageFilter">Sort Mileage:</label>
+    <select id="mileageFilter">
+      <option value="">None</option>
+      <option value="asc">Low to High</option>
+      <option value="desc">High to Low</option>
+    </select>
+  </form>
+
   <div id="auctionEnds" aria-live="polite" aria-atomic="true">Auction Ends In: 23h 59m 59s</div>
 
   <main class="container" role="main" aria-label="Car auction and sales listings">
-
-    <!-- Filters hidden for single listing -->
-
     <div id="listingsContainer" aria-live="polite" aria-atomic="true">
-      <!-- Listings will be injected here -->
+      <!-- Listings injected here -->
     </div>
   </main>
 
@@ -358,27 +403,34 @@
     </form>
   </dialog>
 
+  <footer role="contentinfo">
+    TorqueBay 2025 All Rights Reserved &copy;
+  </footer>
+
   <script>
+    // Dummy listings data, currently only one Astra listing
     const listingsData = [
       {
-        id: '1',
-        title: 'Vauxhall Astra J 1.4 Turbo 2010',
+        id: 'astra2010',
+        title: 'Vauxhall Astra J 1.4 Turbo 2010 A14NET',
         model: 'Astra',
         condition: 'runner',
         mileage: 89905,
-        price: 1999,
+        price: 1750,
         buyNowPrice: 1999,
-        description: 'Powered by a 1.4L turbocharged petrol engine delivering approximately 138 bhp with great fuel efficiency of around 45 mpg (combined). Ideal for city driving and longer trips, with smooth ride and agile handling. Perfect for reliable and affordable performance.',
+        description: `This Vauxhall Astra J 1.4 Turbo (A14NET) from 2010 offers a balanced mix of performance and efficiency. Powered by a 1.4L turbocharged petrol engine producing around 138 hp, it delivers spirited acceleration while maintaining reasonable fuel economy. Typical MPG is approximately 40-45 mpg combined, making it suitable for both city and highway driving. Recently serviced with a full year MOT, it runs and drives reliably. Perfect for daily driving or as a budget-friendly sporty hatchback.`,
         images: [
           'https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg',
           'https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg',
           'https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg',
-          'https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg',
-        ],
+          'https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg'
+        ]
       }
+      // Add more listings here later if needed
     ];
 
-    let token = localStorage.getItem('token');
+    // Authentication simulation (replace with real auth)
+    let token = localStorage.getItem('token') || null;
 
     const listingsContainer = document.getElementById('listingsContainer');
     const auctionEndsEl = document.getElementById('auctionEnds');
@@ -388,45 +440,50 @@
       return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    // Render single listing
+    // Render a single listing card
     function renderListing(listing) {
-      listingsContainer.innerHTML = '';
       const listingEl = document.createElement('article');
       listingEl.className = 'listing';
       listingEl.setAttribute('tabindex', '0');
+      listingEl.setAttribute('aria-label', `Listing: ${listing.title}, Price £${formatNumber(listing.price)}`);
+
+      // Image gallery HTML
+      const galleryImgsHtml = listing.images.map((img, idx) =>
+        `<img src="${img}" alt="${listing.title} image ${idx + 1}" class="${idx === 0 ? 'selected' : ''}" tabindex="0" />`
+      ).join('');
+
       listingEl.innerHTML = `
         <h3>${listing.title}</h3>
-        <div class="gallery" aria-label="Image gallery for ${listing.title}">
-          ${listing.images.map((img, i) => `<img src="${img}" alt="${listing.title} image ${i+1}" ${i === 0 ? 'class="selected"' : ''} tabindex="0" />`).join('')}
-        </div>
+        <div class="gallery" aria-label="Image gallery">${galleryImgsHtml}</div>
         <div class="main-image-container">
-          <img id="mainImage-${listing.id}" class="main-image" src="${listing.images[0]}" alt="${listing.title} main image" tabindex="0" />
+          <img src="${listing.images[0]}" alt="${listing.title}" id="mainImage" />
         </div>
-        <section class="info-section" aria-label="Details for ${listing.title}">
-          <p class="tag" aria-label="Car condition">${listing.condition === 'runner' ? 
-            '<svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M9 16.2l-3.5-3.5L4 14l5 5 12-12-1.5-1.5z"/></svg> Runner' 
-            : 'Non-runner'}</p>
-          <p class="price" aria-label="Price £${formatNumber(listing.price)}">£${formatNumber(listing.price)}</p>
-          <p class="description">${listing.description}</p>
+        <section class="info-section">
+          <div class="tag" aria-label="${listing.condition === 'runner' ? 'Runner car' : 'Non-runner car'}">
+            ${listing.condition === 'runner' ? `
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Runner` : `<span style="color:#d32f2f; font-weight:bold;">Non-runner</span>`}
+          </div>
           <p><strong>Mileage:</strong> ${formatNumber(listing.mileage)} miles</p>
-
-          <div class="actions" aria-label="Actions for ${listing.title}">
-            <form class="bid-form" aria-label="Place a bid on ${listing.title}">
-              <label for="bidAmount-${listing.id}">Your Bid (£):</label>
-              <input type="number" min="${listing.price + 1}" id="bidAmount-${listing.id}" name="bidAmount" placeholder="£${listing.price + 1}" required />
-              <button type="submit" id="bidBtn-${listing.id}">Place Bid</button>
+          <p class="price">£${formatNumber(listing.price)}</p>
+          <p><strong>Buy It Now:</strong> £${formatNumber(listing.buyNowPrice)}</p>
+          <p class="description">${listing.description}</p>
+          <div class="actions" aria-label="Bid and purchase actions">
+            <form id="bidForm" aria-label="Place your bid">
+              <label for="bidAmount">Your Bid (£):</label>
+              <input type="number" min="${listing.price + 1}" id="bidAmount" name="bidAmount" placeholder="£${listing.price + 1}" required />
+              <button type="submit" id="bidBtn">Place Bid</button>
             </form>
-            <button class="buy-now-price" id="buyNowBtn-${listing.id}">Buy It Now £${formatNumber(listing.buyNowPrice)}</button>
-            <button class="contact-seller" id="contactSellerBtn-${listing.id}">Contact Seller</button>
+            <button class="buy-now-price" id="buyNowBtn">Buy It Now £${formatNumber(listing.buyNowPrice)}</button>
+            <button class="contact-seller" id="contactSellerBtn">Contact Seller</button>
           </div>
         </section>
       `;
 
       listingsContainer.appendChild(listingEl);
 
-      // Gallery images click
+      // Gallery images click handler
       const galleryImgs = listingEl.querySelectorAll('.gallery img');
-      const mainImg = listingEl.querySelector(`#mainImage-${listing.id}`);
+      const mainImg = listingEl.querySelector('#mainImage');
       galleryImgs.forEach(img => {
         img.addEventListener('click', () => {
           galleryImgs.forEach(i => i.classList.remove('selected'));
@@ -447,18 +504,17 @@
         mainImg.classList.toggle('zoomed');
       });
 
-      // Bid form handler
-      const bidForm = listingEl.querySelector('.bid-form');
+      // Bid form submit handler
+      const bidForm = listingEl.querySelector('#bidForm');
       bidForm.addEventListener('submit', e => {
         e.preventDefault();
         if(!token) {
           alert('You must be logged in to place a bid. Please login or register.');
           return;
         }
-        const bidInput = bidForm.bidAmount;
-        const bidVal = Number(bidInput.value);
+        const bidVal = Number(bidForm.bidAmount.value);
         if(bidVal <= listing.price) {
-          alert(`Bid must be greater than the current price (£${listing.price}).`);
+          alert(`Bid must be greater than current price (£${listing.price})`);
           return;
         }
         alert(`Your bid of £${formatNumber(bidVal)} has been placed!`);
@@ -466,19 +522,19 @@
       });
 
       // Buy now button handler
-      const buyNowBtn = listingEl.querySelector(`#buyNowBtn-${listing.id}`);
+      const buyNowBtn = listingEl.querySelector('#buyNowBtn');
       buyNowBtn.addEventListener('click', () => {
         if(!token) {
           alert('You must be logged in to buy the car now. Please login or register.');
           return;
         }
-        if(confirm(`Are you sure you want to buy ${listing.title} now for £${formatNumber(listing.buyNowPrice)}?`)){
+        if(confirm(`Are you sure you want to buy "${listing.title}" now for £${formatNumber(listing.buyNowPrice)}?`)) {
           alert('Congratulations! You have purchased the car. The seller will contact you shortly.');
         }
       });
 
-      // Contact seller handler
-      const contactSellerBtn = listingEl.querySelector(`#contactSellerBtn-${listing.id}`);
+      // Contact seller button handler
+      const contactSellerBtn = listingEl.querySelector('#contactSellerBtn');
       contactSellerBtn.addEventListener('click', () => {
         currentListingId = listing.id;
         contactModal.showModal();
@@ -486,14 +542,39 @@
       });
     }
 
-    // Render the single listing Astra
-    renderListing(listingsData[0]);
+    // Filter listings based on user input
+    function filterListings() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const modelFilter = document.getElementById('modelFilter').value.toLowerCase();
+      const conditionFilter = document.getElementById('conditionFilter').value.toLowerCase();
+      const mileageFilter = document.getElementById('mileageFilter').value;
+
+      let filtered = listingsData.filter(listing => {
+        const matchesSearch = listing.title.toLowerCase().includes(searchTerm) || listing.model.toLowerCase().includes(searchTerm);
+        const matchesModel = modelFilter ? listing.model.toLowerCase() === modelFilter : true;
+        const matchesCondition = conditionFilter ? listing.condition.toLowerCase() === conditionFilter : true;
+        return matchesSearch && matchesModel && matchesCondition;
+      });
+
+      // Mileage sort
+      if (mileageFilter === 'asc') {
+        filtered.sort((a,b) => a.mileage - b.mileage);
+      } else if (mileageFilter === 'desc') {
+        filtered.sort((a,b) => b.mileage - a.mileage);
+      }
+
+      listingsContainer.innerHTML = '';
+      if(filtered.length === 0) {
+        listingsContainer.innerHTML = '<p>No listings found.</p>';
+      } else {
+        filtered.forEach(listing => renderListing(listing));
+      }
+    }
 
     // Auction countdown timer
     let countdownTime = 24 * 60 * 60; // 24h in seconds
-    const auctionEndsEl = document.getElementById('auctionEnds');
-
     function updateCountdown() {
+      const auctionEndsEl = document.getElementById('auctionEnds');
       if(countdownTime <= 0) {
         auctionEndsEl.textContent = 'Auction Ended';
         clearInterval(countdownInterval);
@@ -526,15 +607,21 @@
         alert('Please enter a valid phone number.');
         return;
       }
-      // Here: send phoneNumber and currentListingId to backend or API
-      alert(`Thank you! We will contact you shortly at ${phoneNumber} regarding listing ID: ${currentListingId}.`);
+      // Here you could send phoneNumber and currentListingId to your backend/email API
+      alert(`Thank you! We will contact you shortly at ${phoneNumber} regarding listing "${currentListingId}".`);
       contactForm.reset();
       contactModal.close();
     });
+
+    // Filter input events
+    document.getElementById('searchInput').addEventListener('input', filterListings);
+    document.getElementById('modelFilter').addEventListener('change', filterListings);
+    document.getElementById('conditionFilter').addEventListener('change', filterListings);
+    document.getElementById('mileageFilter').addEventListener('change', filterListings);
+
+    // Initial render
+    filterListings();
   </script>
 
-  <footer>
-    TorqueBay 2025 All Rights Reserved &copy;
-  </footer>
 </body>
 </html>
