@@ -9,10 +9,15 @@
       color: #eee;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
+    }
+    .logo {
+      width: 150px;
+      margin-bottom: 20px;
     }
     form {
       background: #111;
@@ -66,10 +71,20 @@
     a:hover {
       text-decoration: underline;
     }
+    .back-link {
+      margin-top: 15px;
+      font-size: 0.95rem;
+      text-align: center;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+  <!-- Logo -->
+  <a href="index.html">
+    <img src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" class="logo" />
+  </a>
+
   <form id="registerForm" autocomplete="off">
     <h2>Create Account</h2>
     <input type="email" id="email" placeholder="Email" required autocomplete="email" />
@@ -81,6 +96,11 @@
       Already have an account? <a href="login.html">Login here</a>
     </p>
   </form>
+
+  <!-- Back to home link -->
+  <div class="back-link">
+    <a href="index.html">← Back to Home</a>
+  </div>
 
   <script>
     const supabaseUrl = 'https://jyejmnszfbkyeacbhbez.supabase.co'
