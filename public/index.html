@@ -81,14 +81,13 @@
     }
 
     #auctionEnds {
-      position: relative;
-      margin-bottom: 1rem;
+      margin: 1rem 0;
       font-weight: 900;
       color: #fff;
-      font-size: 1.1rem;
-      text-align: right;
+      font-size: 1.5rem;
+      text-align: center;
       user-select: none;
-      text-shadow: 0 0 5px #000;
+      text-shadow: 0 0 10px #d32f2f;
     }
 
     main.container {
@@ -159,17 +158,28 @@
       z-index: 5;
     }
 
-    .tag {
+    .tag-bubble {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      color: #4caf50;
+      padding: 4px 12px;
+      border-radius: 20px;
       font-weight: 600;
-      margin-bottom: 5px;
+      font-size: 0.9rem;
+      color: white;
+      margin-right: 8px;
+      user-select: none;
     }
-    .tag svg {
-      width: 18px;
-      height: 18px;
+    .runner-bubble {
+      background-color: #4caf50;
+    }
+    .mot-bubble {
+      background-color: #2e7d32;
+    }
+
+    .tag-bubble svg {
+      width: 16px;
+      height: 16px;
       fill: currentColor;
     }
 
@@ -179,7 +189,7 @@
       flex-direction: column;
       gap: 10px;
       max-width: 220px;
-      margin-top: 40px; /* push down below title */
+      margin-top: 50px; /* increased spacing from title */
     }
 
     .gallery img {
@@ -199,7 +209,7 @@
       flex: 0 0 400px;
       max-width: 400px;
       position: relative;
-      margin-top: 40px; /* push down below title */
+      margin-top: 50px; /* increased spacing from title */
     }
 
     #mainImage {
@@ -229,7 +239,7 @@
       color: #eee;
       max-width: 320px;
       min-width: 280px;
-      margin-top: 40px; /* push down below title */
+      margin-top: 50px; /* increased spacing from title */
     }
 
     .price {
@@ -326,9 +336,8 @@
     /* Responsive */
     @media (max-width: 850px) {
       #auctionEnds {
-        position: static;
-        margin-bottom: 1rem;
-        text-align: center;
+        font-size: 1.2rem;
+        text-shadow: 0 0 5px #d32f2f;
       }
       article.listing {
         flex-direction: column;
@@ -416,7 +425,7 @@
   <dialog id="contactModal" aria-modal="true" role="dialog" aria-labelledby="contactModalTitle">
     <form id="contactForm">
       <h2 id="contactModalTitle">Contact Seller</h2>
-      <p>Please enter your phone number and we will contact you shortly regarding the listing.</p>
+      <p>Please enter your phone number and the seller will contact you shortly to arrange viewing for this listing.</p>
       <label for="phoneNumber">Phone Number:</label><br />
       <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+44 7000 000000" required autocomplete="tel" /><br /><br />
       <button type="submit">Send</button>
@@ -439,7 +448,7 @@
         mileage: 89905,
         price: 1750,
         buyNowPrice: 1999,
-        description: `This Vauxhall Astra J 1.4 Turbo (A14NET) from 2010 offers a balanced mix of performance and efficiency. Powered by a 1.4L turbocharged petrol engine producing around 138 hp, it delivers spirited acceleration while maintaining reasonable fuel economy. Typical MPG is approximately 40-45 mpg combined, making it suitable for both city and highway driving. Recently serviced with a full year MOT, it runs and drives reliably. Perfect for daily driving or as a budget-friendly sporty hatchback.`,
+        description: `This Vauxhall Astra J 1.4 Turbo A14NET engine offers a great blend of performance and efficiency. It produces around 138 bhp and 200 Nm of torque, enabling a smooth and responsive drive. Fuel economy averages around 44-50 mpg combined, making it economical for daily use. The car has a full year MOT, runs and drives well, and was recently serviced.`,
         images: [
           'https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg',
           'https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg',
@@ -449,11 +458,8 @@
       }
     ];
 
-    // Authentication simulation (replace with real auth)
-    let token = localStorage.getItem('token') || null;
-
     const listingsContainer = document.getElementById('listingsContainer');
-    const auctionEndsEl = document.getElementById('auctionEnds');
+    let token = localStorage.getItem('token'); // For login check (fake token for demo)
 
     // Format numbers with commas
     function formatNumber(num) {
@@ -479,12 +485,14 @@
           <img src="${listing.images[0]}" alt="${listing.title}" id="mainImage" />
         </div>
         <section class="info-section">
-          <div class="tag" aria-label="${listing.condition === 'runner' ? 'Runner car' : 'Non-runner car'}">
-            ${listing.condition === 'runner' ? `
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Runner` : `<span style="color:#d32f2f; font-weight:bold;">Non-runner</span>`}
+          <div>
+            <span class="tag-bubble runner-bubble" aria-label="Runner car with MOT">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Runner
+            </span>
+            <span class="tag-bubble mot-bubble" aria-label="MOT valid">MOT ✅</span>
           </div>
           <p><strong>Mileage:</strong> ${formatNumber(listing.mileage)} miles</p>
-          <p class="price">£${formatNumber(listing.price)}</p>
+          <p class="price" aria-live="polite" aria-atomic="true">£${formatNumber(listing.price)}</p>
           <div class="actions" aria-label="Bid and purchase actions">
             <form id="bidForm" aria-label="Place your bid">
               <label for="bidAmount">Your Bid (£):</label>
