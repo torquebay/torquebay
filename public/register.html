@@ -19,45 +19,48 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 1rem;
     }
     .logo {
-      width: 150px;
-      margin-bottom: 20px;
+      width: 180px;
+      margin-bottom: 25px;
     }
     form {
       background: #111;
-      padding: 2rem;
-      border-radius: 10px;
-      width: 350px;
-      box-shadow: 0 0 15px rgba(211, 47, 47, 0.7);
+      padding: 2.5rem;
+      border-radius: 12px;
+      width: 400px;
+      max-width: 90%;
+      box-shadow: 0 0 18px rgba(211, 47, 47, 0.8);
     }
     h2 {
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
       text-align: center;
       color: #d32f2f;
       text-transform: uppercase;
       letter-spacing: 2px;
+      font-size: 1.8rem;
     }
     input {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 5px;
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 6px;
       border: none;
       background: #222;
       color: #eee;
-      font-size: 1rem;
+      font-size: 1.1rem;
     }
     button {
       width: 100%;
-      padding: 12px;
-      margin-top: 15px;
+      padding: 14px;
+      margin-top: 18px;
       background-color: #d32f2f;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       color: white;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
@@ -65,27 +68,49 @@
       background-color: #b71c1c;
     }
     .message {
-      margin-top: 15px;
+      margin-top: 18px;
       text-align: center;
       font-weight: 600;
+      font-size: 1rem;
     }
     a {
       color: #d32f2f;
       text-decoration: none;
+      font-size: 1rem;
     }
     a:hover {
       text-decoration: underline;
     }
     .back-link {
       margin-top: 15px;
-      font-size: 0.95rem;
+      font-size: 1rem;
       text-align: center;
+    }
+
+    @media (max-width: 500px) {
+      .logo {
+        width: 150px;
+      }
+      form {
+        padding: 2rem;
+      }
+      h2 {
+        font-size: 1.6rem;
+      }
+      input {
+        font-size: 1rem;
+        padding: 12px;
+      }
+      button {
+        font-size: 1.1rem;
+        padding: 12px;
+      }
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <!-- Logo -->
+  <!-- Logo with link to home -->
   <a href="index.html">
     <img src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" class="logo" />
   </a>
@@ -102,7 +127,6 @@
     </p>
   </form>
 
-  <!-- Back to home link -->
   <div class="back-link">
     <a href="index.html">← Back to Home</a>
   </div>
