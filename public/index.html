@@ -46,7 +46,7 @@
 
     .filters input, .filters select {
       flex: 1;
-      min-width: 200px;
+      min-width: 180px;
       padding: 8px;
       background: #222;
       border: 1px solid #444;
@@ -137,12 +137,15 @@
         <option value="">Sort</option>
         <option value="price_asc">Price: Low → High</option>
         <option value="price_desc">Price: High → Low</option>
+        <option value="mileage_asc">Mileage: Low → High</option>
       </select>
       <select id="conditionFilter">
         <option value="">All Conditions</option>
         <option value="New">New</option>
         <option value="Used">Used</option>
         <option value="Salvage">Salvage</option>
+        <option value="Runner">Runner</option>
+        <option value="Non Runner">Non Runner</option>
       </select>
     </div>
 
@@ -158,13 +161,75 @@
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
     const conditionFilter = document.getElementById('conditionFilter');
-    let listings = [];
 
-    async function fetchListings() {
-      const res = await fetch('/api/listings');
-      listings = await res.json();
-      renderListings(listings);
-    }
+    // DUMMY LISTINGS for testing without backend:
+    let listings = [
+      {
+        id: '1',
+        title: 'BMW M3 E46',
+        description: 'Classic 2004 BMW M3, well maintained, runs great.',
+        price: 25000,
+        buy_now_price: 30000,
+        image_url: 'https://cdn.bmwblog.com/wp-content/uploads/2017/12/BMW-E46-M3-GTS-2-830x553.jpg',
+        year: 2004,
+        mileage: 85000,
+        location: 'London',
+        condition: 'Runner',
+        auction_end: Date.now() + 3600 * 1000 * 24 // 24 hours from now
+      },
+      {
+        id: '2',
+        title: 'Ford Fiesta 1.0',
+        description: 'Reliable daily driver, needs minor repairs.',
+        price: 3000,
+        buy_now_price: 4000,
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Ford_Fiesta_1.0_Sport_%28MK7%29_%282013%29_%2836601310545%29.jpg/1200px-Ford_Fiesta_1.0_Sport_%28MK7%29_%282013%29_%2836601310545%29.jpg',
+        year: 2013,
+        mileage: 95000,
+        location: 'Manchester',
+        condition: 'Used',
+        auction_end: Date.now() + 3600 * 1000 * 48 // 48 hours
+      },
+      {
+        id: '3',
+        title: 'Salvage Honda Civic',
+        description: 'Salvage title, engine needs work.',
+        price: 1200,
+        buy_now_price: 2000,
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/2016_Honda_Civic_SR_VTi-S_1.5L_front_2016-12-21.jpg/1200px-2016_Honda_Civic_SR_VTi-S_1.5L_front_2016-12-21.jpg',
+        year: 2016,
+        mileage: 120000,
+        location: 'Bristol',
+        condition: 'Salvage',
+        auction_end: Date.now() + 3600 * 1000 * 12 // 12 hours
+      },
+      {
+        id: '4',
+        title: 'Classic VW Beetle',
+        description: 'Runs perfect, great for collectors.',
+        price: 15000,
+        buy_now_price: 18000,
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/1/15/1966_Volkswagen_Beetle_-_flickr.jpg',
+        year: 1966,
+        mileage: 75000,
+        location: 'Brighton',
+        condition: 'Runner',
+        auction_end: Date.now() + 3600 * 1000 * 72 // 72 hours
+      },
+      {
+        id: '5',
+        title: 'Non Runner Toyota Corolla',
+        description: 'Non runner, sold as parts or rebuild.',
+        price: 400,
+        buy_now_price: 700,
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/7/73/2014_Toyota_Corolla_Sport_Sedan_%282014-11-11%29_01.jpg',
+        year: 2014,
+        mileage: 150000,
+        location: 'Leeds',
+        condition: 'Non Runner',
+        auction_end: Date.now() + 3600 * 1000 * 36 // 36 hours
+      }
+    ];
 
     function renderListings(list) {
       listingsEl.innerHTML = '';
@@ -188,14 +253,16 @@
           <button onclick="watch('${listing.id}')">⭐ Watch</button>
         `;
         listingsEl.appendChild(div);
+
         setInterval(() => {
           const timer = document.getElementById(`timer-${listing.id}`);
-          if (timer) timer.textContent = formatTime(endTime - Date.now());
+          if(timer) timer.textContent = formatTime(endTime - Date.now());
         }, 1000);
       });
     }
 
     function formatTime(ms) {
+      if(ms <= 0) return 'Auction ended';
       const s = Math.floor(ms / 1000);
       const m = Math.floor(s / 60);
       const r = s % 60;
@@ -221,54 +288,27 @@
 
       if (sort === 'price_asc') filtered.sort((a, b) => a.price - b.price);
       if (sort === 'price_desc') filtered.sort((a, b) => b.price - a.price);
+      if (sort === 'mileage_asc') filtered.sort((a, b) => (a.mileage || 0) - (b.mileage || 0));
 
       renderListings(filtered);
     }
 
-    async function placeBid(id) {
-      const val = document.getElementById('bid-' + id).value;
-      if (!val) return alert('Enter bid');
-      const res = await fetch(`/api/bid/${id}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + (localStorage.getItem('token') || ''),
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ amount: parseFloat(val) })
-      });
-      const data = await res.json();
-      alert(data.message || 'Bid placed');
-      fetchListings();
+    // Dummy placeholders for interaction
+    function placeBid(id) {
+      alert('Place bid clicked for listing id: ' + id + '.\n(To integrate with backend API)');
     }
-
-    async function buyNow(id) {
-      const res = await fetch(`/api/buy/${id}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + (localStorage.getItem('token') || '')
-        }
-      });
-      const data = await res.json();
-      alert(data.message || 'Purchased');
-      fetchListings();
+    function buyNow(id) {
+      alert('Buy now clicked for listing id: ' + id + '.\n(To integrate with backend API)');
     }
-
     function watch(id) {
-      let watchlist = JSON.parse(localStorage.getItem('watchlist') || '[]');
-      if (!watchlist.includes(id)) {
-        watchlist.push(id);
-        localStorage.setItem('watchlist', JSON.stringify(watchlist));
-        alert('Added to watchlist');
-      } else {
-        alert('Already watching');
-      }
+      alert('Added listing id ' + id + ' to your watchlist.\n(To integrate with backend API or localStorage)');
     }
 
     searchInput.addEventListener('input', applyFilters);
     sortSelect.addEventListener('change', applyFilters);
     conditionFilter.addEventListener('change', applyFilters);
 
-    fetchListings();
+    renderListings(listings);
   </script>
 </body>
 </html>
