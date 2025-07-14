@@ -66,6 +66,8 @@
       width: 100%;
       border-radius: 6px;
       margin-bottom: 8px;
+      object-fit: cover;
+      height: 180px;
     }
 
     .listing h3 {
@@ -103,6 +105,7 @@
       padding: 8px;
       white-space: nowrap;
       overflow: hidden;
+      z-index: 9999;
     }
 
     .rolling-banner span {
@@ -152,7 +155,7 @@
     <div id="listings">Loading listings...</div>
   </div>
 
-  <div class="rolling-banner">
+  <div class="rolling-banner" aria-live="polite">
     <span>🔥 Welcome to Torque Bay – UK’s Most Raw & Real Car Auction. Place Bids, Watch Listings, Own Dreams. Email: torquebay@gmail.com 🔧</span>
   </div>
 
@@ -162,7 +165,7 @@
     const sortSelect = document.getElementById('sortSelect');
     const conditionFilter = document.getElementById('conditionFilter');
 
-    // DUMMY LISTINGS for testing without backend:
+    // Dummy listings with fixed reliable images + fallback
     let listings = [
       {
         id: '1',
@@ -170,7 +173,7 @@
         description: 'Classic 2004 BMW M3, well maintained, runs great.',
         price: 25000,
         buy_now_price: 30000,
-        image_url: 'https://cdn.bmwblog.com/wp-content/uploads/2017/12/BMW-E46-M3-GTS-2-830x553.jpg',
+        image_url: 'https://cdn.motor1.com/images/mgl/Y6ONJ/s1/2004-bmw-m3.jpg',
         year: 2004,
         mileage: 85000,
         location: 'London',
@@ -183,7 +186,7 @@
         description: 'Reliable daily driver, needs minor repairs.',
         price: 3000,
         buy_now_price: 4000,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Ford_Fiesta_1.0_Sport_%28MK7%29_%282013%29_%2836601310545%29.jpg/1200px-Ford_Fiesta_1.0_Sport_%28MK7%29_%282013%29_%2836601310545%29.jpg',
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Ford_Fiesta_ST-Line_1.0_Front.jpg',
         year: 2013,
         mileage: 95000,
         location: 'Manchester',
@@ -196,7 +199,7 @@
         description: 'Salvage title, engine needs work.',
         price: 1200,
         buy_now_price: 2000,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/2016_Honda_Civic_SR_VTi-S_1.5L_front_2016-12-21.jpg/1200px-2016_Honda_Civic_SR_VTi-S_1.5L_front_2016-12-21.jpg',
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Honda_Civic_FD_2009_front.jpg',
         year: 2016,
         mileage: 120000,
         location: 'Bristol',
@@ -222,7 +225,7 @@
         description: 'Non runner, sold as parts or rebuild.',
         price: 400,
         buy_now_price: 700,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/7/73/2014_Toyota_Corolla_Sport_Sedan_%282014-11-11%29_01.jpg',
+        image_url: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/2007_Toyota_Corolla_Sportivo.jpg',
         year: 2014,
         mileage: 150000,
         location: 'Leeds',
@@ -240,7 +243,7 @@
         div.innerHTML = `
           <h3>${listing.title}</h3>
           <span class="tag">${listing.condition || 'Used'}</span>
-          <img src="${listing.image_url}" alt="Car">
+          <img src="${listing.image_url}" alt="Car" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x180?text=No+Image';" />
           <p>${listing.description}</p>
           <p><strong>Year:</strong> ${listing.year || 'N/A'} | <strong>Mileage:</strong> ${listing.mileage || 'N/A'} miles</p>
           <p><strong>Location:</strong> ${listing.location || 'Unknown'}</p>
@@ -293,15 +296,14 @@
       renderListings(filtered);
     }
 
-    // Dummy placeholders for interaction
     function placeBid(id) {
-      alert('Place bid clicked for listing id: ' + id + '.\n(To integrate with backend API)');
+      alert('Place bid clicked for listing id: ' + id + '. (Backend integration needed)');
     }
     function buyNow(id) {
-      alert('Buy now clicked for listing id: ' + id + '.\n(To integrate with backend API)');
+      alert('Buy now clicked for listing id: ' + id + '. (Backend integration needed)');
     }
     function watch(id) {
-      alert('Added listing id ' + id + ' to your watchlist.\n(To integrate with backend API or localStorage)');
+      alert('Added listing id ' + id + ' to your watchlist. (Backend or localStorage needed)');
     }
 
     searchInput.addEventListener('input', applyFilters);
