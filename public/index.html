@@ -5,23 +5,23 @@
   <title>Torque Bay – Car Auctions & Sales</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* Reset & base */
+    /* Base */
     body {
       margin: 0;
       background: #121212;
-      color: #eee;
+      color: #f0f0f0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       user-select: none;
     }
     a {
-      color: #e53935;
+      color: #d32f2f;
       text-decoration: none;
       transition: color 0.2s ease;
     }
     a:hover {
-      color: #ff6659;
+      color: #ef5350;
     }
 
     /* Banner */
@@ -31,7 +31,7 @@
       gap: 16px;
       padding: 14px 24px;
       background: #1e1e1e;
-      border-bottom: 3px solid #e53935;
+      border-bottom: 3px solid #d32f2f;
       user-select: none;
     }
     .banner img {
@@ -39,11 +39,10 @@
       user-select: none;
     }
     .banner h1 {
-      color: #e53935;
+      color: #d32f2f;
       font-weight: 900;
       font-size: 1.7rem;
       margin: 0;
-      text-shadow: 0 0 6px #e5393522;
       user-select: text;
     }
 
@@ -58,21 +57,20 @@
     .listing {
       background: #1b1b1b;
       border-radius: 14px;
-      box-shadow: 0 0 18px #e5393511;
+      box-shadow: 0 0 18px #000000cc;
       padding: 24px;
       text-align: center;
       user-select: text;
     }
     .listing:hover {
-      box-shadow: 0 0 28px #e5393533;
+      box-shadow: 0 0 28px #d32f2fcc;
       transition: box-shadow 0.3s ease;
     }
     .listing h3 {
-      color: #e53935;
+      color: #d32f2f;
       font-weight: 900;
       font-size: 2rem;
       margin-bottom: 0.3rem;
-      text-shadow: 0 0 6px #e5393533;
     }
 
     /* Runner tag */
@@ -80,13 +78,12 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: #4caf50;
+      background: #388e3c;
       padding: 6px 18px;
       font-weight: 700;
       border-radius: 24px;
       color: white;
       font-size: 1rem;
-      box-shadow: 0 0 12px #4caf5066;
       user-select: none;
       margin-bottom: 1.5rem;
     }
@@ -97,16 +94,15 @@
       flex-shrink: 0;
     }
 
-    /* Price big above image */
+    /* Price */
     .price {
-      font-size: 4rem;
+      font-size: 3.5rem;
       font-weight: 900;
-      color: #e53935;
-      text-shadow:
-        0 0 10px #ff665599,
-        0 0 30px #e53935cc;
+      color: #d32f2f;
       margin-bottom: 1rem;
       user-select: text;
+      letter-spacing: -0.05em;
+      font-family: 'Roboto', sans-serif;
     }
     .buy-now-price {
       font-size: 1.6rem;
@@ -118,21 +114,19 @@
       display: inline-block;
       margin-top: 6px;
       cursor: pointer;
-      box-shadow: 0 0 10px #b71c1ccc;
       user-select: none;
       transition: background 0.3s ease;
+      box-shadow: none;
     }
     .buy-now-price:hover {
-      background: #ff1744;
-      box-shadow: 0 0 20px #ff1744cc;
+      background: #ef5350;
     }
 
     /* Countdown & auction end */
     #countdown {
       font-size: 1.7rem;
       font-weight: 700;
-      color: #ff8a65;
-      text-shadow: 0 0 8px #ff7043bb;
+      color: #f57c00;
       margin-bottom: 2rem;
       user-select: none;
     }
@@ -145,13 +139,13 @@
       margin-bottom: 28px;
       overflow-x: auto;
       scrollbar-width: thin;
-      scrollbar-color: #e53935 #222;
+      scrollbar-color: #d32f2f #222;
     }
     .gallery::-webkit-scrollbar {
       height: 8px;
     }
     .gallery::-webkit-scrollbar-thumb {
-      background-color: #e53935;
+      background-color: #d32f2f;
       border-radius: 4px;
     }
     .gallery img {
@@ -161,13 +155,13 @@
       border-radius: 12px;
       cursor: pointer;
       border: 3px solid transparent;
-      box-shadow: 0 0 12px #7f0000cc;
+      box-shadow: 0 0 12px #000000cc;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
       user-select: none;
     }
     .gallery img.selected {
-      border-color: #ff6655;
-      box-shadow: 0 0 25px #ff6655cc;
+      border-color: #ef5350;
+      box-shadow: 0 0 20px #ef535055;
     }
 
     /* Main image */
@@ -175,7 +169,7 @@
       max-width: 720px;
       width: 100%;
       border-radius: 16px;
-      box-shadow: 0 0 30px #e5393555;
+      box-shadow: 0 0 30px #000000bb;
       cursor: zoom-in;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
       user-select: none;
@@ -184,18 +178,18 @@
     #mainImage:hover {
       transform: scale(1.15);
       cursor: zoom-out;
-      box-shadow: 0 0 38px #ff665599;
+      box-shadow: 0 0 38px #ef535055;
     }
 
     /* Description */
     p {
       font-size: 1.15rem;
-      color: #eee;
+      color: #ccc;
       margin-bottom: 0.25rem;
       user-select: text;
     }
     strong {
-      color: #ff6655;
+      color: #ef5350;
     }
 
     /* Bid & buttons */
@@ -219,8 +213,8 @@
       transition: border-color 0.25s ease;
     }
     input[type=number]:focus {
-      border-color: #e53935;
-      box-shadow: 0 0 8px #e5393555;
+      border-color: #d32f2f;
+      box-shadow: 0 0 8px #d32f2f55;
       outline: none;
     }
     input[type=number]:disabled {
@@ -230,7 +224,7 @@
     }
 
     button {
-      background: #e53935;
+      background: #d32f2f;
       color: #fff;
       border: none;
       padding: 12px 28px;
@@ -239,12 +233,12 @@
       font-weight: 900;
       cursor: pointer;
       user-select: none;
-      box-shadow: 0 6px 12px #b71c1caa;
+      box-shadow: 0 6px 12px #7f0000aa;
       transition: background 0.3s ease;
     }
     button:hover:not(:disabled) {
-      background: #ff6655;
-      box-shadow: 0 8px 18px #ff6655cc;
+      background: #ef5350;
+      box-shadow: 0 8px 18px #ef535055;
     }
     button:disabled {
       cursor: not-allowed;
@@ -257,15 +251,14 @@
       background: #222;
       padding: 12px 18px;
       border-radius: 10px;
-      box-shadow: inset 0 0 8px #4d0000cc;
-      margin-bottom: 30px;
-      color: #ffaaaa;
+      box-shadow: inset 0 0 8px #330000cc;
+      margin-top: 30px;
+      color: #f48fb1;
       font-weight: 700;
       font-size: 1.1rem;
       user-select: none;
       text-align: center;
       letter-spacing: 0.05em;
-      user-select:none;
     }
 
     /* Responsive */
@@ -392,40 +385,31 @@
     // Zoom toggle on main image
     let zoomed = false;
     mainImage.addEventListener('click', () => {
-      if (zoomed) {
-        mainImage.style.transform = 'scale(1)';
-        zoomed = false;
-      } else {
-        mainImage.style.transform = 'scale(1.4)';
-        zoomed = true;
-      }
+      zoomed = !zoomed;
+      mainImage.style.transform = zoomed ? 'scale(1.3)' : 'scale(1)';
+      mainImage.style.cursor = zoomed ? 'zoom-out' : 'zoom-in';
     });
 
-    // Countdown timer - 24h from page load
-    const auctionDuration = 24 * 60 * 60 * 1000;
-    const auctionEnd = Date.now() + auctionDuration;
-
+    // Countdown timer for 24 hours
+    const auctionEnd = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h from now
     function updateCountdown() {
-      let diff = auctionEnd - Date.now();
-      if (diff < 0) diff = 0;
-
-      const h = Math.floor(diff / (1000 * 60 * 60));
-      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-      countdownEl.textContent = `Auction ends in: ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-
-      if (diff === 0) {
-        clearInterval(timerInterval);
+      const now = new Date();
+      const diff = auctionEnd - now;
+      if (diff <= 0) {
         countdownEl.textContent = 'Auction ended';
         placeBidBtn.disabled = true;
         bidInput.disabled = true;
+        return;
       }
+      const h = Math.floor(diff / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+      countdownEl.textContent = `Auction ends in: ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
+    setInterval(updateCountdown, 1000);
     updateCountdown();
-    const timerInterval = setInterval(updateCountdown, 1000);
 
-    // Bid placing
+    // Bid placing logic
     placeBidBtn.addEventListener('click', () => {
       if (!loggedIn) {
         alert('Please register or login to place bids.');
@@ -442,7 +426,7 @@
       bidInput.value = '';
     });
 
-    // Buy now
+    // Buy now button logic
     buyNowBtn.addEventListener('click', () => {
       if (!loggedIn) {
         alert('Please register or login to buy the car immediately.');
@@ -451,9 +435,10 @@
       const buyNowPrice = 1999;
       if (confirm(`Are you sure you want to buy this car now for £${buyNowPrice}?`)) {
         alert('Congrats! Proceeding to checkout...');
-        // Add actual buy now logic here
+        // Implement buy now backend logic here
       }
     });
   </script>
+
 </body>
 </html>
