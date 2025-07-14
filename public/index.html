@@ -1,497 +1,445 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Torque Bay - Accelerate Your Dreams</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  /* Reset and base */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0; padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #121212;
-    color: #ddd;
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 15px;
-    user-select: none;
-  }
-  a {
-    color: #FF3B3F;
-    text-decoration: none;
-  }
-  a:hover, a:focus {
-    text-decoration: underline;
-    outline-offset: 2px;
-  }
-  h1, h2, h3 {
-    margin: 0.25em 0 0.5em 0;
-    font-weight: 700;
-    color: #fff;
-  }
+  <meta charset="UTF-8" />
+  <title>Torque Bay - Car Sales & Auction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&display=swap');
 
-  /* Header */
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 4px;
-  }
-  #logo {
-    max-height: 60px;
-    cursor: pointer;
-  }
-  nav {
-    font-size: 0.9rem;
-  }
-  nav a {
-    margin-left: 18px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-  }
+    body {
+      font-family: 'Oswald', 'Arial Black', Arial, sans-serif;
+      padding: 1rem;
+      max-width: 1100px;
+      margin: auto;
+      background: #111;
+      color: #fff;
+    }
 
-  /* Rolling banner below header */
-  .banner-text {
-    background: #000;
-    border: 3px solid #FF3B3F;
-    color: #FF3B3F;
-    font-weight: 700;
-    font-size: 1.15rem;
-    padding: 8px 10px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-    height: 32px;
-    user-select: none;
-  }
-  .banner-text span {
-    display: inline-block;
-    padding-left: 100%;
-    animation: scroll 14s linear infinite;
-  }
-  @keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-  }
+    header {
+      background: black;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
 
-  /* Filters and Search */
-  #filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 20px;
-    align-items: center;
-  }
-  #filters > * {
-    flex: 1 1 150px;
-    min-width: 140px;
-  }
-  #filters input[type="search"],
-  #filters select {
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 5px;
-    border: 1px solid #444;
-    background: #222;
-    color: #eee;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-  #filters input[type="search"]:focus,
-  #filters select:focus {
-    outline: none;
-    border-color: #FF3B3F;
-    box-shadow: 0 0 5px #FF3B3F;
-    background: #1a1a1a;
-  }
-
-  /* Listings container */
-  #listingsContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  /* Single listing */
-  article.listing {
-    background: #222;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(255, 59, 63, 0.3);
-    display: flex;
-    padding: 15px;
-    gap: 18px;
-    align-items: flex-start;
-    color: #eee;
-    user-select: text;
-  }
-
-  /* Gallery and main image */
-  .gallery {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-width: 100px;
-    flex-shrink: 0;
-  }
-  .gallery img {
-    width: 100%;
-    border-radius: 6px;
-    cursor: pointer;
-    opacity: 0.8;
-    border: 2px solid transparent;
-    transition: border-color 0.3s, opacity 0.3s;
-  }
-  .gallery img.selected,
-  .gallery img:hover,
-  .gallery img:focus {
-    border-color: #FF3B3F;
-    opacity: 1;
-    outline: none;
-  }
-
-  .main-image-container {
-    flex-shrink: 0;
-    width: 380px;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: zoom-in;
-    position: relative;
-    transition: transform 0.3s ease;
-  }
-  .main-image-container img {
-    width: 100%;
-    display: block;
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-    user-select: none;
-  }
-  .main-image-container img.zoomed {
-    transform: scale(2);
-    cursor: zoom-out;
-  }
-
-  /* Info section */
-  .info-section {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 12px;
-  }
-
-  .info-section h3 {
-    margin-bottom: 6px;
-    font-size: 1.6rem;
-    color: #FF3B3F;
-    user-select: text;
-  }
-
-  /* Tags bubbles */
-  .tag-bubble {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    user-select: none;
-  }
-  .runner-bubble {
-    background: #0c7a0c;
-    color: #b9f1b9;
-    box-shadow: 0 0 8px #0c7a0caa;
-  }
-  .mot-bubble {
-    background: #1070d3;
-    color: #d9eaff;
-    box-shadow: 0 0 8px #1070d3aa;
-  }
-  .tag-bubble svg {
-    fill: currentColor;
-    width: 18px;
-    height: 18px;
-  }
-
-  /* Mileage and price */
-  .info-section p {
-    margin: 2px 0;
-    font-size: 1rem;
-    user-select: text;
-  }
-  .price {
-    font-size: 2.1rem;
-    font-weight: 800;
-    color: #FF3B3F;
-    user-select: text;
-    margin-top: 4px;
-    margin-bottom: 8px;
-    letter-spacing: 0.04em;
-  }
-
-  /* Auction ends */
-  #auctionEnds {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #fff;
-    text-align: center;
-    text-shadow: 0 0 10px #FF3B3F;
-    margin: 18px 0 12px 0;
-    user-select: none;
-  }
-
-  /* Actions buttons */
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-  .actions button, .actions input[type="number"], .actions label {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  .actions button {
-    border: none;
-    cursor: pointer;
-    border-radius: 6px;
-    padding: 10px 20px;
-    font-weight: 700;
-    transition: background-color 0.3s ease;
-    user-select: none;
-  }
-  #bidAmount {
-    width: 100px;
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid #444;
-    background: #222;
-    color: #eee;
-    font-size: 1rem;
-  }
-  #bidAmount:focus {
-    outline: none;
-    border-color: #FF3B3F;
-    box-shadow: 0 0 6px #FF3B3F;
-    background: #1a1a1a;
-  }
-
-  #bidBtn {
-    background-color: #FF3B3F;
-    color: #fff;
-  }
-  #bidBtn:hover, #bidBtn:focus {
-    background-color: #cc3236;
-  }
-
-  #buyNowBtn {
-    background-color: #ff6600;
-    color: #fff;
-    padding: 11px 25px;
-    font-size: 1.1rem;
-  }
-  #buyNowBtn:hover, #buyNowBtn:focus {
-    background-color: #e65c00;
-  }
-
-  #contactSellerBtn {
-    background-color: #00a85a;
-    color: #fff;
-    padding: 11px 20px;
-    font-size: 1.1rem;
-  }
-  #contactSellerBtn:hover, #contactSellerBtn:focus {
-    background-color: #007a40;
-  }
-
-  /* Description below buttons */
-  .description {
-    font-size: 1rem;
-    line-height: 1.4;
-    margin-top: 6px;
-    color: #ccc;
-    user-select: text;
-  }
-
-  /* Footer */
-  footer {
-    text-align: center;
-    margin: 40px 0 15px 0;
-    font-size: 0.85rem;
-    color: #666;
-    user-select: none;
-  }
-
-  /* Modal dialog for contact seller */
-  dialog#contactModal {
-    border: none;
-    border-radius: 8px;
-    padding: 20px 25px 25px 25px;
-    background: #222;
-    box-shadow: 0 0 15px #FF3B3Faa;
-    color: #eee;
-    max-width: 400px;
-    width: 90%;
-  }
-  dialog#contactModal h2 {
-    margin-top: 0;
-    color: #FF3B3F;
-    user-select: text;
-  }
-  dialog#contactModal p {
-    font-size: 0.95rem;
-    margin-bottom: 15px;
-    color: #ddd;
-  }
-  dialog#contactModal label {
-    font-weight: 600;
-  }
-  dialog#contactModal input {
-    width: 100%;
-    padding: 8px 10px;
-    border-radius: 5px;
-    border: 1px solid #444;
-    background: #111;
-    color: #eee;
-    font-size: 1rem;
-    margin-bottom: 12px;
-  }
-  dialog#contactModal button {
-    margin-right: 10px;
-    font-weight: 700;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 18px;
-    cursor: pointer;
-    user-select: none;
-  }
-  dialog#contactModal button[type="submit"] {
-    background: #FF3B3F;
-    color: #fff;
-  }
-  dialog#contactModal button[type="submit"]:hover,
-  dialog#contactModal button[type="submit"]:focus {
-    background: #cc3236;
-  }
-  dialog#contactModal button[type="button"] {
-    background: #444;
-    color: #bbb;
-  }
-  dialog#contactModal button[type="button"]:hover,
-  dialog#contactModal button[type="button"]:focus {
-    background: #666;
-  }
-
-  /* Responsive */
-  @media (max-width: 900px) {
-    article.listing {
-      flex-direction: column;
+    header div {
+      display: flex;
       align-items: center;
+      gap: 15px;
+      max-width: 1100px;
+      margin: auto;
     }
-    .main-image-container {
-      width: 90vw;
-      max-width: 380px;
+
+    #logo {
+      max-height: 60px;
+      user-select: none;
     }
-    .gallery {
-      flex-direction: row;
-      max-width: 380px;
-      overflow-x: auto;
-      margin-bottom: 12px;
-    }
-    .gallery img {
-      width: 80px;
+
+    header h1 {
+      color: #FF3B3F;
+      font-weight: 900;
+      font-size: 1.8rem;
+      user-select: none;
+      margin: 0;
+      white-space: nowrap;
       flex-shrink: 0;
     }
-    .info-section {
+
+    nav {
+      margin-left: auto;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    nav a {
+      margin-left: 18px;
+      color: #FF3B3F;
+      text-decoration: none;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      text-decoration: underline;
+    }
+
+    .banner-text {
+      background: black;
+      border: 3px solid #FF3B3F;
+      margin-bottom: 25px;
+      padding: 8px 15px;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: normal;
+      font-size: 1.15rem;
+      color: #FF3B3F;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      height: 32px;
+      user-select: none;
+    }
+
+    .banner-text span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll 14s linear infinite;
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .listing {
+      display: flex;
+      gap: 15px;
+      background: #222;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 30px;
+      border: 1px solid #444;
+      color: #ddd;
+      align-items: flex-start;
+    }
+
+    .gallery {
+      flex: 1 1 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .gallery #mainImage {
       width: 100%;
+      border-radius: 6px;
+      cursor: zoom-in;
+      transition: transform 0.3s ease;
+      max-height: 320px;
+      object-fit: cover;
+      user-select: none;
     }
+
+    .gallery #mainImage.zoomed {
+      transform: scale(1.8);
+      cursor: zoom-out;
+      z-index: 10;
+      position: relative;
+      border: 2px solid #FF3B3F;
+    }
+
+    .gallery .thumbs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+
+    .gallery .thumbs img {
+      width: 70px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .gallery .thumbs img.selected {
+      border-color: #FF3B3F;
+    }
+
+    .details {
+      flex: 1 1 350px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: #eee;
+    }
+
+    .details h2 {
+      margin: 0;
+      color: #FF3B3F;
+      font-weight: 900;
+      font-size: 1.7rem;
+      user-select: none;
+    }
+
+    .badges {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      background: #28a745;
+      color: white;
+      border-radius: 12px;
+      padding: 4px 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+      font-size: 0.9rem;
+    }
+
+    .badge .tick {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid white;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .badge .tick::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 0;
+      width: 5px;
+      height: 10px;
+      border-right: 2.5px solid white;
+      border-bottom: 2.5px solid white;
+      transform: rotate(45deg);
+    }
+
+    #auctionEnds {
+      color: white;
+      font-weight: 700;
+      text-align: center;
+      font-size: 1.25rem;
+      margin: 12px 0 20px;
+      user-select: none;
+    }
+
     .actions {
-      justify-content: center;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-  }
-</style>
+
+    .actions label {
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .actions input[type=number] {
+      padding: 6px 8px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background: #111;
+      color: #eee;
+      font-size: 1rem;
+    }
+
+    .actions button {
+      cursor: pointer;
+      font-weight: 700;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      font-size: 1rem;
+    }
+
+    #bidBtn {
+      background-color: #FF3B3F;
+      color: white;
+    }
+
+    #bidBtn:hover,
+    #bidBtn:focus {
+      background-color: #e63338;
+      outline: none;
+    }
+
+    #buyNowBtn {
+      background-color: #FF6F00;
+      color: white;
+    }
+
+    #buyNowBtn:hover,
+    #buyNowBtn:focus {
+      background-color: #e65c00;
+      outline: none;
+    }
+
+    #contactSellerBtn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    #contactSellerBtn:hover,
+    #contactSellerBtn:focus {
+      background-color: #218838;
+      outline: none;
+    }
+
+    .description {
+      font-size: 1rem;
+      margin-top: 15px;
+      color: #ccc;
+      line-height: 1.4;
+      user-select: text;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 40px;
+      padding-bottom: 12px;
+      user-select: none;
+    }
+
+    /* Contact Modal Styles */
+    dialog#contactModal {
+      border: none;
+      border-radius: 8px;
+      padding: 20px 25px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+      font-family: 'Oswald', 'Arial Black', Arial, sans-serif;
+    }
+
+    dialog#contactModal h2 {
+      margin-top: 0;
+      color: #FF3B3F;
+    }
+
+    dialog#contactModal form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    dialog#contactModal label {
+      font-weight: 700;
+    }
+
+    dialog#contactModal input[type=text],
+    dialog#contactModal input[type=tel] {
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #aaa;
+    }
+
+    dialog#contactModal button {
+      padding: 10px 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 4px;
+      border: none;
+      color: white;
+    }
+
+    #cancelContact {
+      background: #555;
+      margin-right: 8px;
+    }
+
+    #cancelContact:hover {
+      background: #444;
+    }
+
+    dialog#contactModal div {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 800px) {
+      .listing {
+        flex-direction: column;
+      }
+      .gallery,
+      .details {
+        flex: none;
+        width: 100%;
+      }
+      header div {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      nav {
+        margin-left: 0;
+      }
+    }
+  </style>
 </head>
 <body>
 
 <header>
-  <img id="logo" src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="Torque Bay Logo" />
-  <nav>
-    <a href="login.html" aria-label="Login">Login</a>
-    <a href="register.html" aria-label="Register">Register</a>
-  </nav>
+  <div>
+    <img id="logo" src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="Torque Bay Logo" />
+    <h1>Torque Bay - Car Sales &amp; Auction</h1>
+    <nav>
+      <a href="login.html" aria-label="Login">Login</a>
+      <a href="register.html" aria-label="Register">Register</a>
+    </nav>
+  </div>
 </header>
 
 <div class="banner-text" role="region" aria-live="polite" aria-atomic="true">
-  <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries & membership info. Stay tuned! 🚀</span>
+  <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries &amp; membership info. Stay tuned! 🚀</span>
 </div>
 
-<!-- Filters -->
-<section id="filters" aria-label="Filter listings">
-  <input type="search" id="searchInput" placeholder="Search by model, keyword..." aria-label="Search listings" />
-  <select id="conditionFilter" aria-label="Filter by condition">
-    <option value="">Condition (All)</option>
-    <option value="runner">Runner</option>
-    <option value="nonrunner">Non-runner</option>
-  </select>
-  <select id="mileageFilter" aria-label="Filter by mileage">
-    <option value="">Mileage</option>
-    <option value="lowtohigh">Mileage: Low to High</option>
-    <option value="hightolow">Mileage: High to Low</option>
-  </select>
+<section class="listing" data-title="2010 Astra J 1.4 Turbo" data-condition="runner" data-miles="89905" id="listingsContainer">
+  <div class="gallery" aria-label="Car image gallery">
+    <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra J front view large image" id="mainImage" />
+    <div class="thumbs" role="list">
+      <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra J front view thumbnail" class="selected" role="listitem" tabindex="0" />
+      <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg" alt="Astra J side view thumbnail" role="listitem" tabindex="0" />
+      <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg" alt="Astra J interior thumbnail" role="listitem" tabindex="0" />
+      <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg" alt="Astra J engine thumbnail" role="listitem" tabindex="0" />
+    </div>
+  </div>
+
+  <div class="details" role="region" aria-labelledby="carTitle" tabindex="0">
+    <h2 id="carTitle">2010 Astra J 1.4 Turbo</h2>
+
+    <div class="badges" aria-label="Car condition and MOT status">
+      <div class="badge" aria-label="Runner condition">
+        <span class="tick" aria-hidden="true"></span> Runner
+      </div>
+      <div class="badge" aria-label="MOT status">
+        MOT ✅
+      </div>
+    </div>
+
+    <div id="auctionEnds" aria-live="polite" aria-atomic="true" aria-label="Auction countdown">
+      Auction ends in: <span id="countdown">Loading...</span>
+    </div>
+
+    <div class="actions" aria-label="Bidding and buying options">
+      <label for="bidAmount">Your Bid (£):</label>
+      <input type="number" id="bidAmount" min="1500" step="10" aria-describedby="bidHelp" />
+      <button id="bidBtn" aria-describedby="bidHelp">Place Bid</button>
+
+      <button id="buyNowBtn" aria-describedby="buyNowHelp">Buy It Now - £1999</button>
+
+      <button id="contactSellerBtn">Contact Seller</button>
+    </div>
+    <p id="bidHelp" style="font-size:0.8rem;color:#aaa;margin-top:-8px;margin-bottom:6px;">
+      Minimum bid £1500. Must be logged in to bid or buy.
+    </p>
+    <p id="buyNowHelp" style="font-size:0.8rem;color:#aaa;margin-top:-12px;margin-bottom:12px;">
+      Buy now price: £1999
+    </p>
+
+    <div class="description" tabindex="0">
+      <strong>Description:</strong> The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm torque. Known for its impressive fuel economy of around 47-50 mpg and brisk acceleration, it's a perfect blend of performance and efficiency for everyday driving.
+    </div>
+  </div>
 </section>
-
-<div id="listingsContainer" aria-live="polite" aria-atomic="true">
-  <!-- Single Astra Listing -->
-  <article class="listing" data-condition="runner" data-miles="89905" data-title="Astra J 1.4 Turbo">
-    <div class="gallery" aria-label="Image thumbnails">
-      <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra front view" tabindex="0" class="selected" />
-      <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg" alt="Astra side view" tabindex="0" />
-      <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg" alt="Astra dashboard" tabindex="0" />
-      <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg" alt="Astra engine bay" tabindex="0" />
-    </div>
-    <div class="main-image-container" aria-label="Main image container">
-      <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra front view large" id="mainImage" />
-    </div>
-
-    <section class="info-section" aria-label="Car information and bidding">
-      <h3>Astra J 1.4 Turbo - 2010</h3>
-      <div>
-        <span class="tag-bubble runner-bubble" title="This vehicle is a runner">
-          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6.003 11.803L2.205 7.997l1.414-1.414 2.384 2.385 4.99-4.99 1.414 1.414z"/></svg> Runner
-        </span>
-        <span class="tag-bubble mot-bubble" title="Full MOT valid">
-          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6.003 11.803L2.205 7.997l1.414-1.414 2.384 2.385 4.99-4.99 1.414 1.414z"/></svg> MOT
-        </span>
-      </div>
-      <p>Mileage: 89,905 miles</p>
-
-      <p class="price">£1,499</p>
-
-      <div id="auctionEnds" aria-live="polite" aria-atomic="true" aria-label="Auction countdown">
-        Auction ends in: <span id="countdown">Loading...</span>
-      </div>
-
-      <div class="actions" aria-label="Bidding and buying options">
-        <label for="bidAmount">Your Bid (£):</label>
-        <input type="number" id="bidAmount" min="1500" step="10" aria-describedby="bidHelp" />
-        <button id="bidBtn" aria-describedby="bidHelp">Place Bid</button>
-        <button id="buyNowBtn" aria-describedby="buyNowHelp">Buy It Now - £1999</button>
-        <button id="contactSellerBtn">Contact Seller</button>
-      </div>
-      <p id="bidHelp" style="font-size:0.8rem;color:#aaa;margin-top:-8px;margin-bottom:6px;">Minimum bid £1500. Must be logged in to bid or buy.</p>
-      <p id="buyNowHelp" style="font-size:0.8rem;color:#aaa;margin-top:-12px;margin-bottom:12px;">Buy now price: £1999</p>
-
-      <div class="description" tabindex="0">
-        <strong>Description:</strong> The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm torque. Known for its impressive fuel economy of around 47-50 mpg and brisk acceleration, it's a perfect blend of performance and efficiency for everyday driving.
-      </div>
-    </section>
-  </article>
-</div>
 
 <footer>
   &copy; TorqueBay 2025 All Rights Reserved
@@ -506,7 +454,7 @@
     <input type="text" id="contactName" name="contactName" required autocomplete="name" />
     <label for="contactPhone">Phone Number:</label>
     <input type="tel" id="contactPhone" name="contactPhone" required autocomplete="tel" pattern="[+0-9\s\-]{6,15}" placeholder="+44 7123 456789" />
-    <div style="text-align:right;">
+    <div>
       <button type="button" id="cancelContact">Cancel</button>
       <button type="submit">Send via WhatsApp</button>
     </div>
@@ -515,7 +463,7 @@
 
 <script>
   // Image gallery logic
-  const galleryImages = document.querySelectorAll('.gallery img');
+  const galleryImages = document.querySelectorAll('.gallery .thumbs img');
   const mainImage = document.getElementById('mainImage');
 
   galleryImages.forEach(img => {
@@ -523,7 +471,7 @@
       galleryImages.forEach(i => i.classList.remove('selected'));
       img.classList.add('selected');
       mainImage.src = img.src;
-      mainImage.alt = img.alt.replace('thumbnail','large');
+      mainImage.alt = img.alt.replace('thumbnail', 'large');
     });
   });
 
@@ -569,14 +517,12 @@
       alert('You must be logged in to place a bid.');
       return;
     }
-    const bidInput = document.getElementById('bidAmount');
-    const bidValue = parseInt(bidInput.value, 10);
-    if (isNaN(bidValue) || bidValue < 1500) {
-      alert('Please enter a valid bid amount of at least £1500.');
+    const bidAmount = parseInt(document.getElementById('bidAmount').value, 10);
+    if (isNaN(bidAmount) || bidAmount < 1500) {
+      alert('Please enter a valid bid of at least £1500.');
       return;
     }
-    alert(`Your bid of £${bidValue} has been placed!`);
-    bidInput.value = '';
+    alert(`Bid placed: £${bidAmount}. Thank you for your interest!`);
   });
 
   document.getElementById('buyNowBtn').addEventListener('click', () => {
@@ -584,86 +530,47 @@
       alert('You must be logged in to buy the car now.');
       return;
     }
-    if(confirm('Are you sure you want to Buy It Now for £1999?')) {
-      alert('Congratulations! You have bought the car. The seller will contact you soon.');
+    if (confirm('Are you sure you want to buy this car for £1999?')) {
+      alert('Thank you for your purchase! The seller will contact you shortly.');
     }
   });
 
-  // Contact seller dialog logic
+  // Contact seller modal logic
   const contactBtn = document.getElementById('contactSellerBtn');
   const contactModal = document.getElementById('contactModal');
-  const cancelContact = document.getElementById('cancelContact');
   const contactForm = document.getElementById('contactForm');
+  const cancelContactBtn = document.getElementById('cancelContact');
 
   contactBtn.addEventListener('click', () => {
     contactModal.showModal();
   });
 
-  cancelContact.addEventListener('click', () => {
+  cancelContactBtn.addEventListener('click', () => {
     contactModal.close();
   });
 
-  contactForm.addEventListener('submit', e => {
+  contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('contactName').value.trim();
-    const phone = document.getElementById('contactPhone').value.trim();
+    const name = contactForm.contactName.value.trim();
+    const phone = contactForm.contactPhone.value.trim();
     if (!name || !phone) {
-      alert('Please fill in both your name and phone number.');
+      alert('Please enter both name and phone number.');
       return;
     }
-    // Construct WhatsApp link with prefilled message
-    const message = encodeURIComponent(`Hello, my name is ${name}. I am interested in the Astra J 1.4 Turbo listing. Please contact me shortly. My phone number: ${phone}`);
-    const whatsappLink = `https://w.app/gq9vjh?text=${message}`;
-    window.open(whatsappLink, '_blank');
+    // Encode message for WhatsApp
+    const message = encodeURIComponent(`Hello, my name is ${name}. I am interested in the 2010 Astra J 1.4 Turbo listing. Please contact me at ${phone} to arrange a viewing.`);
+    const whatsappUrl = `https://w.app/gq9vjh?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+
+    alert('Thank you! The seller will contact you shortly to arrange a viewing.');
     contactModal.close();
-    alert('Thank you! The seller will contact you shortly to arrange viewing.');
     contactForm.reset();
   });
-
-  // Filters and search (only for demonstration since single listing)
-  const searchInput = document.getElementById('searchInput');
-  const conditionFilter = document.getElementById('conditionFilter');
-  const mileageFilter = document.getElementById('mileageFilter');
-  const listingsContainer = document.getElementById('listingsContainer');
-
-  function filterListings() {
-    const searchVal = searchInput.value.toLowerCase();
-    const condVal = conditionFilter.value;
-    const mileageVal = mileageFilter.value;
-
-    const listings = listingsContainer.querySelectorAll('article.listing');
-
-    listings.forEach(listing => {
-      const title = listing.getAttribute('data-title').toLowerCase();
-      const condition = listing.getAttribute('data-condition');
-      const miles = parseInt(listing.getAttribute('data-miles'), 10);
-
-      // Search filter
-      const matchesSearch = title.includes(searchVal);
-
-      // Condition filter
-      const matchesCondition = condVal === '' || condVal === condition;
-
-      // Mileage filter (only two options)
-      let matchesMileage = true; // default
-      if(mileageVal === 'lowtohigh') matchesMileage = true; // Single listing so always true
-      else if(mileageVal === 'hightolow') matchesMileage = true;
-
-      if (matchesSearch && matchesCondition && matchesMileage) {
-        listing.style.display = 'flex';
-      } else {
-        listing.style.display = 'none';
-      }
-    });
-  }
-
-  searchInput.addEventListener('input', filterListings);
-  conditionFilter.addEventListener('change', filterListings);
-  mileageFilter.addEventListener('change', filterListings);
-
-  // Initial filter
-  filterListings();
 </script>
+
+<footer>
+  &copy; TorqueBay 2025 All Rights Reserved
+</footer>
 
 </body>
 </html>
