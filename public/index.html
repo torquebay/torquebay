@@ -5,8 +5,10 @@
   <title>Torque Bay</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
     body {
-      font-family: sans-serif;
+      font-family: 'Inter', sans-serif;
       padding: 1rem;
       max-width: 1000px;
       margin: auto;
@@ -15,27 +17,30 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.4;
     }
 
     img {
       max-width: 100%;
+      display: block;
     }
 
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     .logo-container {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .logo-container img {
-      height: 50px;
+      height: 70px; /* bigger logo */
     }
 
     .auth-buttons a {
@@ -47,6 +52,7 @@
       padding: 6px 12px;
       border-radius: 5px;
       transition: background-color 0.3s ease;
+      font-size: 0.9rem;
     }
     .auth-buttons a:hover {
       background-color: #d32f2f;
@@ -58,7 +64,7 @@
       white-space: nowrap;
       border-top: 3px solid #d32f2f;
       border-bottom: 3px solid #d32f2f;
-      margin-bottom: 1rem;
+      margin: 1rem 0 1rem 0;
       padding: 10px 0;
     }
     .rolling-text {
@@ -74,54 +80,30 @@
       100% { transform: translateX(-100%); }
     }
 
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    #auctionEnds {
+      position: relative;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      color: #fff;
+      font-size: 1.1rem;
+      text-align: right;
+      user-select: none;
+      text-shadow: 0 0 5px #000;
+    }
+
+    main.container {
+      role: main;
+      ariaLabel: "Car auction and sales listings";
+    }
+
+    /* Hide filters if only 1 listing */
+    #filtersForm {
+      display: none;
       margin-bottom: 20px;
       color: #fff;
       align-items: center;
-    }
-
-    .filters label {
-      font-weight: 600;
-      margin-right: 5px;
-    }
-
-    .filters input[type="text"],
-    .filters input[type="number"],
-    .filters select {
-      padding: 5px 8px;
-      border-radius: 4px;
-      border: 1px solid #444;
-      background: #222;
-      color: #fff;
-      min-width: 120px;
-    }
-
-    .filters button {
-      background-color: #d32f2f;
-      border: none;
-      color: white;
-      padding: 8px 15px;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
-    }
-    .filters button:hover {
-      background-color: #b02929;
-    }
-
-    #auctionEnds {
-      position: absolute;
-      right: 20px;
-      top: 70px;
-      font-weight: 900;
-      color: #ff6f00; /* bright orange */
-      font-size: 1.2rem;
-      text-shadow: 0 0 8px #ff6f00;
-      user-select: none;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     article.listing {
@@ -133,8 +115,10 @@
       box-shadow: 0 0 10px rgba(211, 47, 47, 0.3);
       display: flex;
       gap: 20px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       position: relative;
+      align-items: flex-start;
+      font-size: 14px;
     }
 
     article.listing h3 {
@@ -159,7 +143,7 @@
     }
 
     .gallery {
-      flex: 1 1 220px;
+      flex: 0 0 220px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -180,7 +164,7 @@
     }
 
     .main-image-container {
-      flex: 1 1 400px;
+      flex: 0 0 400px;
       max-width: 400px;
       position: relative;
     }
@@ -192,6 +176,7 @@
       object-fit: contain;
       max-height: 300px;
       width: 100%;
+      display: block;
     }
 
     #mainImage.zoomed {
@@ -209,10 +194,11 @@
       gap: 15px;
       color: #fff;
       max-width: 320px;
+      min-width: 280px;
     }
 
     .price {
-      font-size: 1.7rem;
+      font-size: 1.6rem;
       font-weight: 900;
       color: #ff6f00; /* orange */
       margin: 0;
@@ -283,17 +269,20 @@
 
     .description {
       margin-top: 15px;
-      line-height: 1.5;
-      font-size: 1rem;
+      line-height: 1.4;
+      font-size: 0.9rem;
       color: #ddd;
       flex-grow: 1;
+      max-height: 140px;
+      overflow-y: auto;
+      padding-right: 5px;
     }
 
     footer {
       margin-top: auto;
       text-align: center;
       padding: 1rem 0;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #666;
       border-top: 1px solid #333;
     }
@@ -332,7 +321,7 @@
   <header role="banner" aria-label="Site header with logo and authentication">
     <div class="logo-container">
       <img src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="Torque Bay Logo" />
-      <h1>Torque Bay – Car Auctions & Sales</h1>
+      <h1 style="font-size:1.6rem; margin:0; user-select:none;">Torque Bay – Car Auctions & Sales</h1>
     </div>
     <nav class="auth-buttons" aria-label="User authentication actions">
       <a href="login.html" id="loginLink">Login</a>
@@ -350,42 +339,7 @@
 
   <main class="container" role="main" aria-label="Car auction and sales listings">
 
-    <!-- Filters -->
-    <form id="filtersForm" class="filters" aria-label="Filter and search car listings">
-      <label for="searchTitle">Search:</label>
-      <input type="text" id="searchTitle" name="searchTitle" placeholder="Enter keyword..." aria-label="Search by title or description" />
-
-      <label for="filterModel">Model:</label>
-      <select id="filterModel" name="filterModel" aria-label="Filter by car model">
-        <option value="">Any</option>
-        <option value="Astra">Astra</option>
-        <option value="Corsa">Corsa</option>
-        <option value="Focus">Focus</option>
-        <option value="Golf">Golf</option>
-      </select>
-
-      <label for="filterCondition">Condition:</label>
-      <select id="filterCondition" name="filterCondition" aria-label="Filter by running condition">
-        <option value="">Any</option>
-        <option value="runner">Runner</option>
-        <option value="non-runner">Non-runner</option>
-      </select>
-
-      <label for="mileageSort">Mileage:</label>
-      <select id="mileageSort" name="mileageSort" aria-label="Sort by mileage">
-        <option value="">Default</option>
-        <option value="low-high">Low to High</option>
-        <option value="high-low">High to Low</option>
-      </select>
-
-      <label for="priceRangeMin">Price Min (£):</label>
-      <input type="number" id="priceRangeMin" name="priceRangeMin" min="0" placeholder="Min" aria-label="Minimum price" />
-
-      <label for="priceRangeMax">Price Max (£):</label>
-      <input type="number" id="priceRangeMax" name="priceRangeMax" min="0" placeholder="Max" aria-label="Maximum price" />
-
-      <button type="submit" aria-label="Apply filters">Filter</button>
-    </form>
+    <!-- Filters hidden for single listing -->
 
     <div id="listingsContainer" aria-live="polite" aria-atomic="true">
       <!-- Listings will be injected here -->
@@ -398,14 +352,13 @@
       <h2 id="contactModalTitle">Contact Seller</h2>
       <p>Please enter your phone number and we will contact you shortly regarding the listing.</p>
       <label for="phoneNumber">Phone Number:</label><br />
-      <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+44 7000 000000" required /><br /><br />
+      <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+44 7000 000000" required autocomplete="tel" /><br /><br />
       <button type="submit">Send</button>
       <button type="button" id="closeContactModalBtn">Cancel</button>
     </form>
   </dialog>
 
   <script>
-    // Dummy data for listings demo
     const listingsData = [
       {
         id: '1',
@@ -422,186 +375,124 @@
           'https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg',
           'https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg',
         ],
-      },
-      {
-        id: '2',
-        title: 'Ford Focus 2015 1.5 TDCi Diesel',
-        model: 'Focus',
-        condition: 'runner',
-        mileage: 45000,
-        price: 7499,
-        buyNowPrice: 7900,
-        description: 'Reliable diesel with excellent fuel economy. Smooth drive and spacious interior. Great for commuters and families.',
-        images: [
-          'https://via.placeholder.com/400x250?text=Ford+Focus+1',
-          'https://via.placeholder.com/400x250?text=Ford+Focus+2',
-        ],
-      },
-      {
-        id: '3',
-        title: 'Volkswagen Golf 2012 GTI',
-        model: 'Golf',
-        condition: 'non-runner',
-        mileage: 120000,
-        price: 1500,
-        buyNowPrice: 1800,
-        description: 'Classic hot hatch, needs some repairs, but with potential. Great for enthusiasts looking for a project.',
-        images: [
-          'https://via.placeholder.com/400x250?text=VW+Golf+1',
-          'https://via.placeholder.com/400x250?text=VW+Golf+2',
-        ],
       }
     ];
 
     let token = localStorage.getItem('token');
 
     const listingsContainer = document.getElementById('listingsContainer');
-    const filtersForm = document.getElementById('filtersForm');
     const auctionEndsEl = document.getElementById('auctionEnds');
-    let countdownTime = 24 * 60 * 60; // 24 hours in seconds
 
-    // Utility: Format numbers with commas
+    // Format numbers with commas
     function formatNumber(num) {
       return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    // Render listings based on filters
-    function renderListings(listings) {
+    // Render single listing
+    function renderListing(listing) {
       listingsContainer.innerHTML = '';
-      if (listings.length === 0) {
-        listingsContainer.innerHTML = '<p>No listings match your filter criteria.</p>';
-        return;
-      }
-      listings.forEach(listing => {
-        const listingEl = document.createElement('article');
-        listingEl.className = 'listing';
-        listingEl.setAttribute('tabindex', '0');
-        listingEl.innerHTML = `
-          <h3>${listing.title}</h3>
-          <div class="gallery" aria-label="Image gallery for ${listing.title}">
-            ${listing.images.map((img, i) => `<img src="${img}" alt="${listing.title} image ${i+1}" ${i === 0 ? 'class="selected"' : ''} tabindex="0" />`).join('')}
+      const listingEl = document.createElement('article');
+      listingEl.className = 'listing';
+      listingEl.setAttribute('tabindex', '0');
+      listingEl.innerHTML = `
+        <h3>${listing.title}</h3>
+        <div class="gallery" aria-label="Image gallery for ${listing.title}">
+          ${listing.images.map((img, i) => `<img src="${img}" alt="${listing.title} image ${i+1}" ${i === 0 ? 'class="selected"' : ''} tabindex="0" />`).join('')}
+        </div>
+        <div class="main-image-container">
+          <img id="mainImage-${listing.id}" class="main-image" src="${listing.images[0]}" alt="${listing.title} main image" tabindex="0" />
+        </div>
+        <section class="info-section" aria-label="Details for ${listing.title}">
+          <p class="tag" aria-label="Car condition">${listing.condition === 'runner' ? 
+            '<svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M9 16.2l-3.5-3.5L4 14l5 5 12-12-1.5-1.5z"/></svg> Runner' 
+            : 'Non-runner'}</p>
+          <p class="price" aria-label="Price £${formatNumber(listing.price)}">£${formatNumber(listing.price)}</p>
+          <p class="description">${listing.description}</p>
+          <p><strong>Mileage:</strong> ${formatNumber(listing.mileage)} miles</p>
+
+          <div class="actions" aria-label="Actions for ${listing.title}">
+            <form class="bid-form" aria-label="Place a bid on ${listing.title}">
+              <label for="bidAmount-${listing.id}">Your Bid (£):</label>
+              <input type="number" min="${listing.price + 1}" id="bidAmount-${listing.id}" name="bidAmount" placeholder="£${listing.price + 1}" required />
+              <button type="submit" id="bidBtn-${listing.id}">Place Bid</button>
+            </form>
+            <button class="buy-now-price" id="buyNowBtn-${listing.id}">Buy It Now £${formatNumber(listing.buyNowPrice)}</button>
+            <button class="contact-seller" id="contactSellerBtn-${listing.id}">Contact Seller</button>
           </div>
-          <div class="main-image-container">
-            <img id="mainImage-${listing.id}" class="main-image" src="${listing.images[0]}" alt="${listing.title} main image" tabindex="0" />
-          </div>
-          <section class="info-section" aria-label="Details for ${listing.title}">
-            <p class="tag" aria-label="Car condition">${listing.condition === 'runner' ? 
-              '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5L4 14l5 5 12-12-1.5-1.5z"/></svg> Runner' 
-              : 'Non-runner'}</p>
-            <p class="price" aria-label="Price £${formatNumber(listing.price)}">£${formatNumber(listing.price)}</p>
-            <p class="description">${listing.description}</p>
-            <p><strong>Mileage:</strong> ${formatNumber(listing.mileage)} miles</p>
+        </section>
+      `;
 
-            <div class="actions" aria-label="Actions for ${listing.title}">
-              <form class="bid-form" aria-label="Place a bid on ${listing.title}">
-                <label for="bidAmount-${listing.id}">Your Bid (£):</label>
-                <input type="number" min="${listing.price + 1}" id="bidAmount-${listing.id}" name="bidAmount" placeholder="£${listing.price + 1}" required />
-                <button type="submit" id="bidBtn-${listing.id}">Place Bid</button>
-              </form>
-              <button class="buy-now-price" id="buyNowBtn-${listing.id}">Buy It Now £${formatNumber(listing.buyNowPrice)}</button>
-              <button class="contact-seller" id="contactSellerBtn-${listing.id}">Contact Seller</button>
-            </div>
-          </section>
-        `;
+      listingsContainer.appendChild(listingEl);
 
-        listingsContainer.appendChild(listingEl);
-
-        // Setup image gallery click handlers
-        const galleryImgs = listingEl.querySelectorAll('.gallery img');
-        const mainImg = listingEl.querySelector(`#mainImage-${listing.id}`);
-        galleryImgs.forEach(img => {
-          img.addEventListener('click', () => {
-            galleryImgs.forEach(i => i.classList.remove('selected'));
-            img.classList.add('selected');
-            mainImg.src = img.src;
-            mainImg.alt = img.alt;
-          });
-          img.addEventListener('keydown', e => {
-            if(e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              img.click();
-            }
-          });
+      // Gallery images click
+      const galleryImgs = listingEl.querySelectorAll('.gallery img');
+      const mainImg = listingEl.querySelector(`#mainImage-${listing.id}`);
+      galleryImgs.forEach(img => {
+        img.addEventListener('click', () => {
+          galleryImgs.forEach(i => i.classList.remove('selected'));
+          img.classList.add('selected');
+          mainImg.src = img.src;
+          mainImg.alt = img.alt;
         });
-
-        // Main image zoom toggle
-        mainImg.addEventListener('click', () => {
-          mainImg.classList.toggle('zoomed');
-        });
-
-        // Bid form handler
-        const bidForm = listingEl.querySelector('.bid-form');
-        bidForm.addEventListener('submit', e => {
-          e.preventDefault();
-          if(!token) {
-            alert('You must be logged in to place a bid. Please login or register.');
-            return;
-          }
-          const bidInput = bidForm.bidAmount;
-          const bidVal = Number(bidInput.value);
-          if(bidVal <= listing.price) {
-            alert(`Bid must be greater than the current price (£${listing.price}).`);
-            return;
-          }
-          alert(`Your bid of £${formatNumber(bidVal)} has been placed!`);
-          bidForm.reset();
-        });
-
-        // Buy now button handler
-        const buyNowBtn = listingEl.querySelector(`#buyNowBtn-${listing.id}`);
-        buyNowBtn.addEventListener('click', () => {
-          if(!token) {
-            alert('You must be logged in to buy the car now. Please login or register.');
-            return;
-          }
-          if(confirm(`Are you sure you want to buy ${listing.title} now for £${formatNumber(listing.buyNowPrice)}?`)){
-            alert('Congratulations! You have purchased the car. The seller will contact you shortly.');
+        img.addEventListener('keydown', e => {
+          if(e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            img.click();
           }
         });
+      });
 
-        // Contact seller handler
-        const contactSellerBtn = listingEl.querySelector(`#contactSellerBtn-${listing.id}`);
-        contactSellerBtn.addEventListener('click', () => {
-          currentListingId = listing.id;
-          contactModal.showModal();
-          document.getElementById('phoneNumber').focus();
-        });
+      // Main image zoom toggle
+      mainImg.addEventListener('click', () => {
+        mainImg.classList.toggle('zoomed');
+      });
+
+      // Bid form handler
+      const bidForm = listingEl.querySelector('.bid-form');
+      bidForm.addEventListener('submit', e => {
+        e.preventDefault();
+        if(!token) {
+          alert('You must be logged in to place a bid. Please login or register.');
+          return;
+        }
+        const bidInput = bidForm.bidAmount;
+        const bidVal = Number(bidInput.value);
+        if(bidVal <= listing.price) {
+          alert(`Bid must be greater than the current price (£${listing.price}).`);
+          return;
+        }
+        alert(`Your bid of £${formatNumber(bidVal)} has been placed!`);
+        bidForm.reset();
+      });
+
+      // Buy now button handler
+      const buyNowBtn = listingEl.querySelector(`#buyNowBtn-${listing.id}`);
+      buyNowBtn.addEventListener('click', () => {
+        if(!token) {
+          alert('You must be logged in to buy the car now. Please login or register.');
+          return;
+        }
+        if(confirm(`Are you sure you want to buy ${listing.title} now for £${formatNumber(listing.buyNowPrice)}?`)){
+          alert('Congratulations! You have purchased the car. The seller will contact you shortly.');
+        }
+      });
+
+      // Contact seller handler
+      const contactSellerBtn = listingEl.querySelector(`#contactSellerBtn-${listing.id}`);
+      contactSellerBtn.addEventListener('click', () => {
+        currentListingId = listing.id;
+        contactModal.showModal();
+        document.getElementById('phoneNumber').focus();
       });
     }
 
-    // Initial render all listings
-    renderListings(listingsData);
-
-    // Filter form handler
-    filtersForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const searchTitle = filtersForm.searchTitle.value.toLowerCase();
-      const filterModel = filtersForm.filterModel.value.toLowerCase();
-      const filterCondition = filtersForm.filterCondition.value.toLowerCase();
-      const mileageSort = filtersForm.mileageSort.value;
-      const priceMin = Number(filtersForm.priceRangeMin.value) || 0;
-      const priceMax = Number(filtersForm.priceRangeMax.value) || Infinity;
-
-      let filteredListings = listingsData.filter(listing => {
-        let matches = true;
-        if (searchTitle && !listing.title.toLowerCase().includes(searchTitle) && !listing.description.toLowerCase().includes(searchTitle)) matches = false;
-        if (filterModel && listing.model.toLowerCase() !== filterModel) matches = false;
-        if (filterCondition && listing.condition !== filterCondition) matches = false;
-        if (listing.price < priceMin || listing.price > priceMax) matches = false;
-        return matches;
-      });
-
-      // Sort by mileage
-      if(mileageSort === 'low-high') {
-        filteredListings.sort((a,b) => a.mileage - b.mileage);
-      } else if (mileageSort === 'high-low') {
-        filteredListings.sort((a,b) => b.mileage - a.mileage);
-      }
-
-      renderListings(filteredListings);
-    });
+    // Render the single listing Astra
+    renderListing(listingsData[0]);
 
     // Auction countdown timer
+    let countdownTime = 24 * 60 * 60; // 24h in seconds
+    const auctionEndsEl = document.getElementById('auctionEnds');
+
     function updateCountdown() {
       if(countdownTime <= 0) {
         auctionEndsEl.textContent = 'Auction Ended';
@@ -635,8 +526,7 @@
         alert('Please enter a valid phone number.');
         return;
       }
-      // Here: You can send phoneNumber and currentListingId to your backend or API
-      // For demo, we just alert:
+      // Here: send phoneNumber and currentListingId to backend or API
       alert(`Thank you! We will contact you shortly at ${phoneNumber} regarding listing ID: ${currentListingId}.`);
       contactForm.reset();
       contactModal.close();
