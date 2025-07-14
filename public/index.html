@@ -124,6 +124,28 @@
         font-size: 1.2rem;
       }
     }
+
+    /* Gallery thumbnails */
+    .gallery {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-bottom: 15px;
+    }
+
+    .gallery img {
+      flex: 0 0 150px;
+      height: 100px;
+      border-radius: 6px;
+      cursor: pointer;
+      object-fit: cover;
+      border: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+
+    .gallery img.selected {
+      border-color: red;
+    }
   </style>
 </head>
 <body>
@@ -135,24 +157,40 @@
 
   <div class="container">
     <div class="filters">
-      <input type="text" id="searchInput" placeholder="Search make, model, title...">
-      <select id="sortSelect">
-        <option value="">Sort</option>
-        <option value="price_asc">Price: Low → High</option>
-        <option value="price_desc">Price: High → Low</option>
-        <option value="mileage_asc">Mileage: Low → High</option>
+      <input type="text" id="searchInput" placeholder="Search make, model, title..." disabled style="background:#333; cursor:not-allowed;" title="Filter disabled for single listing" />
+      <select id="sortSelect" disabled style="background:#333; cursor:not-allowed;" title="Sorting disabled for single listing">
+        <option>Sort options disabled</option>
       </select>
-      <select id="conditionFilter">
-        <option value="">All Conditions</option>
-        <option value="New">New</option>
-        <option value="Used">Used</option>
-        <option value="Salvage">Salvage</option>
-        <option value="Runner">Runner</option>
-        <option value="Non Runner">Non Runner</option>
+      <select id="conditionFilter" disabled style="background:#333; cursor:not-allowed;" title="Filter disabled for single listing">
+        <option>Condition filter disabled</option>
       </select>
     </div>
 
-    <div id="listings">Loading listings...</div>
+    <div id="listings">
+      <div class="listing">
+        <h3>Vauxhall Astra J 1.4 Turbo (2010)</h3>
+        <span class="tag">Runner</span>
+        
+        <div class="gallery" id="gallery">
+          <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra Front View" class="selected" />
+          <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg" alt="Astra Side View" />
+          <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg" alt="Astra Interior" />
+          <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg" alt="Astra Engine Bay" />
+        </div>
+        
+        <img id="mainImage" src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra Main Image" />
+
+        <p>89,905 miles | Full year MOT | Recently serviced</p>
+        <p>Runs and drives perfectly.</p>
+        <p><strong>Price:</strong> £3,800</p>
+        <p><strong>Buy Now:</strong> £4,500</p>
+
+        <input id="bid-1" type="number" placeholder="Enter your bid" style="width: 140px;" />
+        <button onclick="placeBid('1')">Place Bid</button>
+        <button onclick="buyNow('1')">Buy It Now</button>
+        <button onclick="watch('1')">⭐ Watch</button>
+      </div>
+    </div>
   </div>
 
   <div class="rolling-banner" aria-live="polite">
@@ -160,157 +198,33 @@
   </div>
 
   <script>
-    const listingsEl = document.getElementById('listings');
-    const searchInput = document.getElementById('searchInput');
-    const sortSelect = document.getElementById('sortSelect');
-    const conditionFilter = document.getElementById('conditionFilter');
+    const mainImage = document.getElementById('mainImage');
+    const gallery = document.getElementById('gallery');
 
-    // Dummy listings with fixed reliable images + fallback
-    let listings = [
-      {
-        id: '1',
-        title: 'BMW M3 E46',
-        description: 'Classic 2004 BMW M3, well maintained, runs great.',
-        price: 25000,
-        buy_now_price: 30000,
-        image_url: 'https://cdn.motor1.com/images/mgl/Y6ONJ/s1/2004-bmw-m3.jpg',
-        year: 2004,
-        mileage: 85000,
-        location: 'London',
-        condition: 'Runner',
-        auction_end: Date.now() + 3600 * 1000 * 24 // 24 hours from now
-      },
-      {
-        id: '2',
-        title: 'Ford Fiesta 1.0',
-        description: 'Reliable daily driver, needs minor repairs.',
-        price: 3000,
-        buy_now_price: 4000,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Ford_Fiesta_ST-Line_1.0_Front.jpg',
-        year: 2013,
-        mileage: 95000,
-        location: 'Manchester',
-        condition: 'Used',
-        auction_end: Date.now() + 3600 * 1000 * 48 // 48 hours
-      },
-      {
-        id: '3',
-        title: 'Salvage Honda Civic',
-        description: 'Salvage title, engine needs work.',
-        price: 1200,
-        buy_now_price: 2000,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Honda_Civic_FD_2009_front.jpg',
-        year: 2016,
-        mileage: 120000,
-        location: 'Bristol',
-        condition: 'Salvage',
-        auction_end: Date.now() + 3600 * 1000 * 12 // 12 hours
-      },
-      {
-        id: '4',
-        title: 'Classic VW Beetle',
-        description: 'Runs perfect, great for collectors.',
-        price: 15000,
-        buy_now_price: 18000,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/1/15/1966_Volkswagen_Beetle_-_flickr.jpg',
-        year: 1966,
-        mileage: 75000,
-        location: 'Brighton',
-        condition: 'Runner',
-        auction_end: Date.now() + 3600 * 1000 * 72 // 72 hours
-      },
-      {
-        id: '5',
-        title: 'Non Runner Toyota Corolla',
-        description: 'Non runner, sold as parts or rebuild.',
-        price: 400,
-        buy_now_price: 700,
-        image_url: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/2007_Toyota_Corolla_Sportivo.jpg',
-        year: 2014,
-        mileage: 150000,
-        location: 'Leeds',
-        condition: 'Non Runner',
-        auction_end: Date.now() + 3600 * 1000 * 36 // 36 hours
-      }
-    ];
-
-    function renderListings(list) {
-      listingsEl.innerHTML = '';
-      list.forEach(listing => {
-        const endTime = listing.auction_end || Date.now() + 3600000;
-        const div = document.createElement('div');
-        div.className = 'listing';
-        div.innerHTML = `
-          <h3>${listing.title}</h3>
-          <span class="tag">${listing.condition || 'Used'}</span>
-          <img src="${listing.image_url}" alt="Car" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x180?text=No+Image';" />
-          <p>${listing.description}</p>
-          <p><strong>Year:</strong> ${listing.year || 'N/A'} | <strong>Mileage:</strong> ${listing.mileage || 'N/A'} miles</p>
-          <p><strong>Location:</strong> ${listing.location || 'Unknown'}</p>
-          <p><strong>Current Price:</strong> £${listing.price}</p>
-          <p><strong>Buy Now:</strong> £${listing.buy_now_price}</p>
-          <p><strong>Time Left:</strong> <span id="timer-${listing.id}">${formatTime(endTime - Date.now())}</span></p>
-          <input id="bid-${listing.id}" type="number" placeholder="Enter your bid" style="width: 140px;">
-          <button onclick="placeBid('${listing.id}')">Place Bid</button>
-          <button onclick="buyNow('${listing.id}')">Buy It Now</button>
-          <button onclick="watch('${listing.id}')">⭐ Watch</button>
-        `;
-        listingsEl.appendChild(div);
-
-        setInterval(() => {
-          const timer = document.getElementById(`timer-${listing.id}`);
-          if(timer) timer.textContent = formatTime(endTime - Date.now());
-        }, 1000);
+    // Change main image on thumbnail click
+    gallery.querySelectorAll('img').forEach(img => {
+      img.addEventListener('click', () => {
+        // Remove 'selected' from all
+        gallery.querySelectorAll('img').forEach(i => i.classList.remove('selected'));
+        // Add 'selected' to clicked
+        img.classList.add('selected');
+        // Change main image src
+        mainImage.src = img.src;
+        mainImage.alt = img.alt;
       });
-    }
-
-    function formatTime(ms) {
-      if(ms <= 0) return 'Auction ended';
-      const s = Math.floor(ms / 1000);
-      const m = Math.floor(s / 60);
-      const r = s % 60;
-      return `${m}m ${r}s`;
-    }
-
-    function applyFilters() {
-      let filtered = [...listings];
-      const q = searchInput.value.toLowerCase();
-      const sort = sortSelect.value;
-      const cond = conditionFilter.value;
-
-      if (q) {
-        filtered = filtered.filter(l =>
-          l.title.toLowerCase().includes(q) ||
-          l.description.toLowerCase().includes(q)
-        );
-      }
-
-      if (cond) {
-        filtered = filtered.filter(l => l.condition === cond);
-      }
-
-      if (sort === 'price_asc') filtered.sort((a, b) => a.price - b.price);
-      if (sort === 'price_desc') filtered.sort((a, b) => b.price - a.price);
-      if (sort === 'mileage_asc') filtered.sort((a, b) => (a.mileage || 0) - (b.mileage || 0));
-
-      renderListings(filtered);
-    }
+    });
 
     function placeBid(id) {
-      alert('Place bid clicked for listing id: ' + id + '. (Backend integration needed)');
+      alert('Place bid clicked for listing id: ' + id + '. Backend integration needed.');
     }
+
     function buyNow(id) {
-      alert('Buy now clicked for listing id: ' + id + '. (Backend integration needed)');
+      alert('Buy now clicked for listing id: ' + id + '. Backend integration needed.');
     }
+
     function watch(id) {
-      alert('Added listing id ' + id + ' to your watchlist. (Backend or localStorage needed)');
+      alert('Added listing id ' + id + ' to your watchlist. Backend or localStorage integration needed.');
     }
-
-    searchInput.addEventListener('input', applyFilters);
-    sortSelect.addEventListener('change', applyFilters);
-    conditionFilter.addEventListener('change', applyFilters);
-
-    renderListings(listings);
   </script>
 </body>
 </html>
