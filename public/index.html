@@ -29,7 +29,7 @@ header div {
 }
 
 #logo {
-  max-height: 120px;
+  max-height: 90px;
   user-select: none;
 }
 
@@ -43,25 +43,39 @@ header h1 {
   flex-shrink: 0;
 }
 
-nav.auth-nav {
-  width: 100%;
-  background: #222;
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 10px 0;
-  margin-bottom: 10px;
+nav {
+  margin-left: auto;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-nav.auth-nav a {
+nav a {
+  margin-left: 18px;
   color: #FF3B3F;
   text-decoration: none;
-  font-size: 1rem;
-  font-weight: 700;
 }
 
-nav.auth-nav a:hover {
+nav a:hover,
+nav a:focus {
   text-decoration: underline;
+}
+
+.login-bar {
+  display: flex;
+  justify-content: center;
+  background: #000;
+  padding: 8px 0;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+}
+
+.login-bar a {
+  color: #FF3B3F;
+  font-weight: bold;
+  margin: 0 15px;
+  text-decoration: none;
 }
 
 .banner-text {
@@ -94,29 +108,224 @@ nav.auth-nav a:hover {
   100% { transform: translateX(-100%); }
 }
 
-.filters {
-  background: #222;
-  padding: 15px;
-  border-radius: 6px;
-  margin-bottom: 25px;
+.filter-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.filters label {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-.filters input,
-.filters select {
+.filter-bar input,
+.filter-bar select {
   padding: 6px 10px;
-  background: #111;
-  border: 1px solid #444;
   border-radius: 4px;
+  border: 1px solid #444;
+  background: #000;
+  color: #fff;
+}
+
+.listing {
+  display: flex;
+  gap: 15px;
+  background: #222;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 30px;
+  border: 1px solid #444;
+  color: #ddd;
+  align-items: flex-start;
+}
+
+.gallery {
+  flex: 1 1 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gallery #mainImage {
+  width: 100%;
+  border-radius: 6px;
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+  max-height: 320px;
+  object-fit: cover;
+  user-select: none;
+}
+
+.gallery #mainImage.zoomed {
+  transform: scale(1.8);
+  cursor: zoom-out;
+  z-index: 10;
+  position: relative;
+  border: 2px solid #FF3B3F;
+}
+
+.gallery .thumbs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.gallery .thumbs img {
+  width: 70px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.gallery .thumbs img.selected {
+  border-color: #FF3B3F;
+}
+
+.details {
+  flex: 1 1 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #eee;
+}
+
+.details h2 {
+  margin: 0;
+  color: #FF3B3F;
+  font-weight: 900;
+  font-size: 1.7rem;
+  user-select: none;
+}
+
+.badges {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.badge {
+  background: #28a745;
   color: white;
+  border-radius: 12px;
+  padding: 4px 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  font-size: 0.9rem;
+}
+
+.badge .tick {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid white;
+  border-radius: 50%;
+  position: relative;
+}
+
+.badge .tick::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0;
+  width: 5px;
+  height: 10px;
+  border-right: 2.5px solid white;
+  border-bottom: 2.5px solid white;
+  transform: rotate(45deg);
+}
+
+#auctionEnds {
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  font-size: 1.25rem;
+  margin: 12px 0 20px;
+  user-select: none;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actions label {
+  font-weight: 600;
+  user-select: none;
+}
+
+.actions input[type=number] {
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #111;
+  color: #eee;
+  font-size: 1rem;
+}
+
+.actions button {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+#bidBtn {
+  background-color: #FF3B3F;
+  color: white;
+}
+
+#bidBtn:hover,
+#bidBtn:focus {
+  background-color: #e63338;
+  outline: none;
+}
+
+#buyNowBtn {
+  background-color: #FF6F00;
+  color: white;
+}
+
+#buyNowBtn:hover,
+#buyNowBtn:focus {
+  background-color: #e65c00;
+  outline: none;
+}
+
+#contactSellerBtn {
+  background-color: #28a745;
+  color: white;
+}
+
+#contactSellerBtn:hover,
+#contactSellerBtn:focus {
+  background-color: #218838;
+  outline: none;
+}
+
+.description {
+  font-size: 1rem;
+  margin-top: 15px;
+  color: #ccc;
+  line-height: 1.4;
+  user-select: text;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 40px;
+  padding-bottom: 12px;
+  user-select: none;
 }
 
   </style>
@@ -125,17 +334,58 @@ nav.auth-nav a:hover {
   <div>
     <img id="logo" src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" />
   </div>
-</header><nav class="auth-nav">
+</header>
+<div class="login-bar">
   <a href="login.html">Login</a>
   <a href="register.html">Register</a>
-</nav><div class="banner-text" role="region" aria-live="polite" aria-atomic="true">
+</div><div class="banner-text">
   <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries &amp; membership info. Stay tuned! 🚀</span>
-</div><div class="filters">
-  <label for="searchInput">Search:</label>
-  <input type="text" id="searchInput" placeholder="Search by title..." /><label for="mileageFilter">Mileage:</label> <select id="mileageFilter"> <option value="all">All</option> <option value="under50k">Under 50k</option> <option value="50kto100k">50k–100k</option> <option value="over100k">Over 100k</option> </select>
-
-<label for="conditionFilter">Condition:</label> <select id="conditionFilter"> <option value="all">All</option> <option value="runner">Runner</option> <option value="non-runner">Non-Runner</option> </select>
-
-<label for="categoryFilter">Category:</label> <select id="categoryFilter"> <option value="all">All</option> <option value="Hatchback">Hatchback</option> <option value="Saloon">Saloon</option> <option value="SUV">SUV</option> <option value="Coupe">Coupe</option> </select>
-
-</div><!-- Your existing listings, countdown, and content remain below untouched -->
+</div><!-- Insert Filter/Search bar here --><div class="filter-bar">
+  <input type="text" id="searchBar" placeholder="Search by title...">
+  <select id="mileageFilter">
+    <option value="">Mileage</option>
+    <option value="low">Under 100k</option>
+    <option value="high">100k+</option>
+  </select>
+  <select id="conditionFilter">
+    <option value="">Condition</option>
+    <option value="runner">Runner</option>
+    <option value="nonrunner">Non-runner</option>
+  </select>
+  <select id="categoryFilter">
+    <option value="">Category</option>
+    <option value="saloon">Saloon</option>
+    <option value="hatchback">Hatchback</option>
+    <option value="suv">SUV</option>
+  </select>
+</div><!-- Your Astra J Listing restored --><section class="listing" data-title="2010 Astra J 1.4 Turbo" data-condition="runner" data-miles="89905">
+  <div class="gallery">
+    <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" id="mainImage" alt="Astra J front view">
+    <div class="thumbs">
+      <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg">
+      <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg">
+      <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg">
+    </div>
+  </div>
+  <div class="details">
+    <h2>2010 Astra J 1.4 Turbo Low Miles</h2>
+    <div class="badges">
+      <div class="badge"><span class="tick"></span> Runner</div>
+      <div class="badge"><span class="tick"></span> MOT</div>
+    </div>
+    <div id="auctionEnds">Auction ends in: <span id="countdown">Loading...</span></div>
+    <div class="actions">
+      <label for="bidAmount">Your Bid (£):</label>
+      <input type="number" id="bidAmount" min="1500">
+      <button id="bidBtn">Place Bid</button>
+      <button id="buyNowBtn">Buy It Now - £1999</button>
+      <button id="contactSellerBtn">Organise Viewing</button>
+    </div>
+    <div class="description">
+      <strong>Description:</strong> The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm torque. Known for its impressive fuel economy of around 47-50 mpg and brisk acceleration, it's a perfect blend of performance and efficiency for everyday driving.
+    </div>
+  </div>
+</section><footer>
+  &copy; TorqueBay 2025 All Rights Reserved 
+</footer></body>
+</html>
