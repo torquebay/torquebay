@@ -2,66 +2,113 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Torque Bay</title>
+  <title>Torque Bay – Accelerate Your Dreams</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
-      font-family: sans-serif;
-      padding: 1rem;
-      max-width: 1000px;
-      margin: auto;
+      margin: 0;
       background: #111;
       color: #fff;
+      font-family: sans-serif;
     }
 
-    img {
-      max-width: 100%;
-    }
-
-    .listing {
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
-      padding: 10px;
-      background: #222;
-    }
-
-    button {
-      background: red;
-      color: white;
-      padding: 8px 15px;
-      border: none;
-      cursor: pointer;
-    }
-
-    /* Banner Styles */
     .banner {
       display: flex;
       align-items: center;
-      background-color: black;
-      border: 4px solid red;
+      justify-content: space-between;
       padding: 10px 20px;
-      margin-bottom: 1rem;
+      background: #000;
+      border-bottom: 4px solid red;
     }
 
     .banner img {
-      max-height: 60px;
-      margin-right: 15px;
+      height: 60px;
     }
 
-    .banner-text {
+    .banner h1 {
+      font-size: 1.6rem;
+      color: red;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .filters input, .filters select {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px;
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      border-radius: 4px;
+    }
+
+    .listing {
+      border: 1px solid #333;
+      background: #1a1a1a;
+      padding: 15px;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+    }
+
+    .listing img {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .listing h3 {
+      margin-top: 0;
+    }
+
+    .tag {
+      background: red;
+      color: #fff;
+      padding: 3px 8px;
+      font-size: 0.8rem;
+      display: inline-block;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    button {
+      padding: 8px 12px;
+      margin: 4px 4px 4px 0;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .rolling-banner {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #000;
       color: red;
       font-weight: bold;
-      font-size: 1.3rem;
-      overflow: hidden;
+      border-top: 2px solid red;
+      padding: 8px;
       white-space: nowrap;
-      flex: 1;
-      position: relative;
+      overflow: hidden;
     }
 
-    .banner-text span {
+    .rolling-banner span {
       display: inline-block;
       padding-left: 100%;
-      animation: scroll 12s linear infinite;
+      animation: scroll 15s linear infinite;
     }
 
     @keyframes scroll {
@@ -69,205 +116,159 @@
       100% { transform: translateX(-100%); }
     }
 
-    #listingFormContainer {
-      display: none;
-    }
-
-    #filters {
-      margin: 10px 0;
-    }
-
-    #filters input, #filters select {
-      padding: 6px;
-      margin: 4px;
-      border-radius: 4px;
-      background: #222;
-      color: white;
-      border: 1px solid #444;
-    }
-
-    #filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
+    @media (max-width: 600px) {
+      .banner h1 {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Banner -->
-  <div class="banner" role="region" aria-live="polite">
-    <img src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="TorqueBay Banner" />
-    <div class="banner-text">
-      <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries & membership info. Stay tuned! 🚀</span>
-    </div>
+  <div class="banner">
+    <img src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="Torque Bay" />
+    <h1>Torque Bay – Accelerate Your Dreams</h1>
   </div>
 
-  <!-- Search & Sort -->
-  <div id="filters">
-    <input type="text" id="searchInput" placeholder="Search make, model, title" />
-    <select id="sortSelect">
-      <option value="">Sort By</option>
-      <option value="price_asc">Price: Low → High</option>
-      <option value="price_desc">Price: High → Low</option>
-    </select>
-    <button onclick="applyFilters()">Apply</button>
-  </div>
-
-  <center>
-    <section id="listings">Loading listings...</section>
-
-    <div id="listingFormContainer">
-      <h2>Upload Listing</h2>
-      <form id="listingForm">
-        <input name="title" placeholder="Title" required /><br>
-        <textarea name="description" placeholder="Description" required></textarea><br>
-        <input name="price" placeholder="Starting Price" type="number" required /><br>
-        <input name="buyNowPrice" placeholder="Buy Now Price" type="number" required /><br>
-        <input name="year" placeholder="Year (e.g. 2015)" type="number" /><br>
-        <input name="mileage" placeholder="Mileage (e.g. 120000)" type="number" /><br>
-        <input name="location" placeholder="Location (e.g. London)" /><br>
-        <input name="image" type="file" required /><br>
-        <button type="submit">Upload</button>
-      </form>
+  <div class="container">
+    <div class="filters">
+      <input type="text" id="searchInput" placeholder="Search make, model, title...">
+      <select id="sortSelect">
+        <option value="">Sort</option>
+        <option value="price_asc">Price: Low → High</option>
+        <option value="price_desc">Price: High → Low</option>
+      </select>
+      <select id="conditionFilter">
+        <option value="">All Conditions</option>
+        <option value="New">New</option>
+        <option value="Used">Used</option>
+        <option value="Salvage">Salvage</option>
+      </select>
     </div>
 
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input name="email" type="email" placeholder="Email" required /><br>
-      <input name="password" type="password" placeholder="Password" required /><br>
-      <button type="submit">Login</button>
-    </form>
-  </center>
+    <div id="listings">Loading listings...</div>
+  </div>
+
+  <div class="rolling-banner">
+    <span>🔥 Welcome to Torque Bay – UK’s Most Raw & Real Car Auction. Place Bids, Watch Listings, Own Dreams. Email: torquebay@gmail.com 🔧</span>
+  </div>
 
   <script>
-    let token = localStorage.getItem('token') || null;
     const listingsEl = document.getElementById('listings');
-    const listingFormContainer = document.getElementById('listingFormContainer');
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
-
-    let currentListings = [];
-
-    if (!token) {
-      listingsEl.innerHTML = `
-        <p style="color: red; font-weight: bold;">
-          Please <a href="login.html" style="color: #0af;">Login</a> or 
-          <a href="register.html" style="color: #0af;">Register</a> to view listings.
-        </p>
-      `;
-    } else {
-      listingFormContainer.style.display = 'block';
-      fetchListings();
-    }
+    const conditionFilter = document.getElementById('conditionFilter');
+    let listings = [];
 
     async function fetchListings() {
       const res = await fetch('/api/listings');
-      const listings = await res.json();
-      currentListings = listings;
+      listings = await res.json();
       renderListings(listings);
     }
 
-    function renderListings(listings) {
+    function renderListings(list) {
       listingsEl.innerHTML = '';
-      listings.forEach(listing => {
+      list.forEach(listing => {
+        const endTime = listing.auction_end || Date.now() + 3600000;
         const div = document.createElement('div');
         div.className = 'listing';
         div.innerHTML = `
           <h3>${listing.title}</h3>
-          <img src="${listing.image_url}" alt="car" />
+          <span class="tag">${listing.condition || 'Used'}</span>
+          <img src="${listing.image_url}" alt="Car">
           <p>${listing.description}</p>
-          <p>Price: £${listing.price}</p>
-          <p>Buy Now: £${listing.buy_now_price}</p>
-          ${listing.year ? `<p>Year: ${listing.year}</p>` : ''}
-          ${listing.mileage ? `<p>Mileage: ${listing.mileage} miles</p>` : ''}
-          ${listing.location ? `<p>Location: ${listing.location}</p>` : ''}
+          <p><strong>Year:</strong> ${listing.year || 'N/A'} | <strong>Mileage:</strong> ${listing.mileage || 'N/A'} miles</p>
+          <p><strong>Location:</strong> ${listing.location || 'Unknown'}</p>
+          <p><strong>Current Price:</strong> £${listing.price}</p>
+          <p><strong>Buy Now:</strong> £${listing.buy_now_price}</p>
+          <p><strong>Time Left:</strong> <span id="timer-${listing.id}">${formatTime(endTime - Date.now())}</span></p>
+          <input id="bid-${listing.id}" type="number" placeholder="Enter your bid" style="width: 140px;">
+          <button onclick="placeBid('${listing.id}')">Place Bid</button>
           <button onclick="buyNow('${listing.id}')">Buy It Now</button>
-          <button onclick="addToWatchlist('${listing.id}')">⭐ Watch</button>
+          <button onclick="watch('${listing.id}')">⭐ Watch</button>
         `;
         listingsEl.appendChild(div);
+        setInterval(() => {
+          const timer = document.getElementById(`timer-${listing.id}`);
+          if (timer) timer.textContent = formatTime(endTime - Date.now());
+        }, 1000);
       });
     }
 
-    function applyFilters() {
-      let filtered = [...currentListings];
-      const query = searchInput.value.toLowerCase();
-      const sort = sortSelect.value;
+    function formatTime(ms) {
+      const s = Math.floor(ms / 1000);
+      const m = Math.floor(s / 60);
+      const r = s % 60;
+      return `${m}m ${r}s`;
+    }
 
-      if (query) {
-        filtered = filtered.filter(item =>
-          item.title.toLowerCase().includes(query) ||
-          item.description.toLowerCase().includes(query)
+    function applyFilters() {
+      let filtered = [...listings];
+      const q = searchInput.value.toLowerCase();
+      const sort = sortSelect.value;
+      const cond = conditionFilter.value;
+
+      if (q) {
+        filtered = filtered.filter(l =>
+          l.title.toLowerCase().includes(q) ||
+          l.description.toLowerCase().includes(q)
         );
       }
 
-      if (sort === 'price_asc') {
-        filtered.sort((a, b) => a.price - b.price);
-      } else if (sort === 'price_desc') {
-        filtered.sort((a, b) => b.price - a.price);
+      if (cond) {
+        filtered = filtered.filter(l => l.condition === cond);
       }
+
+      if (sort === 'price_asc') filtered.sort((a, b) => a.price - b.price);
+      if (sort === 'price_desc') filtered.sort((a, b) => b.price - a.price);
 
       renderListings(filtered);
     }
 
-    document.getElementById('listingForm').onsubmit = async (e) => {
-      e.preventDefault();
-      if (!token) return alert('Login first!');
-      const form = e.target;
-      const formData = new FormData(form);
-      const res = await fetch('/api/listings', {
+    async function placeBid(id) {
+      const val = document.getElementById('bid-' + id).value;
+      if (!val) return alert('Enter bid');
+      const res = await fetch(`/api/bid/${id}`, {
         method: 'POST',
-        headers: { Authorization: 'Bearer ' + token },
-        body: formData
+        headers: {
+          'Authorization': 'Bearer ' + (localStorage.getItem('token') || ''),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ amount: parseFloat(val) })
       });
       const data = await res.json();
-      if (data.error) return alert(data.error);
-      alert('Listing uploaded!');
-      form.reset();
+      alert(data.message || 'Bid placed');
       fetchListings();
-    };
-
-    document.getElementById('loginForm').onsubmit = async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email.value, password: form.password.value })
-      });
-      const data = await res.json();
-      if (data.token) {
-        token = data.token;
-        localStorage.setItem('token', token);
-        alert('Logged in');
-        listingFormContainer.style.display = 'block';
-        fetchListings();
-      } else {
-        alert(data.error || 'Login failed');
-      }
-    };
-
-    async function buyNow(id) {
-      if (!token) return alert('Login first!');
-      const res = await fetch('/api/buy/' + id, {
-        method: 'POST',
-        headers: { Authorization: 'Bearer ' + token }
-      });
-      const data = await res.json();
-      alert(data.message);
     }
 
-    function addToWatchlist(id) {
+    async function buyNow(id) {
+      const res = await fetch(`/api/buy/${id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + (localStorage.getItem('token') || '')
+        }
+      });
+      const data = await res.json();
+      alert(data.message || 'Purchased');
+      fetchListings();
+    }
+
+    function watch(id) {
       let watchlist = JSON.parse(localStorage.getItem('watchlist') || '[]');
       if (!watchlist.includes(id)) {
         watchlist.push(id);
         localStorage.setItem('watchlist', JSON.stringify(watchlist));
-        alert('Added to watchlist!');
+        alert('Added to watchlist');
       } else {
-        alert('Already in watchlist.');
+        alert('Already watching');
       }
     }
+
+    searchInput.addEventListener('input', applyFilters);
+    sortSelect.addEventListener('change', applyFilters);
+    conditionFilter.addEventListener('change', applyFilters);
+
+    fetchListings();
   </script>
 </body>
 </html>
