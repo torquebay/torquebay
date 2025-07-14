@@ -1,160 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Torque Bay Auctions</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&display=swap');
+<meta charset="UTF-8" />
+<title>Torque Bay Auctions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&display=swap');
+  body { font-family: 'Oswald', 'Arial Black', Arial, sans-serif; padding: 1rem; max-width: 1100px; margin: auto; background: #111; color: #fff; }
+  /* ... keep your existing CSS here ... */
 
-    body {
-      font-family: 'Oswald', 'Arial Black', Arial, sans-serif;
-      padding: 1rem;
-      max-width: 1100px;
-      margin: auto;
-      background: #111;
-      color: #fff;
-    }
-
-    header {
-      background: black;
-      padding: 10px 15px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-
-    header div {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    #logo {
-      max-height: 60px;
-      user-select: none;
-    }
-
-    header h1 {
-      color: #FF3B3F;
-      font-weight: 900;
-      font-size: 1.8rem;
-      user-select: none;
-      margin: 0;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    nav {
-      margin-left: auto;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    nav a {
-      margin-left: 18px;
-      color: #FF3B3F;
-      text-decoration: none;
-    }
-
-    nav a:hover,
-    nav a:focus {
-      text-decoration: underline;
-    }
-
-    .banner-text {
-      font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
-      background: black;
-      border: 3px solid #FF3B3F;
-      margin-bottom: 25px;
-      padding: 8px 15px;
-      max-width: 1100px;
-      margin-left: auto;
-      margin-right: auto;
-      font-weight: normal;
-      font-size: 1.15rem;
-      color: #FF3B3F;
-      overflow: hidden;
-      white-space: nowrap;
-      position: relative;
-      height: 32px;
-      user-select: none;
-    }
-
-    .banner-text span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: scroll 14s linear infinite;
-    }
-
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-
-    /* ... existing styles unchanged for brevity ... */
-
-    /* Contact Modal Styles */
-    dialog#contactModal {
-      border: none;
-      border-radius: 8px;
-      padding: 20px 25px;
-      max-width: 400px;
-      width: 90%;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
-      font-family: 'Oswald', 'Arial Black', Arial, sans-serif;
-    }
-
-    dialog#contactModal h2 {
-      margin-top: 0;
-      color: #FF3B3F;
-    }
-
-    dialog#contactModal form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    dialog#contactModal label {
-      font-weight: 700;
-    }
-
-    dialog#contactModal input[type=text],
-    dialog#contactModal input[type=tel] {
-      padding: 8px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: 1px solid #aaa;
-    }
-
-    dialog#contactModal button {
-      padding: 10px 15px;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 4px;
-      border: none;
-      color: white;
-    }
-
-    #cancelContact {
-      background: #555;
-      margin-right: 8px;
-    }
-
-    #cancelContact:hover {
-      background: #444;
-    }
-
-    dialog#contactModal div {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 10px;
-    }
-
-    /* Responsive adjustments (unchanged) */
-  </style>
+  /* New styles for filter & search */
+  .filter-search {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .filter-search input[type="text"],
+  .filter-search select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background: #222;
+    color: #eee;
+    font-size: 1rem;
+  }
+</style>
 </head>
 <body>
 
@@ -172,63 +43,89 @@
   <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries &amp; membership info. Stay tuned! 🚀</span>
 </div>
 
-<section class="listing" data-title="2010 Astra J 1.4 Turbo" data-condition="runner" data-miles="89905" id="listingsContainer">
-  <!-- gallery and details unchanged for brevity -->
+<!-- Search and Filter bar -->
+<div class="filter-search">
+  <input type="text" id="searchInput" placeholder="Search by title..." aria-label="Search listings by title">
+  <select id="conditionFilter" aria-label="Filter listings by condition">
+    <option value="">All Conditions</option>
+    <option value="runner">Runner</option>
+    <option value="non-runner">Non-runner</option>
+  </select>
+</div>
+
+<!-- Listings container -->
+<section id="listingsContainer">
+  <section class="listing" data-title="2010 Astra J 1.4 Turbo" data-condition="runner" data-miles="89905">
+    <!-- keep your entire existing listing HTML here, unchanged -->
+    <div class="gallery" aria-label="Car image gallery">
+      <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra J front view large image" id="mainImage" />
+      <div class="thumbs" role="list">
+        <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg" alt="Astra J side view thumbnail" role="listitem" tabindex="0" />
+        <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg" alt="Astra J interior thumbnail" role="listitem" tabindex="0" />
+        <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg" alt="Astra J engine thumbnail" role="listitem" tabindex="0" />
+      </div>
+    </div>
+    <div class="details" role="region" aria-labelledby="carTitle" tabindex="0">
+      <h2 id="carTitle">2010 Astra J 1.4 Turbo</h2>
+      <div class="badges" aria-label="Car condition and MOT status">
+        <div class="badge" aria-label="Runner condition">
+          <span class="tick" aria-hidden="true"></span> Runner
+        </div>
+        <div class="badge" aria-label="MOT status">
+          MOT ✅
+        </div>
+      </div>
+      <div id="auctionEnds">Auction ends in: <span id="countdown">Loading...</span></div>
+      <div class="actions">
+        <label for="bidAmount">Your Bid (£):</label>
+        <input type="number" id="bidAmount" min="1500" step="10" />
+        <button id="bidBtn">Place Bid</button>
+        <button id="buyNowBtn">Buy It Now - £1999</button>
+        <button id="contactSellerBtn">Contact Seller</button>
+      </div>
+      <div class="description">
+        <strong>Description:</strong> The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm torque...
+      </div>
+    </div>
+  </section>
+  <!-- You can copy-paste and add more listings here if needed -->
 </section>
 
 <footer>
   &copy; TorqueBay 2025 All Rights Reserved
 </footer>
 
-<!-- Contact Seller Modal -->
-<dialog id="contactModal" aria-modal="true" role="dialog" aria-labelledby="contactModalTitle">
-  <h2 id="contactModalTitle">Contact Seller</h2>
-  <p>Please enter your name and phone number. The seller will contact you shortly to arrange a viewing.</p>
-  <form id="contactForm">
-    <label for="contactName">Name:</label>
-    <input type="text" id="contactName" name="contactName" required autocomplete="name" />
-    <label for="contactPhone">Phone Number:</label>
-    <input type="tel" id="contactPhone" name="contactPhone" required autocomplete="tel" pattern="[+0-9\s\-]{6,15}" placeholder="+44 7123 456789" />
-    <div>
-      <button type="button" id="cancelContact">Cancel</button>
-      <button type="submit">Send via WhatsApp</button>
-    </div>
-  </form>
-</dialog>
+<!-- keep your Contact Seller Modal here unchanged -->
 
 <script>
-  // Image gallery, zoom, and countdown logic unchanged
+  // keep your existing JS here unchanged
 
-  // Contact seller modal logic updated for your WhatsApp number
-  const contactBtn = document.getElementById('contactSellerBtn');
-  const contactModal = document.getElementById('contactModal');
-  const contactForm = document.getElementById('contactForm');
-  const cancelContactBtn = document.getElementById('cancelContact');
+  // Add search and filter logic
+  const searchInput = document.getElementById('searchInput');
+  const conditionFilter = document.getElementById('conditionFilter');
+  const listings = document.querySelectorAll('#listingsContainer .listing');
 
-  contactBtn.addEventListener('click', () => {
-    contactModal.showModal();
-  });
+  function filterListings() {
+    const searchValue = searchInput.value.toLowerCase().trim();
+    const conditionValue = conditionFilter.value.toLowerCase();
 
-  cancelContactBtn.addEventListener('click', () => {
-    contactModal.close();
-  });
+    listings.forEach(listing => {
+      const title = listing.dataset.title.toLowerCase();
+      const condition = listing.dataset.condition.toLowerCase();
 
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = contactForm.contactName.value.trim();
-    const phone = contactForm.contactPhone.value.trim();
-    if (!name || !phone) {
-      alert('Please enter both name and phone number.');
-      return;
-    }
-    const message = encodeURIComponent(`Hello, my name is ${name}. I am interested in the 2010 Astra J 1.4 Turbo listing. Please contact me at ${phone} to arrange a viewing.`);
-    const whatsappUrl = `https://wa.me/447755123456?text=${message}`;
-    window.open(whatsappUrl, '_blank');
-    alert('Thank you! The seller will contact you shortly to arrange a viewing.');
-    contactModal.close();
-    contactForm.reset();
-  });
+      const matchesSearch = title.includes(searchValue);
+      const matchesCondition = conditionValue === "" || condition === conditionValue;
+
+      if (matchesSearch && matchesCondition) {
+        listing.style.display = "";
+      } else {
+        listing.style.display = "none";
+      }
+    });
+  }
+
+  searchInput.addEventListener('input', filterListings);
+  conditionFilter.addEventListener('change', filterListings);
 </script>
-
 </body>
 </html>
