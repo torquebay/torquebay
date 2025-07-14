@@ -1,99 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <title>Torque Bay – Accelerate Your Dreams</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    /* Reset & base */
     body {
       margin: 0;
       background: #111;
       color: #fff;
-      font-family: sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     .banner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 20px;
+      padding: 12px 24px;
       background: #000;
       border-bottom: 4px solid red;
     }
 
     .banner img {
       height: 60px;
+      user-select: none;
     }
 
     .banner h1 {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       color: red;
       margin: 0;
+      font-weight: 700;
     }
 
     .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 1rem;
+      max-width: 960px;
+      margin: 1.5rem auto 5rem;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .filters {
+      width: 100%;
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .filters input, .filters select {
       flex: 1;
       min-width: 180px;
-      padding: 8px;
+      padding: 10px 14px;
       background: #222;
       border: 1px solid #444;
       color: #fff;
-      border-radius: 4px;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: not-allowed;
+      user-select: none;
     }
 
     .listing {
-      border: 1px solid #333;
-      background: #1a1a1a;
-      padding: 15px;
-      margin-bottom: 1.5rem;
-      border-radius: 8px;
-    }
-
-    .listing img {
       width: 100%;
-      border-radius: 6px;
-      margin-bottom: 8px;
-      object-fit: cover;
-      height: 180px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
     .listing h3 {
-      margin-top: 0;
+      margin: 0 0 12px;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #ff2222;
+      user-select: text;
     }
 
     .tag {
       background: red;
       color: #fff;
-      padding: 3px 8px;
-      font-size: 0.8rem;
+      padding: 5px 12px;
+      font-size: 0.85rem;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
       display: inline-block;
-      border-radius: 4px;
-      margin-bottom: 8px;
+      user-select: none;
+    }
+
+    /* Gallery styles */
+    .gallery {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      max-width: 700px;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+
+    .gallery img {
+      flex: 0 0 140px;
+      height: 95px;
+      border-radius: 8px;
+      cursor: pointer;
+      object-fit: cover;
+      border: 3px solid transparent;
+      transition: border-color 0.25s ease;
+      box-shadow: 0 0 6px rgba(255,0,0,0.3);
+    }
+
+    .gallery img.selected {
+      border-color: red;
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
+    }
+
+    /* Main image */
+    #mainImage {
+      max-width: 700px;
+      width: auto;
+      height: auto;
+      border-radius: 12px;
+      cursor: zoom-in;
+      transition: transform 0.35s ease;
+      box-shadow: 0 0 16px rgba(255,0,0,0.7);
+      user-select: none;
+      margin-bottom: 25px;
+    }
+
+    #mainImage:hover {
+      transform: scale(1.12);
+      cursor: zoom-out;
+    }
+
+    p {
+      max-width: 700px;
+      margin: 6px 0;
+      user-select: text;
+    }
+
+    strong {
+      color: #ff4444;
+    }
+
+    input[type=number] {
+      width: 140px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background: #222;
+      color: #fff;
+      margin-right: 8px;
+      font-size: 1rem;
+      user-select: text;
     }
 
     button {
-      padding: 8px 12px;
-      margin: 4px 4px 4px 0;
       background: red;
-      color: white;
+      color: #fff;
+      padding: 9px 18px;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
       cursor: pointer;
+      transition: background 0.25s ease;
+      user-select: none;
     }
 
+    button:hover {
+      background: #ff4444;
+    }
+
+    button + button {
+      margin-left: 10px;
+    }
+
+    .actions {
+      margin-top: 20px;
+    }
+
+    /* Rolling banner */
     .rolling-banner {
       position: fixed;
       bottom: 0;
@@ -102,16 +200,18 @@
       color: red;
       font-weight: bold;
       border-top: 2px solid red;
-      padding: 8px;
+      padding: 10px 0;
       white-space: nowrap;
       overflow: hidden;
       z-index: 9999;
+      font-size: 1.1rem;
     }
 
     .rolling-banner span {
       display: inline-block;
       padding-left: 100%;
       animation: scroll 15s linear infinite;
+      user-select: none;
     }
 
     @keyframes scroll {
@@ -119,81 +219,65 @@
       100% { transform: translateX(-100%); }
     }
 
-    @media (max-width: 600px) {
-      .banner h1 {
-        font-size: 1.2rem;
+    /* Responsive */
+    @media (max-width: 720px) {
+      #mainImage {
+        max-width: 90vw;
       }
-    }
 
-    /* Gallery thumbnails */
-    .gallery {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      margin-bottom: 15px;
-    }
-
-    .gallery img {
-      flex: 0 0 150px;
-      height: 100px;
-      border-radius: 6px;
-      cursor: pointer;
-      object-fit: cover;
-      border: 2px solid transparent;
-      transition: border-color 0.3s ease;
-    }
-
-    .gallery img.selected {
-      border-color: red;
+      .gallery img {
+        flex: 0 0 110px;
+        height: 75px;
+      }
     }
   </style>
 </head>
 <body>
 
   <div class="banner">
-    <img src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="Torque Bay" />
+    <img src="https://i.ibb.co/gL9ttQ1k/logo.jpg" alt="Torque Bay Logo" />
     <h1>Torque Bay – Accelerate Your Dreams</h1>
   </div>
 
-  <div class="container">
-    <div class="filters">
-      <input type="text" id="searchInput" placeholder="Search make, model, title..." disabled style="background:#333; cursor:not-allowed;" title="Filter disabled for single listing" />
-      <select id="sortSelect" disabled style="background:#333; cursor:not-allowed;" title="Sorting disabled for single listing">
+  <main class="container" role="main" aria-label="Car listings and filters">
+    <section class="filters" aria-label="Search and filter options">
+      <input type="text" id="searchInput" placeholder="Search make, model, title..." disabled aria-disabled="true" title="Filter disabled for single listing" />
+      <select id="sortSelect" disabled aria-disabled="true" title="Sorting disabled for single listing">
         <option>Sort options disabled</option>
       </select>
-      <select id="conditionFilter" disabled style="background:#333; cursor:not-allowed;" title="Filter disabled for single listing">
+      <select id="conditionFilter" disabled aria-disabled="true" title="Filter disabled for single listing">
         <option>Condition filter disabled</option>
       </select>
-    </div>
+    </section>
 
-    <div id="listings">
-      <div class="listing">
-        <h3>Vauxhall Astra J 1.4 Turbo (2010)</h3>
-        <span class="tag">Runner</span>
-        
-        <div class="gallery" id="gallery">
-          <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra Front View" class="selected" />
-          <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg" alt="Astra Side View" />
-          <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg" alt="Astra Interior" />
-          <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg" alt="Astra Engine Bay" />
-        </div>
-        
-        <img id="mainImage" src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra Main Image" />
+    <article class="listing" aria-label="Listing for Vauxhall Astra J 2010">
+      <h3>Vauxhall Astra J 1.4 Turbo (2010)</h3>
+      <span class="tag" aria-label="Car condition">Runner</span>
 
-        <p>89,905 miles | Full year MOT | Recently serviced</p>
-        <p>Runs and drives perfectly.</p>
-        <p><strong>Price:</strong> £3,800</p>
-        <p><strong>Buy Now:</strong> £4,500</p>
-
-        <input id="bid-1" type="number" placeholder="Enter your bid" style="width: 140px;" />
-        <button onclick="placeBid('1')">Place Bid</button>
-        <button onclick="buyNow('1')">Buy It Now</button>
-        <button onclick="watch('1')">⭐ Watch</button>
+      <div class="gallery" id="gallery" role="list" aria-label="Car images thumbnails">
+        <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra front view" class="selected" role="listitem" />
+        <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg" alt="Astra side view" role="listitem" />
+        <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg" alt="Astra interior" role="listitem" />
+        <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg" alt="Astra engine bay" role="listitem" />
       </div>
-    </div>
-  </div>
 
-  <div class="rolling-banner" aria-live="polite">
+      <img id="mainImage" src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Main Astra car image" />
+
+      <p>89,905 miles | Full year MOT | Recently serviced</p>
+      <p>Runs and drives perfectly.</p>
+      <p><strong>Price:</strong> £3,800</p>
+      <p><strong>Buy Now:</strong> £4,500</p>
+
+      <div class="actions" role="region" aria-label="Place bid and buy actions">
+        <input id="bid-1" type="number" aria-label="Enter your bid amount" placeholder="Enter your bid" />
+        <button type="button" onclick="placeBid('1')">Place Bid</button>
+        <button type="button" onclick="buyNow('1')">Buy It Now</button>
+        <button type="button" onclick="watch('1')" aria-label="Add to watchlist">⭐ Watch</button>
+      </div>
+    </article>
+  </main>
+
+  <div class="rolling-banner" aria-live="polite" aria-atomic="true">
     <span>🔥 Welcome to Torque Bay – UK’s Most Raw & Real Car Auction. Place Bids, Watch Listings, Own Dreams. Email: torquebay@gmail.com 🔧</span>
   </div>
 
@@ -201,14 +285,13 @@
     const mainImage = document.getElementById('mainImage');
     const gallery = document.getElementById('gallery');
 
-    // Change main image on thumbnail click
     gallery.querySelectorAll('img').forEach(img => {
       img.addEventListener('click', () => {
-        // Remove 'selected' from all
+        // Deselect all
         gallery.querySelectorAll('img').forEach(i => i.classList.remove('selected'));
-        // Add 'selected' to clicked
+        // Select clicked
         img.classList.add('selected');
-        // Change main image src
+        // Update main image
         mainImage.src = img.src;
         mainImage.alt = img.alt;
       });
