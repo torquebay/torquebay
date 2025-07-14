@@ -33,7 +33,7 @@ nav {
 }
 
 nav a {
-  margin: 0 10px;
+  margin: 0 12px;
   color: #FF3B3F;
   text-decoration: none;
 }
@@ -48,18 +48,19 @@ nav a:focus {
   background: black;
   border: 3px solid #FF3B3F;
   margin-bottom: 25px;
-  padding: 8px 15px;
+  padding: 4px 10px;
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
   font-weight: normal;
-  font-size: 1.15rem;
+  font-size: 0.9rem;
   color: #FF3B3F;
   overflow: hidden;
   white-space: nowrap;
   position: relative;
-  height: 32px;
+  height: 24px;
   user-select: none;
+  text-align: center;
 }
 
 .banner-text span {
@@ -73,78 +74,25 @@ nav a:focus {
   100% { transform: translateX(-100%); }
 }
 
-.listing {
-  display: flex;
-  gap: 15px;
-  background: #222;
-  border-radius: 6px;
-  padding: 15px;
-  margin-bottom: 30px;
-  border: 1px solid #444;
-  color: #ddd;
-  align-items: flex-start;
-}
-
-.gallery {
-  flex: 1 1 450px;
+.actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-
-.gallery #mainImage {
-  width: 100%;
-  border-radius: 6px;
-  cursor: zoom-in;
-  transition: transform 0.3s ease;
-  max-height: 320px;
-  object-fit: cover;
-  user-select: none;
-}
-
-.gallery #mainImage.zoomed {
-  transform: scale(1.8);
-  cursor: zoom-out;
-  z-index: 10;
-  position: relative;
-  border: 2px solid #FF3B3F;
-}
-
-.gallery .thumbs {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-}
-
-.gallery .thumbs img {
-  width: 70px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 4px;
-  cursor: pointer;
-  border: 2px solid transparent;
-  user-select: none;
-  flex-shrink: 0;
-}
-
-.gallery .thumbs img.selected {
-  border-color: #FF3B3F;
-}
-
-.details {
-  flex: 1 1 350px;
-  display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 10px;
-  color: #eee;
 }
 
-.details h2 {
-  margin: 0;
-  color: #FF3B3F;
-  font-weight: 900;
-  font-size: 1.7rem;
+.actions label {
+  font-weight: 600;
   user-select: none;
+}
+
+.actions input[type=number] {
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #111;
+  color: #eee;
+  font-size: 1rem;
 }
 
 .actions button {
@@ -156,138 +104,149 @@ nav a:focus {
   user-select: none;
   transition: background-color 0.3s ease;
   font-size: 1rem;
+  width: 200px;
 }
 
-#bidBtn { background-color: #FF3B3F; color: white; }
-#bidBtn:hover { background-color: #e63338; }
-#buyNowBtn { background-color: #FF6F00; color: white; }
-#buyNowBtn:hover { background-color: #e65c00; }
-#contactSellerBtn { background-color: #28a745; color: white; }
-#contactSellerBtn:hover { background-color: #218838; }
+#bidBtn {
+  background-color: #FF3B3F;
+  color: white;
+}
 
-@media (max-width: 800px) {
-  .listing { flex-direction: column; }
-  .gallery, .details { flex: none; width: 100%; }
+#bidBtn:hover,
+#bidBtn:focus {
+  background-color: #e63338;
+  outline: none;
+}
+
+#buyNowBtn {
+  background-color: #FF6F00;
+  color: white;
+}
+
+#buyNowBtn:hover,
+#buyNowBtn:focus {
+  background-color: #e65c00;
+  outline: none;
+}
+
+#contactSellerBtn {
+  background-color: #28a745;
+  color: white;
+}
+
+#contactSellerBtn:hover,
+#contactSellerBtn:focus {
+  background-color: #218838;
+  outline: none;
 }
 
   </style>
 </head>
-<body>
-  <header>
-    <img id="logo" src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" />
-    <nav>
-      <a href="login.html">Login</a>
-      <a href="register.html">Register</a>
-    </nav>
-  </header>  <div class="banner-text"><span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries &amp; membership info. Stay tuned! 🚀</span></div>  <section class="listing">
-    <div class="gallery">
-      <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" id="mainImage" alt="Astra J front view large image" />
-      <div class="thumbs">
-        <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg" alt="Astra J side view thumbnail" />
-        <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg" alt="Astra J interior thumbnail" />
-        <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg" alt="Astra J engine thumbnail" />
-      </div>
-    </div>
-    <div class="details">
-      <h2>2010 Astra J 1.4 Turbo</h2>
-      <div class="badges">
-        <div class="badge"><span class="tick"></span> Runner</div>
-        <div class="badge">MOT ✅</div>
-      </div>
-      <div id="auctionEnds">Auction ends in: <span id="countdown">Loading...</span></div>
-      <div class="actions">
-        <label for="bidAmount">Your Bid (£):</label>
-        <input type="number" id="bidAmount" min="1500" step="10" />
-        <button id="bidBtn">Place Bid</button>
-        <button id="buyNowBtn">Buy It Now - £1999</button>
-        <button id="contactSellerBtn">Contact Seller</button>
-      </div>
-      <p style="font-size:0.8rem;color:#aaa;margin-top:-8px;">Minimum bid £1500. Must be logged in to bid or buy.</p>
-      <div class="description">
-        <strong>Description:</strong> The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm torque. Known for its impressive fuel economy of around 47-50 mpg and brisk acceleration, it's a perfect blend of performance and efficiency for everyday driving.
-      </div>
-    </div>
-  </section>  <footer>
-    &copy; TorqueBay 2025 All Rights Reserved
-  </footer>  <dialog id="contactModal">
-    <h2>Contact Seller</h2>
-    <form id="contactForm">
-      <label for="contactName">Name:</label>
-      <input type="text" id="contactName" name="contactName" required />
-      <label for="contactPhone">Phone Number:</label>
-      <input type="tel" id="contactPhone" name="contactPhone" required placeholder="+44 7123 456789" />
-      <div>
-        <button type="button" id="cancelContact">Cancel</button>
-        <button type="submit">Send via WhatsApp</button>
-      </div>
-    </form>
-  </dialog>  <script>
-    const galleryImages = document.querySelectorAll('.gallery .thumbs img');
-    const mainImage = document.getElementById('mainImage');
-
-    galleryImages.forEach(img => {
-      img.addEventListener('click', () => {
-        galleryImages.forEach(i => i.classList.remove('selected'));
-        img.classList.add('selected');
-        mainImage.src = img.src;
-        mainImage.alt = img.alt.replace('thumbnail', 'large');
-      });
-    });
-
-    mainImage.addEventListener('click', () => {
-      mainImage.classList.toggle('zoomed');
-    });
-    mainImage.addEventListener('mouseleave', () => {
-      mainImage.classList.remove('zoomed');
-    });
-
-    document.getElementById('bidBtn').addEventListener('click', () => {
-      alert('You must be logged in to place a bid.');
-    });
-
-    document.getElementById('buyNowBtn').addEventListener('click', () => {
-      if (confirm('Are you sure you want to buy this car for £1999?')) {
-        alert('Thank you for your purchase! The seller will contact you shortly.');
-      }
-    });
-
-    const contactBtn = document.getElementById('contactSellerBtn');
-    const contactModal = document.getElementById('contactModal');
-    const contactForm = document.getElementById('contactForm');
-    const cancelContactBtn = document.getElementById('cancelContact');
-
-    contactBtn.addEventListener('click', () => {
-      contactModal.showModal();
-    });
-    cancelContactBtn.addEventListener('click', () => {
-      contactModal.close();
-    });
-
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = contactForm.contactName.value.trim();
-      const phone = contactForm.contactPhone.value.trim();
-      if (!name || !phone) return alert('Please enter both name and phone number.');
-      const message = encodeURIComponent(`Hello, my name is ${name}. I am interested in the 2010 Astra J 1.4 Turbo listing. Please contact me at ${phone} to arrange a viewing.`);
-      const whatsappUrl = `https://w.app/gq9vjh?text=${message}`;
-      window.open(whatsappUrl, '_blank');
-      contactModal.close();
-      contactForm.reset();
-    });
-
-    const countdownEl = document.getElementById('countdown');
-    const auctionEnd = new Date(Date.UTC(2025, 6, 24, 0, 0, 0));
-    function updateCountdown() {
-      const now = new Date();
-      const diff = auctionEnd - now;
-      if (diff <= 0) return countdownEl.textContent = "Auction ended";
-      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const m = Math.floor((diff / (1000 * 60)) % 60);
-      const s = Math.floor((diff / 1000) % 60);
-      countdownEl.textContent = `${d}d ${h}h ${m}m ${s}s`;
+<body><header>
+  <img id="logo" src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" />
+  <nav>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+  </nav>
+</header><div class="banner-text" role="region" aria-live="polite" aria-atomic="true">
+  <span>🚗 Updates coming soon! – Email TorqueBay@gmail.com for enquiries &amp; membership info. Stay tuned! 🚀</span>
+</div><!-- Search/filter tools --><section style="text-align:center; margin: 20px 0;">
+  <input type="text" id="searchInput" placeholder="Search cars..." style="padding: 6px; width: 200px;">
+  <select id="categoryFilter" style="padding: 6px;">
+    <option value="">All Categories</option>
+    <option value="runner">Runner</option>
+    <option value="non-runner">Non-Runner</option>
+  </select>
+  <select id="mileageFilter" style="padding: 6px;">
+    <option value="">All Mileage</option>
+    <option value="low">Under 100k</option>
+    <option value="high">Over 100k</option>
+  </select>
+</section><!-- Listings container will be inserted here --><div id="listingsContainer"></div><footer>
+  &copy; TorqueBay 2025 All Rights Reserved
+</footer><script>
+  const listings = [
+    {
+      title: '2010 Astra J 1.4 Turbo',
+      miles: 89905,
+      condition: 'runner',
+      category: 'petrol',
+      images: [
+        'https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg',
+        'https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg',
+        'https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg',
+        'https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg'
+      ],
+      description: 'The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm torque. Known for its impressive fuel economy of around 47-50 mpg and brisk acceleration, it\'s a perfect blend of performance and efficiency for everyday driving.',
+      price: 1999
     }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-  </script></body>
+  ];
+
+  function renderListings(filter = {}) {
+    const container = document.getElementById('listingsContainer');
+    container.innerHTML = '';
+    const filtered = listings.filter(l => {
+      const searchMatch = !filter.search || l.title.toLowerCase().includes(filter.search.toLowerCase());
+      const categoryMatch = !filter.category || l.condition === filter.category;
+      const mileageMatch = !filter.mileage || (filter.mileage === 'low' ? l.miles < 100000 : l.miles >= 100000);
+      return searchMatch && categoryMatch && mileageMatch;
+    });
+    if (filtered.length === 0) {
+      container.innerHTML = '<p style="text-align:center; color:#aaa">No listings match your criteria.</p>';
+      return;
+    }
+    filtered.forEach(car => {
+      const html = `
+        <section class="listing">
+          <div class="gallery">
+            <img id="mainImage" src="${car.images[0]}" alt="${car.title}" />
+            <div class="thumbs">
+              ${car.images.map(i => `<img src="${i}" />`).join('')}
+            </div>
+          </div>
+          <div class="details">
+            <h2>${car.title}</h2>
+            <div class="badges">
+              <div class="badge"><span class="tick"></span> ${car.condition}</div>
+              <div class="badge">MOT ✅</div>
+            </div>
+            <div id="auctionEnds">Auction ends in: <span id="countdown">3d 6h</span></div>
+            <div class="actions">
+              <label for="bidAmount">Your Bid (£):</label>
+              <input type="number" id="bidAmount" min="1500" step="10" />
+              <button id="bidBtn">Place Bid</button>
+              <button id="buyNowBtn">Buy It Now - £${car.price}</button>
+              <button id="contactSellerBtn">Contact Seller</button>
+            </div>
+            <p class="description"><strong>Description:</strong> ${car.description}</p>
+          </div>
+        </section>`;
+      container.insertAdjacentHTML('beforeend', html);
+    });
+  }
+
+  renderListings();
+
+  document.getElementById('searchInput').addEventListener('input', e => {
+    renderListings({
+      search: e.target.value,
+      category: document.getElementById('categoryFilter').value,
+      mileage: document.getElementById('mileageFilter').value
+    });
+  });
+  document.getElementById('categoryFilter').addEventListener('change', e => {
+    renderListings({
+      search: document.getElementById('searchInput').value,
+      category: e.target.value,
+      mileage: document.getElementById('mileageFilter').value
+    });
+  });
+  document.getElementById('mileageFilter').addEventListener('change', e => {
+    renderListings({
+      search: document.getElementById('searchInput').value,
+      category: document.getElementById('categoryFilter').value,
+      mileage: e.target.value
+    });
+  });
+</script></body>
 </html>
