@@ -105,6 +105,7 @@
       gap: 16px;
       flex-wrap: wrap;
       justify-content: center;
+      align-items: center;
     }
     .filter-bar select {
       padding: 10px;
@@ -121,6 +122,7 @@
       padding: 30px;
       max-width: 1200px;
       margin: 0 auto 80px;
+      flex-grow: 1;
     }
     .card {
       background: #272a2f;
@@ -128,7 +130,6 @@
       border-radius: 12px;
       box-shadow: 0 0 12px rgba(0,0,0,0.4);
       color: #ddd;
-      position: relative;
     }
     .card img {
       width: 100%;
@@ -158,132 +159,42 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+    }
+    .card button.place-bid {
+      background-color: #e59428; /* orange */
+      color: #fff;
+    }
+    .card button.buy-now {
+      background-color: #e02828; /* red */
       color: white;
-      transition: background-color 0.3s ease;
+    }
+    .card button.contact-seller {
+      background-color: #28a745; /* green */
+      color: white;
     }
     .card button:disabled {
       background-color: #555;
       cursor: not-allowed;
-      color: #bbb;
     }
-    /* Button Colors */
-    .btn-placebid {
-      background-color: #ff6600; /* orange */
-    }
-    .btn-buyitnow {
-      background-color: #e02828; /* red */
-    }
-    .btn-contactseller {
-      background-color: #28a745; /* green */
-    }
-    .btn-contactseller.disabled {
-      background-color: #555 !important;
-      cursor: not-allowed;
-      color: #bbb;
-    }
-
-    /* Modal Styles */
-    .modal {
-      display: none; 
-      position: fixed; 
-      z-index: 1100; 
-      left: 0; top: 0; width: 100%; height: 100%;
-      overflow: auto; 
-      background-color: rgba(0,0,0,0.75);
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .modal-content {
-      background-color: #222529;
-      padding: 20px 30px;
-      border-radius: 10px;
-      color: #ddd;
-      max-width: 400px;
-      width: 100%;
-      box-shadow: 0 0 20px #e02828;
-      position: relative;
-    }
-    .modal-content h2 {
-      margin-bottom: 20px;
-      color: #e02828;
-      font-weight: 700;
-      font-family: 'Montserrat', sans-serif;
-    }
-    .modal-content label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-    .modal-content input[type="text"],
-    .modal-content input[type="tel"] {
-      width: 100%;
-      padding: 8px 10px;
-      margin-bottom: 16px;
-      border-radius: 6px;
-      border: none;
-      font-size: 1rem;
-      background: #3a3f44;
-      color: #eee;
-    }
-    .modal-content button {
-      padding: 10px 18px;
-      background: #e02828;
-      border: none;
-      color: white;
-      font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
-    }
-    .modal-close {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      font-size: 22px;
-      font-weight: 700;
-      color: #e02828;
-      cursor: pointer;
+    footer {
+      background: #111;
+      color: #666;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 0.9rem;
       user-select: none;
     }
-    .modal-alert p {
-      margin-bottom: 20px;
-    }
-    .modal-alert button {
-      background: #28a745;
-    }
 
-    /* Bid input */
-    .bid-section {
-      margin-top: 8px;
-      margin-bottom: 10px;
-    }
-    .bid-section label {
-      font-weight: 600;
-      display: block;
-      margin-bottom: 6px;
-    }
-    .bid-section input[type="number"] {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 1rem;
-      background: #3a3f44;
-      color: #eee;
-      margin-bottom: 6px;
-    }
-
-    .current-bid {
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #ff6600;
-    }
-
-    .countdown {
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: #e02828;
+    /* Responsive */
+    @media (max-width: 480px) {
+      .filter-bar {
+        flex-direction: column;
+        gap: 12px;
+      }
+      nav {
+        gap: 20px;
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
@@ -316,221 +227,103 @@
       <option value="petrol">Petrol</option>
       <option value="diesel">Diesel</option>
     </select>
+    <button id="applyFilterBtn" style="padding:10px 16px; background:#e02828; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">
+      Filter
+    </button>
   </div>
   <main class="listing-grid">
-    <!-- Astra J live listing -->
-    <div class="card" data-listing="Vauxhall Astra J" data-live="true">
+    <!-- Astra J Listing -->
+    <div class="card" data-category="runner" data-brand="astra" data-fuel="petrol">
       <img src="https://i.ibb.co/HpkjZvVL/2025-07-05-18-30-42-743.jpg" alt="Astra J" />
       <h3>Vauxhall Astra J</h3>
       <p><span class="badge runner">Runner</span> <span class="badge mot-valid">MOT: Valid</span></p>
       <p>Petrol | 1.4 Turbo | 2010 | 89,905 miles</p>
-
-      <div class="current-bid" id="currentBidAstra">Current Bid: £1500</div>
-
-      <div class="countdown" id="countdownAstra">Auction ends in: calculating...</div>
-
-      <div class="bid-section">
-        <label for="bidInputAstra">Enter your bid (£):</label>
-        <input type="number" id="bidInputAstra" min="1501" placeholder="Your bid must be higher than current" />
-      </div>
-
+      <p><strong>Current Bid:</strong> £750 | <strong>Buy It Now:</strong> £1850</p>
+      <p><strong>Auction ends in: <span id="astra-countdown">Loading...</span></strong></p>
       <div class="buttons">
-        <button class="btn-placebid">Place Bid</button>
-        <button class="btn-buyitnow">Buy It Now</button>
-        <button class="btn-contactseller">Contact Seller</button>
+        <button class="place-bid">Place Bid</button>
+        <button class="buy-now">Buy It Now</button>
+        <button class="contact-seller">Contact Seller</button>
       </div>
     </div>
-
-    <!-- BMW dummy listing -->
-    <div class="card" data-listing="BMW 330D M57" data-live="false">
+    <!-- BMW Listing -->
+    <div class="card" data-category="runner" data-brand="bmw" data-fuel="diesel">
       <img src="https://i.ibb.co/0RRx7dxH/1000067109.jpg" alt="BMW" />
       <h3>BMW 330D M57</h3>
       <p><span class="badge runner">Runner</span> <span class="badge mot-expired">MOT: Expired</span></p>
       <p>Diesel | 3.0 Turbo | 2007 | 120,000 miles</p>
-      <p>Auction ended: Sold for £2,800</p>
+      <p><em>Mapped stage 1 with custom exhaust and popcorn limiter</em></p>
       <div class="buttons">
-        <button class="btn-placebid" disabled>Place Bid</button>
-        <button class="btn-buyitnow" disabled>Buy It Now</button>
-        <button class="btn-contactseller disabled" disabled>Contact Seller</button>
+        <button class="place-bid" disabled>Place Bid</button>
+        <button class="buy-now" disabled>Buy It Now</button>
+        <button class="contact-seller">Contact Seller</button>
       </div>
     </div>
-
-    <!-- Fiesta dummy listing -->
-    <div class="card" data-listing="Ford Fiesta" data-live="false">
+    <!-- Fiesta Listing -->
+    <div class="card" data-category="nonrunner" data-brand="fiesta" data-fuel="petrol">
       <img src="https://i.ibb.co/d0LhNS0v/fiesta.jpg" alt="Fiesta" />
       <h3>Ford Fiesta</h3>
       <p><span class="badge not-runner">Non Runner</span> <span class="badge mot-expired">MOT: Expired</span></p>
       <p>Petrol | 1.25 NA | 2013 | 95,000 miles</p>
       <p>Auction ended: Sold for £759</p>
       <div class="buttons">
-        <button class="btn-placebid" disabled>Place Bid</button>
-        <button class="btn-buyitnow" disabled>Buy It Now</button>
-        <button class="btn-contactseller disabled" disabled>Contact Seller</button>
+        <button class="place-bid" disabled>Place Bid</button>
+        <button class="buy-now" disabled>Buy It Now</button>
+        <button class="contact-seller">Contact Seller</button>
       </div>
     </div>
   </main>
 
-  <!-- Contact Seller Modal -->
-  <div id="contactSellerModal" class="modal">
-    <div class="modal-content">
-      <span class="modal-close" id="closeContactSeller">&times;</span>
-      <h2>Contact Seller</h2>
-      <form id="contactSellerForm">
-        <label for="contactName">Your Name</label>
-        <input type="text" id="contactName" name="contactName" required />
-        <label for="contactNumber">Your Phone Number</label>
-        <input type="tel" id="contactNumber" name="contactNumber" required pattern="[0-9+ ]{6,15}" placeholder="e.g. 07123456789" />
-        <input type="hidden" id="contactListing" name="contactListing" />
-        <button type="submit">Send WhatsApp Message</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Alert Modal (for login prompts) -->
-  <div id="alertModal" class="modal">
-    <div class="modal-content modal-alert">
-      <span class="modal-close" id="closeAlert">&times;</span>
-      <p id="alertMessage">Please login to continue.</p>
-      <button id="alertRedirectBtn">Go to Login</button>
-    </div>
-  </div>
+  <footer>
+    &copy; 2025 Torque Bay - All Rights Reserved
+  </footer>
 
   <script>
-    // Dummy login check (replace with real auth check)
-    function isLoggedIn() {
-      // For testing: change to true or false
-      return !!localStorage.getItem('token'); // example token presence check
-    }
+    // Filter functionality on button click
+    document.getElementById('applyFilterBtn').addEventListener('click', () => {
+      const category = document.querySelector('select[name="category"]').value.toLowerCase();
+      const brand = document.querySelector('select[name="brand"]').value.toLowerCase();
+      const fuel = document.querySelector('select[name="fuel"]').value.toLowerCase();
 
-    // Countdown timer for Astra auction (6 days from now)
-    const auctionEndDate = new Date(Date.now() + 6 * 24 * 60 * 60 * 1000);
-    const countdownEl = document.getElementById('countdownAstra');
-    const currentBidEl = document.getElementById('currentBidAstra');
-    let currentBid = 1500; // starting bid
+      document.querySelectorAll('.listing-grid .card').forEach(card => {
+        const cardCategory = card.dataset.category.toLowerCase();
+        const cardBrand = card.dataset.brand.toLowerCase();
+        const cardFuel = card.dataset.fuel.toLowerCase();
 
+        const matchCategory = !category || cardCategory === category;
+        const matchBrand = !brand || cardBrand === brand;
+        const matchFuel = !fuel || cardFuel === fuel;
+
+        if (matchCategory && matchBrand && matchFuel) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+
+    // Countdown timer for Astra auction ending 18 July 2025, 4:00 PM
     function updateCountdown() {
-      const now = new Date();
-      let diff = auctionEndDate - now;
-      if (diff <= 0) {
-        countdownEl.textContent = 'Auction ended';
-        document.querySelector('.btn-placebid').disabled = true;
-        document.querySelector('.btn-buyitnow').disabled = true;
+      const countdownElem = document.getElementById('astra-countdown');
+      const endDate = new Date('July 18, 2025 16:00:00').getTime();
+      const now = new Date().getTime();
+      const distance = endDate - now;
+
+      if (distance < 0) {
+        countdownElem.textContent = 'Auction ended';
         return;
       }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      diff -= days * (1000 * 60 * 60 * 24);
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      diff -= hours * (1000 * 60 * 60);
-      const minutes = Math.floor(diff / (1000 * 60));
-      countdownEl.textContent = `Auction ends in: ${days}d ${hours}h ${minutes}m`;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownElem.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
-    setInterval(updateCountdown, 60000);
+
+    setInterval(updateCountdown, 1000);
     updateCountdown();
-
-    // Modal elements
-    const contactSellerModal = document.getElementById('contactSellerModal');
-    const alertModal = document.getElementById('alertModal');
-    const alertMessage = document.getElementById('alertMessage');
-    const alertRedirectBtn = document.getElementById('alertRedirectBtn');
-
-    // Close buttons
-    document.getElementById('closeContactSeller').onclick = () => contactSellerModal.style.display = 'none';
-    document.getElementById('closeAlert').onclick = () => alertModal.style.display = 'none';
-
-    // Close modals on outside click
-    window.onclick = function(event) {
-      if (event.target === contactSellerModal) contactSellerModal.style.display = 'none';
-      if (event.target === alertModal) alertModal.style.display = 'none';
-    };
-
-    // Contact Seller Button logic
-    document.querySelectorAll('.btn-contactseller').forEach(button => {
-      if (!button.classList.contains('disabled')) {
-        button.addEventListener('click', () => {
-          // Show contact seller modal
-          const card = button.closest('.card');
-          const listing = card.getAttribute('data-listing');
-          document.getElementById('contactListing').value = listing;
-          document.getElementById('contactName').value = '';
-          document.getElementById('contactNumber').value = '';
-          contactSellerModal.style.display = 'flex';
-        });
-      }
-    });
-
-    // Contact Seller form submit -> open WhatsApp
-    document.getElementById('contactSellerForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const name = document.getElementById('contactName').value.trim();
-      const number = document.getElementById('contactNumber').value.trim();
-      const listing = document.getElementById('contactListing').value;
-      if (!name || !number) return alert('Please fill in all fields.');
-
-      const phoneNumber = '447553899955'; // UK format without 0 for WhatsApp
-      const message = encodeURIComponent(`Hi, my name is ${name}. I am interested in the listing: ${listing}. My contact number is ${number}. Please get back to me. Thank you!`);
-      const url = `https://wa.me/${phoneNumber}?text=${message}`;
-
-      window.open(url, '_blank');
-      contactSellerModal.style.display = 'none';
-    });
-
-    // Helper: Show alert modal with message and redirect on button
-    function showLoginAlert(message) {
-      alertMessage.textContent = message;
-      alertModal.style.display = 'flex';
-      alertRedirectBtn.onclick = () => {
-        window.location.href = 'login.html';
-      };
-    }
-
-    // Place Bid button logic
-    document.querySelectorAll('.btn-placebid').forEach(button => {
-      button.addEventListener('click', () => {
-        const card = button.closest('.card');
-        const isLive = card.getAttribute('data-live') === 'true';
-        if (!isLive) return; // disabled on dummy listings
-
-        if (!isLoggedIn()) {
-          showLoginAlert('Please login to place a bid.');
-          return;
-        }
-
-        const listing = card.getAttribute('data-listing');
-        const bidInput = card.querySelector('input[type="number"]');
-        let bidValue = parseFloat(bidInput.value);
-        if (isNaN(bidValue)) {
-          alert('Please enter a valid bid amount.');
-          return;
-        }
-        if (bidValue <= currentBid) {
-          alert(`Your bid must be higher than the current bid (£${currentBid}).`);
-          return;
-        }
-
-        currentBid = bidValue;
-        currentBidEl.textContent = `Current Bid: £${currentBid}`;
-        alert(`Your bid of £${bidValue} has been placed on "${listing}". Good luck!`);
-        bidInput.value = '';
-      });
-    });
-
-    // Buy It Now button logic
-    document.querySelectorAll('.btn-buyitnow').forEach(button => {
-      button.addEventListener('click', () => {
-        const card = button.closest('.card');
-        const isLive = card.getAttribute('data-live') === 'true';
-        if (!isLive) return; // disabled on dummy listings
-
-        if (!isLoggedIn()) {
-          showLoginAlert('Please login to buy now.');
-          return;
-        }
-
-        // Proceed to buy now - redirect or popup
-        alert('Redirecting you to payment/buy now page...');
-        // TODO: implement buy now page or redirect
-      });
-    });
 
   </script>
 </body>
