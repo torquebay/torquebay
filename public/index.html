@@ -126,6 +126,9 @@
       box-shadow: 0 0 12px rgba(0,0,0,0.4);
       user-select: none;
       flex-shrink: 0;
+      height: fit-content;
+      position: sticky;
+      top: 90px;
     }
 
     aside#filterSidebar h3 {
@@ -212,6 +215,11 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
       color: #ddd;
       user-select: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .listing:hover:not(.ended) {
+      box-shadow: 0 0 15px #e02828;
     }
 
     .listing.ended {
@@ -251,6 +259,7 @@
       display: flex;
       gap: 8px;
       overflow-x: auto;
+      padding-bottom: 4px;
     }
 
     .gallery .thumbs img {
@@ -293,6 +302,7 @@
       font-size: 0.9rem;
       color: #a0a0a0;
       user-select: none;
+      flex-wrap: wrap;
     }
 
     .badge {
@@ -304,6 +314,7 @@
       align-items: center;
       gap: 6px;
       user-select: none;
+      white-space: nowrap;
     }
 
     .badge.not-runner {
@@ -373,6 +384,12 @@
       width: 120px;
       box-shadow: inset 0 0 6px #000;
       user-select: text;
+      flex-shrink: 0;
+      transition: background-color 0.3s ease;
+    }
+    .actions input[type=number]:focus {
+      background-color: #2e3034;
+      outline: none;
     }
 
     .actions button {
@@ -385,6 +402,7 @@
       font-size: 1rem;
       flex: 1 1 120px;
       transition: background-color 0.3s ease;
+      min-width: 120px;
     }
 
     #bidBtn {
@@ -495,6 +513,8 @@
       aside#filterSidebar {
         width: 100%;
         margin-bottom: 30px;
+        position: static;
+        top: auto;
       }
       .gallery {
         width: 100%;
@@ -516,6 +536,33 @@
       }
       .listing {
         flex-direction: column;
+      }
+      .actions input[type=number], .actions button {
+        flex: 1 1 100%;
+        min-width: unset;
+      }
+      .actions label {
+        flex: 1 1 100%;
+      }
+    }
+
+    @media (max-width: 400px) {
+      nav {
+        gap: 12px;
+        font-size: 0.9rem;
+      }
+      .welcome-text {
+        font-size: 2rem;
+        margin: 30px 0 15px;
+      }
+      aside#filterSidebar {
+        padding: 15px 20px;
+      }
+      aside#filterSidebar h3 {
+        font-size: 1.1rem;
+      }
+      .details h2 {
+        font-size: 1.5rem;
       }
     }
   </style>
@@ -567,29 +614,17 @@
           <option value="">All</option>
           <option value="Petrol">Petrol</option>
           <option value="Diesel">Diesel</option>
-          <option value="Hybrid">Hybrid</option>
           <option value="Electric">Electric</option>
+          <option value="Hybrid">Hybrid</option>
         </select>
 
-        <label for="filterYearMin">Year (Min)</label>
-        <input type="number" id="filterYearMin" name="yearMin" placeholder="From" min="1900" max="2050" />
-
-        <label for="filterYearMax">Year (Max)</label>
-        <input type="number" id="filterYearMax" name="yearMax" placeholder="To" min="1900" max="2050" />
-
-        <label for="filterPriceMin">Price (Min £)</label>
-        <input type="number" id="filterPriceMin" name="priceMin" placeholder="Min Bid" min="0" />
-
-        <label for="filterPriceMax">Price (Max £)</label>
-        <input type="number" id="filterPriceMax" name="priceMax" placeholder="Buy Now" min="0" />
-
-        <button type="submit">Apply Filters</button>
-        <button type="button" class="clear-btn" id="clearFiltersBtn">Clear Filters</button>
+        <button type="submit">Apply Filter</button>
+        <button type="button" class="clear-btn" id="clearFilterBtn">Clear Filter</button>
       </form>
     </aside>
 
-    <main id="listingsContainer" aria-live="polite" aria-relevant="additions">
-      <!-- Listings injected by JS -->
+    <main id="listingsContainer" aria-live="polite" aria-label="Car Listings">
+      <!-- Dummy listings will be injected here by JS -->
     </main>
   </div>
 
@@ -597,316 +632,322 @@
     &copy; 2025 Torque Bay. All rights reserved.
   </footer>
 
-  <!-- Contact Seller Modal -->
   <dialog id="contactModal" aria-modal="true" role="dialog" aria-labelledby="contactModalTitle" aria-describedby="contactModalDesc">
     <h2 id="contactModalTitle">Contact Seller</h2>
     <form id="contactForm">
       <label for="contactName">Your Name</label>
-      <input type="text" id="contactName" name="contactName" required placeholder="Enter your name" />
-      <label for="contactPhone">Your Phone Number</label>
-      <input type="tel" id="contactPhone" name="contactPhone" required placeholder="e.g. +447123456789" />
-      <button type="submit">Send WhatsApp Message</button>
-      <button type="button" id="contactCancelBtn" style="margin-top:10px; background:#555;">Cancel</button>
+      <input type="text" id="contactName" name="contactName" required />
+
+      <label for="contactPhone">Phone Number</label>
+      <input type="tel" id="contactPhone" name="contactPhone" pattern="[\d\s+\-()]{7,}" required />
+
+      <button type="submit">Send Message</button>
     </form>
   </dialog>
 
   <script>
-    // Listings data with updated Astra J images & live/dummy distinction
-    const listings = [
+    // Sample dummy listings data
+    const dummyListings = [
       {
         id: 1,
-        title: 'Astra J 1.4 Turbo 2010 A14NET',
-        brand: 'Astra',
-        model: 'J',
-        year: 2010,
-        condition: 'runner',
-        fuelType: 'Petrol',
-        miles: 89905,
-        priceMinBid: 750,
-        priceBuyNow: 1850,
-        auctionEnd: new Date(Date.UTC(2025, 6, 30, 23, 59, 59)),
-        description: 'The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm of torque. Well maintained with a clean interior, low mileage, and an MOT valid until October 2025.',
+        title: "Vauxhall Astra 2010",
+        condition: "runner",
+        brand: "Astra",
+        model: "J",
+        fuelType: "Petrol",
         images: [
-          "https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg",
-          "https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg",
-          "https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg",
-          "https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg"
+          "https://i.ibb.co/Tk4Ym9y/astra1.jpg",
+          "https://i.ibb.co/c8gD9DW/astra2.jpg",
+          "https://i.ibb.co/Wk5frvC/astra3.jpg"
         ],
-        whatsappNumber: "+447700900123",
-        live: true,
-        userCanBid: true
+        badges: ["Runner", "No MOT", "Taxed"],
+        auctionEnds: new Date(Date.now() + 86400 * 1000 * 2), // 2 days from now
+        description: "A reliable Vauxhall Astra J, runs well, some cosmetic damage.",
+        buyItNowPrice: 1500,
+        currentBid: 1200,
+        sellerContact: "+441234567890"
       },
-      // Dummy ended listings
       {
         id: 2,
-        title: 'BMW 320d E90 M47',
-        brand: 'BMW',
-        model: '320d',
-        year: 2012,
-        condition: 'runner',
-        fuelType: 'Diesel',
-        miles: 125000,
-        priceMinBid: 1200,
-        priceBuyNow: 2300,
-        auctionEnd: new Date(Date.UTC(2024, 0, 15, 23, 59, 59)),
-        description: 'BMW 320d with M47 engine, stage 1 remap, EGR off, swirl flaps deleted, straight pipe exhaust. A solid runner with a great history.',
+        title: "BMW 320d E90 2007",
+        condition: "not-runner",
+        brand: "BMW",
+        model: "320d",
+        fuelType: "Diesel",
         images: [
-          "https://via.placeholder.com/280x160?text=BMW+320d+Front",
-          "https://via.placeholder.com/280x160?text=BMW+320d+Side",
-          "https://via.placeholder.com/280x160?text=BMW+320d+Interior"
+          "https://i.ibb.co/fxFKm7f/bmw1.jpg",
+          "https://i.ibb.co/6tsr0sn/bmw2.jpg",
+          "https://i.ibb.co/CKKKQXC/bmw3.jpg"
         ],
-        whatsappNumber: "+447700900124",
-        live: false,
-        userCanBid: false
+        badges: ["Not Runner", "MOT Expired", "SORN"],
+        auctionEnds: new Date(Date.now() + 86400 * 1000 * 1), // 1 day
+        description: "BMW 320d with engine issues, great parts car or project.",
+        buyItNowPrice: 2500,
+        currentBid: 2000,
+        sellerContact: "+441112223334"
       },
       {
         id: 3,
-        title: 'Ford Fiesta MK7 2011',
-        brand: 'Ford',
-        model: 'Fiesta',
-        year: 2011,
-        condition: 'not-runner',
-        fuelType: 'Petrol',
-        miles: 130000,
-        priceMinBid: 300,
-        priceBuyNow: 600,
-        auctionEnd: new Date(Date.UTC(2024, 1, 10, 23, 59, 59)),
-        description: 'Ford Fiesta MK7 with 1.25L petrol engine, needs work but great project car.',
+        title: "Ford Fiesta 2015",
+        condition: "runner",
+        brand: "Ford",
+        model: "Fiesta",
+        fuelType: "Petrol",
         images: [
-          "https://via.placeholder.com/280x160?text=Ford+Fiesta+Front",
-          "https://via.placeholder.com/280x160?text=Ford+Fiesta+Side",
-          "https://via.placeholder.com/280x160?text=Ford+Fiesta+Interior"
+          "https://i.ibb.co/9gbGdw6/ford1.jpg",
+          "https://i.ibb.co/R7bZzjf/ford2.jpg"
         ],
-        whatsappNumber: "+447700900125",
-        live: false,
-        userCanBid: false
+        badges: ["Runner", "MOT Valid", "Taxed"],
+        auctionEnds: new Date(Date.now() + 86400 * 1000 * 5), // 5 days
+        description: "Well-maintained Ford Fiesta, perfect for daily commute.",
+        buyItNowPrice: 3500,
+        currentBid: 3100,
+        sellerContact: "+447777777777"
       }
     ];
 
-    // Cached elements
     const listingsContainer = document.getElementById('listingsContainer');
     const filterForm = document.getElementById('filterForm');
-    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+    const clearFilterBtn = document.getElementById('clearFilterBtn');
     const contactModal = document.getElementById('contactModal');
     const contactForm = document.getElementById('contactForm');
-    const contactCancelBtn = document.getElementById('contactCancelBtn');
 
-    let currentContactListing = null;
-
-    // Render listings based on filters
-    function renderListings(filter = {}) {
+    // Render listings
+    function renderListings(listings) {
       listingsContainer.innerHTML = '';
-
-      // Filter logic
-      const filtered = listings.filter(listing => {
-        if (filter.condition && filter.condition !== '' && listing.condition !== filter.condition) {
-          return false;
-        }
-        if (filter.brand && filter.brand !== '' && listing.brand.toLowerCase() !== filter.brand.toLowerCase()) {
-          return false;
-        }
-        if (filter.model && filter.model !== '' && !listing.model.toLowerCase().includes(filter.model.toLowerCase())) {
-          return false;
-        }
-        if (filter.fuelType && filter.fuelType !== '' && listing.fuelType.toLowerCase() !== filter.fuelType.toLowerCase()) {
-          return false;
-        }
-        if (filter.yearMin && filter.yearMin !== '' && listing.year < parseInt(filter.yearMin)) {
-          return false;
-        }
-        if (filter.yearMax && filter.yearMax !== '' && listing.year > parseInt(filter.yearMax)) {
-          return false;
-        }
-        if (filter.priceMin && filter.priceMin !== '' && listing.priceMinBid < parseInt(filter.priceMin)) {
-          return false;
-        }
-        if (filter.priceMax && filter.priceMax !== '' && listing.priceBuyNow > parseInt(filter.priceMax)) {
-          return false;
-        }
-        return true;
-      });
-
-      if (filtered.length === 0) {
-        listingsContainer.innerHTML = `<p style="color:#eee; font-size:1.3rem; text-align:center; user-select:none;">No listings found with current filters.</p>`;
+      if(listings.length === 0) {
+        listingsContainer.innerHTML = '<p style="text-align:center;color:#888;">No listings match your filter.</p>';
         return;
       }
 
-      filtered.forEach(listing => {
-        const ended = new Date() > listing.auctionEnd || !listing.live;
-
+      listings.forEach(listing => {
+        // Create listing card
         const listingEl = document.createElement('article');
-        listingEl.className = 'listing' + (ended ? ' ended' : '');
-        listingEl.setAttribute('tabindex', '0');
+        listingEl.className = 'listing';
+        if(listing.condition === 'not-runner') listingEl.classList.add('ended');
 
-        listingEl.innerHTML = `
-          <div class="gallery" aria-label="Images of ${listing.title}">
-            <img src="${listing.images[0]}" alt="${listing.title} main image" id="mainImage-${listing.id}" />
-            <div class="thumbs" role="list" aria-label="Thumbnail images">
-              ${listing.images.map((img, i) =>
-                `<img src="${img}" alt="${listing.title} image ${i + 1}" role="listitem" tabindex="0" data-listingid="${listing.id}" data-index="${i}" class="${i === 0 ? 'selected' : ''}" />`
-              ).join('')}
-            </div>
-          </div>
-          <div class="details">
-            <h2>${listing.title}</h2>
-            <div class="badges">
-              <div class="badge ${listing.condition === 'runner' ? '' : 'not-runner'}" aria-label="Condition: ${listing.condition}">
-                ${listing.condition === 'runner' ? 'Runner' : 'Not Runner'}
-              </div>
-              <div class="badge">Year: ${listing.year}</div>
-              <div class="badge">Fuel: ${listing.fuelType}</div>
-              <div class="badge">Miles: ${listing.miles.toLocaleString()}</div>
-            </div>
+        // Gallery
+        const gallery = document.createElement('div');
+        gallery.className = 'gallery';
 
-            <div id="auctionEnds">${ended ? '<strong>Auction Ended</strong>' : 'Auction Ends: ' + listing.auctionEnd.toUTCString()}</div>
+        const mainImage = document.createElement('img');
+        mainImage.id = 'mainImage';
+        mainImage.src = listing.images[0];
+        mainImage.alt = `${listing.title} main image`;
+        mainImage.tabIndex = 0;
+        gallery.appendChild(mainImage);
 
-            <p class="description">${listing.description}</p>
-
-            <div class="actions">
-              <label for="bidAmount-${listing.id}">Bid Amount (min £${listing.priceMinBid})</label>
-              <input type="number" id="bidAmount-${listing.id}" name="bidAmount" min="${listing.priceMinBid}" step="1" placeholder="Enter bid amount" ${ended ? 'disabled' : ''} />
-              <button id="bidBtn-${listing.id}" ${ended ? 'disabled' : ''}>Place Bid</button>
-
-              <button id="buyNowBtn-${listing.id}" ${ended ? 'disabled' : ''}>Buy It Now £${listing.priceBuyNow}</button>
-
-              ${
-                listing.live
-                  ? `<button id="contactSellerBtn-${listing.id}" data-whatsapp="${listing.whatsappNumber}">Contact Seller</button>`
-                  : `<button disabled style="background:#555; cursor:not-allowed;">Auction Ended</button>`
-              }
-            </div>
-          </div>
-        `;
-
-        listingsContainer.appendChild(listingEl);
-      });
-
-      setupGalleryClicks();
-      setupButtons();
-    }
-
-    // Setup gallery thumbnails click
-    function setupGalleryClicks() {
-      const thumbs = document.querySelectorAll('.thumbs img');
-      thumbs.forEach(thumb => {
-        thumb.addEventListener('click', () => {
-          const listingId = thumb.getAttribute('data-listingid');
-          const mainImg = document.getElementById(`mainImage-${listingId}`);
-          if (!mainImg) return;
-
-          mainImg.src = thumb.src;
-
-          // Update selected class
-          const siblings = thumb.parentElement.querySelectorAll('img');
-          siblings.forEach(s => s.classList.remove('selected'));
-          thumb.classList.add('selected');
+        const thumbs = document.createElement('div');
+        thumbs.className = 'thumbs';
+        listing.images.forEach((imgSrc, idx) => {
+          const thumbImg = document.createElement('img');
+          thumbImg.src = imgSrc;
+          thumbImg.alt = `${listing.title} thumbnail ${idx+1}`;
+          if(idx === 0) thumbImg.classList.add('selected');
+          thumbImg.tabIndex = 0;
+          thumbImg.addEventListener('click', () => {
+            mainImage.src = imgSrc;
+            thumbs.querySelectorAll('img').forEach(i => i.classList.remove('selected'));
+            thumbImg.classList.add('selected');
+          });
+          thumbs.appendChild(thumbImg);
         });
-        // keyboard accessible
-        thumb.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            thumb.click();
+        gallery.appendChild(thumbs);
+
+        // Zoom toggle
+        mainImage.addEventListener('click', () => {
+          if(mainImage.classList.contains('zoomed')) {
+            mainImage.classList.remove('zoomed');
+          } else {
+            mainImage.classList.add('zoomed');
           }
         });
-      });
 
-      // Zoom toggle on main image
-      document.querySelectorAll('.gallery #mainImage').forEach(img => {
-        img.addEventListener('click', () => {
-          img.classList.toggle('zoomed');
+        mainImage.addEventListener('keydown', e => {
+          if(e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            mainImage.click();
+          }
+        });
+
+        listingEl.appendChild(gallery);
+
+        // Details
+        const details = document.createElement('div');
+        details.className = 'details';
+
+        const title = document.createElement('h2');
+        title.textContent = listing.title;
+        details.appendChild(title);
+
+        // Badges
+        const badges = document.createElement('div');
+        badges.className = 'badges';
+
+        listing.badges.forEach(badgeText => {
+          const badge = document.createElement('span');
+          badge.className = 'badge';
+          if(badgeText.toLowerCase().includes('not runner')) badge.classList.add('not-runner');
+          badge.textContent = badgeText;
+          badges.appendChild(badge);
+        });
+        details.appendChild(badges);
+
+        // Auction Ends countdown
+        const auctionEnds = document.createElement('div');
+        auctionEnds.id = 'auctionEnds';
+        details.appendChild(auctionEnds);
+
+        // Description
+        const desc = document.createElement('p');
+        desc.className = 'description';
+        desc.textContent = listing.description;
+        details.appendChild(desc);
+
+        // Actions
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        const bidLabel = document.createElement('label');
+        bidLabel.setAttribute('for', `bidInput-${listing.id}`);
+        bidLabel.textContent = 'Your Bid (£):';
+        actions.appendChild(bidLabel);
+
+        const bidInput = document.createElement('input');
+        bidInput.type = 'number';
+        bidInput.min = listing.currentBid + 1;
+        bidInput.id = `bidInput-${listing.id}`;
+        bidInput.placeholder = `Min: £${listing.currentBid + 1}`;
+        bidInput.disabled = listing.condition === 'not-runner';
+        actions.appendChild(bidInput);
+
+        const bidBtn = document.createElement('button');
+        bidBtn.id = 'bidBtn';
+        bidBtn.textContent = 'Place Bid';
+        bidBtn.disabled = listing.condition === 'not-runner';
+        actions.appendChild(bidBtn);
+
+        const buyBtn = document.createElement('button');
+        buyBtn.id = 'buyNowBtn';
+        buyBtn.textContent = `Buy It Now (£${listing.buyItNowPrice})`;
+        buyBtn.disabled = listing.condition === 'not-runner';
+        actions.appendChild(buyBtn);
+
+        const contactBtn = document.createElement('button');
+        contactBtn.id = 'contactSellerBtn';
+        contactBtn.textContent = 'Contact Seller';
+        actions.appendChild(contactBtn);
+
+        details.appendChild(actions);
+
+        listingEl.appendChild(details);
+
+        listingsContainer.appendChild(listingEl);
+
+        // Countdown timer
+        function updateCountdown() {
+          const now = new Date();
+          const diff = listing.auctionEnds - now;
+          if(diff <= 0) {
+            auctionEnds.textContent = 'Auction ended';
+            bidInput.disabled = true;
+            bidBtn.disabled = true;
+            buyBtn.disabled = true;
+            clearInterval(timerInterval);
+            return;
+          }
+          const days = Math.floor(diff / (1000*60*60*24));
+          const hours = Math.floor((diff / (1000*60*60)) % 24);
+          const minutes = Math.floor((diff / (1000*60)) % 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+          auctionEnds.textContent = `Auction ends in ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        updateCountdown();
+        const timerInterval = setInterval(updateCountdown, 1000);
+
+        // Bid button logic
+        bidBtn.addEventListener('click', () => {
+          const bidVal = parseInt(bidInput.value, 10);
+          if(isNaN(bidVal) || bidVal <= listing.currentBid) {
+            alert(`Please enter a valid bid higher than current bid (£${listing.currentBid})`);
+            return;
+          }
+          listing.currentBid = bidVal;
+          alert(`Bid placed at £${bidVal} for ${listing.title}`);
+          bidInput.min = bidVal + 1;
+          bidInput.placeholder = `Min: £${bidVal + 1}`;
+          bidInput.value = '';
+        });
+
+        // Buy it now logic
+        buyBtn.addEventListener('click', () => {
+          if(confirm(`Are you sure you want to Buy It Now for £${listing.buyItNowPrice}?`)) {
+            alert(`Congratulations! You bought the ${listing.title} for £${listing.buyItNowPrice}`);
+            bidInput.disabled = true;
+            bidBtn.disabled = true;
+            buyBtn.disabled = true;
+          }
+        });
+
+        // Contact seller button opens modal
+        contactBtn.addEventListener('click', () => {
+          contactModal.showModal();
+          contactForm.dataset.listingId = listing.id;
         });
       });
     }
 
-    // Setup bid, buy now and contact buttons
-    function setupButtons() {
-      listings.forEach(listing => {
-        const ended = new Date() > listing.auctionEnd || !listing.live;
-        if (ended) return;
-
-        // Bid button
-        const bidBtn = document.getElementById(`bidBtn-${listing.id}`);
-        const bidInput = document.getElementById(`bidAmount-${listing.id}`);
-        if (bidBtn && bidInput) {
-          bidBtn.addEventListener('click', () => {
-            const bidValue = parseInt(bidInput.value);
-            if (isNaN(bidValue) || bidValue < listing.priceMinBid) {
-              alert(`Please enter a valid bid amount at least £${listing.priceMinBid}`);
-              return;
-            }
-            alert(`Bid of £${bidValue} placed on ${listing.title}. (Demo only)`);
-          });
-        }
-
-        // Buy now button
-        const buyBtn = document.getElementById(`buyNowBtn-${listing.id}`);
-        if (buyBtn) {
-          buyBtn.addEventListener('click', () => {
-            alert(`You have bought the ${listing.title} for £${listing.priceBuyNow}. (Demo only)`);
-          });
-        }
-
-        // Contact seller button (Whatsapp integration)
-        const contactBtn = document.getElementById(`contactSellerBtn-${listing.id}`);
-        if (contactBtn) {
-          contactBtn.addEventListener('click', () => {
-            currentContactListing = listing;
-            contactModal.showModal();
-          });
-        }
-      });
-    }
-
-    // Filter form submit
-    filterForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = new FormData(filterForm);
-      const filters = {};
-      for (const [key, value] of formData.entries()) {
-        filters[key] = value.trim();
-      }
-      renderListings(filters);
-    });
-
-    // Clear filters
-    clearFiltersBtn.addEventListener('click', () => {
-      filterForm.reset();
-      renderListings();
-    });
-
-    // Contact modal cancel button
-    contactCancelBtn.addEventListener('click', () => {
-      contactModal.close();
-      currentContactListing = null;
-    });
-
-    // Contact form submit - open WhatsApp link
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!currentContactListing) {
-        alert('No listing selected.');
-        contactModal.close();
-        return;
-      }
-      const name = document.getElementById('contactName').value.trim();
-      const phone = document.getElementById('contactPhone').value.trim();
-      if (!name || !phone) {
-        alert('Please fill in all fields.');
-        return;
-      }
-      // WhatsApp message encode
-      const message = encodeURIComponent(
-        `Hello, I am ${name}. I am interested in your listing: ${currentContactListing.title}. Please contact me at ${phone}.`
-      );
-      const whatsappUrl = `https://wa.me/${currentContactListing.whatsappNumber.replace(/\D/g,'')}?text=${message}`;
-      window.open(whatsappUrl, '_blank');
-      contactModal.close();
-      currentContactListing = null;
-      contactForm.reset();
-    });
-
     // Initial render
-    renderListings();
+    renderListings(dummyListings);
+
+    // Filter form logic
+    filterForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const condition = filterForm.condition.value;
+      const brand = filterForm.brand.value.toLowerCase();
+      const model = filterForm.model.value.toLowerCase();
+      const fuelType = filterForm.fuelType.value.toLowerCase();
+
+      const filtered = dummyListings.filter(l => {
+        return (!condition || l.condition === condition) &&
+               (!brand || l.brand.toLowerCase() === brand) &&
+               (!model || l.model.toLowerCase().includes(model)) &&
+               (!fuelType || l.fuelType.toLowerCase() === fuelType);
+      });
+      renderListings(filtered);
+    });
+
+    clearFilterBtn.addEventListener('click', () => {
+      filterForm.reset();
+      renderListings(dummyListings);
+    });
+
+    // Contact form submit
+    contactForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = contactForm.contactName.value.trim();
+      const phone = contactForm.contactPhone.value.trim();
+
+      if(name === '' || phone === '') {
+        alert('Please fill in all fields');
+        return;
+      }
+      alert(`Thank you, ${name}. Your message has been sent to the seller.`);
+      contactForm.reset();
+      contactModal.close();
+    });
+
+    // Close modal on clicking outside or pressing Escape
+    contactModal.addEventListener('click', e => {
+      if(e.target === contactModal) {
+        contactModal.close();
+      }
+    });
+    window.addEventListener('keydown', e => {
+      if(e.key === 'Escape' && contactModal.open) {
+        contactModal.close();
+      }
+    });
   </script>
 </body>
 </html>
