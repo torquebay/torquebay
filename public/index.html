@@ -212,11 +212,29 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
       color: #ddd;
       user-select: none;
+      position: relative;
     }
 
+    /* Ended/dummy listings style */
     .listing.ended {
       opacity: 0.6;
       pointer-events: none;
+    }
+
+    .listing.ended .actions button {
+      background-color: #555 !important;
+      cursor: not-allowed;
+      color: #aaa !important;
+      pointer-events: none;
+    }
+
+    /* Sold info text */
+    .sold-info {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #e02828;
+      margin: 8px 0 14px;
+      user-select: none;
     }
 
     /* Gallery */
@@ -284,6 +302,24 @@
       color: #e02828;
       margin-bottom: 6px;
       user-select: none;
+    }
+
+    /* Vehicle info row */
+    .vehicle-info {
+      display: flex;
+      gap: 18px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #bbb;
+      user-select: none;
+      flex-wrap: wrap;
+    }
+    .vehicle-info span {
+      background: #3a3a3a;
+      padding: 5px 12px;
+      border-radius: 14px;
+      user-select: none;
+      white-space: nowrap;
     }
 
     .badges {
@@ -383,530 +419,474 @@
       border-radius: 8px;
       user-select: none;
       font-size: 1rem;
-      flex: 1 1 120px;
-      transition: background-color 0.3s ease;
-    }
-
-    #bidBtn {
       background-color: #e02828;
       color: white;
+      transition: background-color 0.3s ease;
     }
-    #bidBtn:hover,
-    #bidBtn:focus {
+    .actions button:hover,
+    .actions button:focus {
       background-color: #b62020;
       outline: none;
     }
 
-    #buyNowBtn {
-      background-color: #ff6f00;
-      color: white;
-    }
-    #buyNowBtn:hover,
-    #buyNowBtn:focus {
-      background-color: #cc5c00;
-      outline: none;
+    .actions button:disabled {
+      background-color: #555 !important;
+      cursor: not-allowed;
+      color: #aaa;
     }
 
-    #contactSellerBtn {
-      background-color: #28a745;
-      color: white;
-    }
-    #contactSellerBtn:hover,
-    #contactSellerBtn:focus {
-      background-color: #218838;
-      outline: none;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px 10px;
-      font-weight: 300;
-      font-size: 0.9rem;
-      color: #555;
-      user-select: none;
-      border-top: 1px solid #2a2a2a;
-      margin-top: auto;
-      background: #121318;
-    }
-
-    /* Contact Modal */
-    dialog#contactModal {
-      border: none;
-      border-radius: 8px;
-      padding: 20px 25px;
-      max-width: 400px;
-      width: 90%;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    dialog#contactModal h2 {
-      margin-top: 0;
-      color: #e02828;
-      user-select: none;
-    }
-
-    dialog#contactModal form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    dialog#contactModal label {
+    /* Contact Seller Button */
+    button.contact-seller {
+      background-color: #292b2f;
+      color: #eee;
       font-weight: 700;
-      user-select: none;
-    }
-
-    dialog#contactModal input[type=text],
-    dialog#contactModal input[type=tel] {
-      padding: 8px 10px;
+      padding: 10px 14px;
       border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      user-select: text;
+      border: 2px solid #e02828;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-
-    dialog#contactModal button {
-      margin-top: 15px;
-      padding: 12px 0;
-      font-weight: 700;
-      font-size: 1rem;
+    button.contact-seller:hover {
       background-color: #e02828;
       color: white;
+    }
+
+    /* Modal overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      user-select: none;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    /* Modal content */
+    .modal-content {
+      background: #222428;
+      border-radius: 12px;
+      padding: 30px 30px 40px;
+      width: 360px;
+      box-shadow: 0 0 16px #e02828;
+      color: #eee;
+      user-select: text;
+      position: relative;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 24px;
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: #e02828;
+      text-align: center;
+      user-select: none;
+    }
+
+    .modal-content label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="tel"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 20px;
+      border-radius: 8px;
       border: none;
-      border-radius: 6px;
+      font-size: 1rem;
+      background: #1a1c20;
+      color: #eee;
+      box-shadow: inset 0 0 6px #000;
+    }
+
+    .modal-content input[type="text"]:focus,
+    .modal-content input[type="tel"]:focus {
+      outline: none;
+      background: #2e3034;
+    }
+
+    .modal-content button.submit-btn {
+      width: 100%;
+      background-color: #e02828;
+      border: none;
+      padding: 14px 0;
+      font-weight: 700;
+      font-size: 1.15rem;
+      border-radius: 8px;
+      color: white;
       cursor: pointer;
       user-select: none;
       transition: background-color 0.3s ease;
     }
-    dialog#contactModal button:hover,
-    dialog#contactModal button:focus {
+    .modal-content button.submit-btn:hover {
       background-color: #b62020;
-      outline: none;
     }
 
-    /* Responsive */
-    @media (max-width: 1000px) {
-      .container {
-        flex-direction: column;
-        padding: 0 15px;
-      }
-      aside#filterSidebar {
-        width: 100%;
-        margin-bottom: 30px;
-      }
-      .gallery {
-        width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
-      }
-      .gallery #mainImage {
-        width: 100%;
-        max-height: 240px;
-        border-radius: 12px;
-        cursor: zoom-in;
-      }
-      .gallery .thumbs {
-        justify-content: start;
-      }
-      .gallery .thumbs img {
-        width: 80px;
-        height: 54px;
-      }
-      .listing {
-        flex-direction: column;
-      }
+    .modal-content .close-btn {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      font-size: 1.8rem;
+      color: #bbb;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s ease;
     }
+    .modal-content .close-btn:hover {
+      color: #e02828;
+    }
+
   </style>
 </head>
 <body>
 
-  <header class="top-header">
-    <div class="logo" onclick="window.location.href='index.html'">
+  <header class="top-header" aria-label="Site header">
+    <div class="logo" role="img" aria-label="Torque Bay logo">
+      <!-- New logo URL -->
       <img src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" />
     </div>
   </header>
 
-  <nav>
-    <a href="index.html" class="active">Home</a>
-    <a href="register.html">Register</a>
-    <a href="login.html">Login</a>
-    <a href="about.html">About Us</a>
-    <a href="contact.html">Contact Us</a>
+  <nav aria-label="Primary navigation">
+    <a href="#" class="active" aria-current="page">Home</a>
+    <a href="#">Auctions</a>
+    <a href="#">Sell Car</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
   </nav>
 
-  <h1 class="welcome-text">Welcome to Torque Bay</h1>
+  <main class="container" role="main">
 
-  <div class="container">
-    <aside id="filterSidebar" aria-label="Filter listings">
+    <aside id="filterSidebar" aria-label="Filters for car listings">
       <h3>Filter Listings</h3>
-      <form id="filterForm">
-        <label for="filterStatus">Condition</label>
-        <select id="filterStatus" name="condition">
-          <option value="">All</option>
-          <option value="runner">Runner</option>
-          <option value="not-runner">Not Runner</option>
-        </select>
+      <label for="filterCategory">Category</label>
+      <select id="filterCategory" name="category" aria-describedby="categoryHelp">
+        <option value="">All</option>
+        <option value="runner">Runner</option>
+        <option value="nonrunner">Non Runner</option>
+      </select>
 
-        <label for="filterBrand">Brand</label>
-        <select id="filterBrand" name="brand">
-          <option value="">All</option>
-          <option value="Astra">Astra</option>
-          <option value="BMW">BMW</option>
-          <option value="Ford">Ford</option>
-          <option value="Vauxhall">Vauxhall</option>
-          <option value="Volkswagen">Volkswagen</option>
-        </select>
+      <label for="filterBrand">Brand</label>
+      <select id="filterBrand" name="brand" aria-describedby="brandHelp">
+        <option value="">All</option>
+        <option value="astra">Astra</option>
+        <option value="bmw">BMW</option>
+        <option value="fiesta">Fiesta</option>
+      </select>
 
-        <label for="filterModel">Model</label>
-        <input type="text" id="filterModel" name="model" placeholder="Model (e.g. J)" />
+      <label for="filterFuel">Fuel Type</label>
+      <select id="filterFuel" name="fuel" aria-describedby="fuelHelp">
+        <option value="">All</option>
+        <option value="petrol">Petrol</option>
+        <option value="diesel">Diesel</option>
+      </select>
 
-        <label for="filterFuel">Fuel Type</label>
-        <select id="filterFuel" name="fuelType">
-          <option value="">All</option>
-          <option value="Petrol">Petrol</option>
-          <option value="Diesel">Diesel</option>
-          <option value="Hybrid">Hybrid</option>
-          <option value="Electric">Electric</option>
-        </select>
+      <label for="filterEngineType">Engine Type</label>
+      <select id="filterEngineType" name="engineType" aria-describedby="engineHelp">
+        <option value="">All</option>
+        <option value="turbo">Turbo</option>
+        <option value="na">Naturally Aspirated</option>
+        <option value="supercharged">Supercharged</option>
+      </select>
 
-        <label for="filterYearMin">Year (Min)</label>
-        <input type="number" id="filterYearMin" name="yearMin" placeholder="From" min="1900" max="2050" />
-
-        <label for="filterYearMax">Year (Max)</label>
-        <input type="number" id="filterYearMax" name="yearMax" placeholder="To" min="1900" max="2050" />
-
-        <label for="filterPriceMin">Price (Min £)</label>
-        <input type="number" id="filterPriceMin" name="priceMin" placeholder="Min Bid" min="0" />
-
-        <label for="filterPriceMax">Price (Max £)</label>
-        <input type="number" id="filterPriceMax" name="priceMax" placeholder="Buy Now" min="0" />
-
-        <button type="submit">Apply Filters</button>
-        <button type="button" class="clear-btn" id="clearFiltersBtn">Clear Filters</button>
-      </form>
+      <button id="applyFiltersBtn">Apply Filters</button>
+      <button id="clearFiltersBtn" class="clear-btn">Clear Filters</button>
     </aside>
 
-    <main id="listingsContainer" aria-live="polite" aria-relevant="additions">
-      <!-- Listings injected by JS -->
-    </main>
-  </div>
+    <section id="listingsContainer" aria-label="Car listings">
 
-  <footer>
-    &copy; 2025 Torque Bay. All rights reserved.
-  </footer>
+      <!-- Listing Astra J -->
+      <article class="listing runner" data-category="runner" data-brand="astra" data-fuel="petrol" data-engineType="turbo" data-year="2014" data-mot="Valid" data-mileage="88000" data-engine="1.4 Turbo">
+        <div class="gallery" aria-label="Image gallery for Vauxhall Astra J">
+          <img id="mainImage-astra" class="main-image" src="https://i.ibb.co/HpkjZvVL/2025-07-05-18-30-42-743.jpg" alt="Vauxhall Astra J front view" tabindex="0" />
+          <div class="thumbs" role="list">
+            <img src="https://i.ibb.co/HpkjZvVL/2025-07-05-18-30-42-743.jpg" alt="Vauxhall Astra J front view thumbnail" role="listitem" tabindex="0" data-main="#mainImage-astra" />
+            <img src="https://i.ibb.co/qF18xs68/2025-07-05-18-31-00-391.jpg" alt="Vauxhall Astra J side view thumbnail" role="listitem" tabindex="0" data-main="#mainImage-astra" />
+            <img src="https://i.ibb.co/DPSwkGff/2025-07-05-18-31-07-371.jpg" alt="Vauxhall Astra J rear view thumbnail" role="listitem" tabindex="0" data-main="#mainImage-astra" />
+          </div>
+        </div>
+        <div class="details">
+          <h2>Vauxhall Astra J</h2>
+
+          <div class="vehicle-info" aria-label="Vehicle details">
+            <span>Fuel: Petrol</span>
+            <span>Year: 2014</span>
+            <span>MOT: Valid</span>
+            <span>Mileage: 88,000 miles</span>
+            <span>Engine: 1.4 Turbo</span>
+          </div>
+
+          <p class="description">
+            A reliable Astra J with full MOT, petrol 1.4 turbo engine, perfect for daily use.
+          </p>
+
+          <div class="actions">
+            <label for="bidAmount-astra">Your bid (£):</label>
+            <input type="number" id="bidAmount-astra" name="bidAmount" min="100" max="10000" step="10" />
+            <button class="bid-btn" data-listing="Vauxhall Astra J">Place Bid</button>
+            <button class="buy-btn" data-listing="Vauxhall Astra J">Buy It Now</button>
+            <button class="contact-seller" data-listing="Vauxhall Astra J">Contact Seller</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Listing BMW (dummy ended) -->
+      <article class="listing runner ended" data-category="runner" data-brand="bmw" data-fuel="diesel" data-engineType="turbo" data-year="2007" data-mot="Expired" data-mileage="120000" data-engine="3.0 Turbo Diesel">
+        <div class="gallery" aria-label="Image gallery for BMW 320d E90">
+          <img id="mainImage-bmw" class="main-image" src="https://i.ibb.co/0RRx7dxH/1000067109.jpg" alt="BMW 320d E90 front view" tabindex="0" />
+          <div class="thumbs" role="list">
+            <img src="https://i.ibb.co/tp4Wk6ML/1000067106.jpg" alt="BMW 320d E90 side view thumbnail" role="listitem" tabindex="0" data-main="#mainImage-bmw" />
+            <img src="https://i.ibb.co/0RRx7dxH/1000067109.jpg" alt="BMW 320d E90 front view thumbnail" role="listitem" tabindex="0" data-main="#mainImage-bmw" />
+          </div>
+        </div>
+        <div class="details">
+          <h2>BMW 330D M57</h2>
+
+          <div class="vehicle-info" aria-label="Vehicle details">
+            <span>Fuel: Diesel</span>
+            <span>Year: 2007</span>
+            <span>MOT: Expired</span>
+            <span>Mileage: 120,000 miles</span>
+            <span>Engine: 3.0 Turbo Diesel</span>
+          </div>
+
+          <p class="description">
+            BMW 330D M57 with stage 2 map and exhaust system.
+          </p>
+
+          <p class="sold-info">Auction ended: Sold for £2,800</p>
+
+          <div class="actions">
+            <label for="bidAmount-bmw">Your bid (£):</label>
+            <input type="number" id="bidAmount-bmw" name="bidAmount" min="500" max="15000" step="50" disabled />
+            <button class="bid-btn" data-listing="BMW 330D M57" disabled>Place Bid</button>
+            <button class="buy-btn" data-listing="BMW 330D M57" disabled>Buy It Now</button>
+            <button class="contact-seller" data-listing="BMW 330D M57">Contact Seller</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Listing Fiesta (dummy ended) -->
+      <article class="listing nonrunner ended" data-category="nonrunner" data-brand="fiesta" data-fuel="petrol" data-engineType="na" data-year="2013" data-mot="Expired" data-mileage="95000" data-engine="1.25 Naturally Aspirated">
+        <div class="gallery" aria-label="Image gallery for Ford Fiesta">
+          <img id="mainImage-fiesta" class="main-image" src="https://i.ibb.co/d0LhNS0v/fiesta.jpg" alt="Ford Fiesta front view" tabindex="0" />
+          <div class="thumbs" role="list">
+            <img src="https://i.ibb.co/d0LhNS0v/fiesta.jpg" alt="Ford Fiesta front view thumbnail" role="listitem" tabindex="0" data-main="#mainImage-fiesta" />
+          </div>
+        </div>
+        <div class="details">
+          <h2>Ford Fiesta</h2>
+
+          <div class="vehicle-info" aria-label="Vehicle details">
+            <span>Fuel: Petrol</span>
+            <span>Year: 2013</span>
+            <span>MOT: Expired</span>
+            <span>Mileage: 95,000 miles</span>
+            <span>Engine: 1.25 NA</span>
+          </div>
+
+          <p class="description">
+            Ford Fiesta non runner with naturally aspirated 1.25 petrol engine.
+          </p>
+
+          <p class="sold-info">Auction ended: Sold for £759</p>
+
+          <div class="actions">
+            <label for="bidAmount-fiesta">Your bid (£):</label>
+            <input type="number" id="bidAmount-fiesta" name="bidAmount" min="100" max="5000" step="10" disabled />
+            <button class="bid-btn" data-listing="Ford Fiesta" disabled>Place Bid</button>
+            <button class="buy-btn" data-listing="Ford Fiesta" disabled>Buy It Now</button>
+            <button class="contact-seller" data-listing="Ford Fiesta">Contact Seller</button>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
 
   <!-- Contact Seller Modal -->
-  <dialog id="contactModal" aria-modal="true" role="dialog" aria-labelledby="contactModalTitle" aria-describedby="contactModalDesc">
-    <h2 id="contactModalTitle">Contact Seller</h2>
-    <form id="contactForm">
-      <label for="contactName">Your Name</label>
-      <input type="text" id="contactName" name="contactName" required placeholder="Enter your name" />
-      <label for="contactPhone">Your Phone Number</label>
-      <input type="tel" id="contactPhone" name="contactPhone" required placeholder="e.g. +447123456789" />
-      <button type="submit">Send WhatsApp Message</button>
-      <button type="button" id="contactCancelBtn" style="margin-top:10px; background:#555;">Cancel</button>
-    </form>
-  </dialog>
+  <div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Close contact form">&times;</button>
+      <h3 id="modalTitle">Contact Seller</h3>
+      <form id="contactForm">
+        <label for="contactName">Your Name</label>
+        <input type="text" id="contactName" name="contactName" required autocomplete="name" />
+        <label for="contactPhone">Your Phone Number</label>
+        <input type="tel" id="contactPhone" name="contactPhone" required autocomplete="tel" pattern="[0-9\s\-\+]+" />
+        <input type="hidden" id="listingName" name="listingName" />
+        <button type="submit" class="submit-btn">Send WhatsApp Message</button>
+      </form>
+    </div>
+  </div>
 
   <script>
-    // Listings data with updated Astra J images & live/dummy distinction
-    const listings = [
-      {
-        id: 1,
-        title: 'Astra J 1.4 Turbo 2010 A14NET',
-        brand: 'Astra',
-        model: 'J',
-        year: 2010,
-        condition: 'runner',
-        fuelType: 'Petrol',
-        miles: 89905,
-        priceMinBid: 750,
-        priceBuyNow: 1850,
-        auctionEnd: new Date(Date.UTC(2025, 6, 30, 23, 59, 59)),
-        description: 'The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm of torque. Well maintained with a clean interior, low mileage, and an MOT valid until October 2025.',
-        images: [
-          "https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg",
-          "https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg",
-          "https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg",
-          "https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg"
-        ],
-        whatsappNumber: "+447700900123",
-        live: true,
-        userCanBid: true
-      },
-      // Dummy ended listings
-      {
-        id: 2,
-        title: 'BMW 320d E90 M47',
-        brand: 'BMW',
-        model: '320d',
-        year: 2012,
-        condition: 'runner',
-        fuelType: 'Diesel',
-        miles: 125000,
-        priceMinBid: 1200,
-        priceBuyNow: 2300,
-        auctionEnd: new Date(Date.UTC(2024, 0, 15, 23, 59, 59)),
-        description: 'BMW 320d with M47 engine, stage 1 remap, EGR off, swirl flaps deleted, straight pipe exhaust. A solid runner with a great history.',
-        images: [
-          "https://via.placeholder.com/280x160?text=BMW+320d+Front",
-          "https://via.placeholder.com/280x160?text=BMW+320d+Side",
-          "https://via.placeholder.com/280x160?text=BMW+320d+Interior"
-        ],
-        whatsappNumber: "+447700900124",
-        live: false,
-        userCanBid: false
-      },
-      {
-        id: 3,
-        title: 'Ford Fiesta MK7 2011',
-        brand: 'Ford',
-        model: 'Fiesta',
-        year: 2011,
-        condition: 'not-runner',
-        fuelType: 'Petrol',
-        miles: 130000,
-        priceMinBid: 300,
-        priceBuyNow: 600,
-        auctionEnd: new Date(Date.UTC(2024, 1, 10, 23, 59, 59)),
-        description: 'Ford Fiesta MK7 with 1.25L petrol engine, needs work but great project car.',
-        images: [
-          "https://via.placeholder.com/280x160?text=Ford+Fiesta+Front",
-          "https://via.placeholder.com/280x160?text=Ford+Fiesta+Side",
-          "https://via.placeholder.com/280x160?text=Ford+Fiesta+Interior"
-        ],
-        whatsappNumber: "+447700900125",
-        live: false,
-        userCanBid: false
-      }
-    ];
+    // Simulated login state; you can toggle true/false here for testing
+    let isLoggedIn = false;
 
-    // Cached elements
-    const listingsContainer = document.getElementById('listingsContainer');
-    const filterForm = document.getElementById('filterForm');
-    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
-    const contactModal = document.getElementById('contactModal');
-    const contactForm = document.getElementById('contactForm');
-    const contactCancelBtn = document.getElementById('contactCancelBtn');
+    // Gallery thumbnails click logic for all galleries
+    document.querySelectorAll('.gallery').forEach(gallery => {
+      const mainImg = gallery.querySelector('.main-image');
+      const thumbs = gallery.querySelectorAll('.thumbs img');
 
-    let currentContactListing = null;
-
-    // Render listings based on filters
-    function renderListings(filter = {}) {
-      listingsContainer.innerHTML = '';
-
-      // Filter logic
-      const filtered = listings.filter(listing => {
-        if (filter.condition && filter.condition !== '' && listing.condition !== filter.condition) {
-          return false;
-        }
-        if (filter.brand && filter.brand !== '' && listing.brand.toLowerCase() !== filter.brand.toLowerCase()) {
-          return false;
-        }
-        if (filter.model && filter.model !== '' && !listing.model.toLowerCase().includes(filter.model.toLowerCase())) {
-          return false;
-        }
-        if (filter.fuelType && filter.fuelType !== '' && listing.fuelType.toLowerCase() !== filter.fuelType.toLowerCase()) {
-          return false;
-        }
-        if (filter.yearMin && filter.yearMin !== '' && listing.year < parseInt(filter.yearMin)) {
-          return false;
-        }
-        if (filter.yearMax && filter.yearMax !== '' && listing.year > parseInt(filter.yearMax)) {
-          return false;
-        }
-        if (filter.priceMin && filter.priceMin !== '' && listing.priceMinBid < parseInt(filter.priceMin)) {
-          return false;
-        }
-        if (filter.priceMax && filter.priceMax !== '' && listing.priceBuyNow > parseInt(filter.priceMax)) {
-          return false;
-        }
-        return true;
-      });
-
-      if (filtered.length === 0) {
-        listingsContainer.innerHTML = `<p style="color:#eee; font-size:1.3rem; text-align:center; user-select:none;">No listings found with current filters.</p>`;
-        return;
-      }
-
-      filtered.forEach(listing => {
-        const ended = new Date() > listing.auctionEnd || !listing.live;
-
-        const listingEl = document.createElement('article');
-        listingEl.className = 'listing' + (ended ? ' ended' : '');
-        listingEl.setAttribute('tabindex', '0');
-
-        listingEl.innerHTML = `
-          <div class="gallery" aria-label="Images of ${listing.title}">
-            <img src="${listing.images[0]}" alt="${listing.title} main image" id="mainImage-${listing.id}" />
-            <div class="thumbs" role="list" aria-label="Thumbnail images">
-              ${listing.images.map((img, i) =>
-                `<img src="${img}" alt="${listing.title} image ${i + 1}" role="listitem" tabindex="0" data-listingid="${listing.id}" data-index="${i}" class="${i === 0 ? 'selected' : ''}" />`
-              ).join('')}
-            </div>
-          </div>
-          <div class="details">
-            <h2>${listing.title}</h2>
-            <div class="badges">
-              <div class="badge ${listing.condition === 'runner' ? '' : 'not-runner'}" aria-label="Condition: ${listing.condition}">
-                ${listing.condition === 'runner' ? 'Runner' : 'Not Runner'}
-              </div>
-              <div class="badge">Year: ${listing.year}</div>
-              <div class="badge">Fuel: ${listing.fuelType}</div>
-              <div class="badge">Miles: ${listing.miles.toLocaleString()}</div>
-            </div>
-
-            <div id="auctionEnds">${ended ? '<strong>Auction Ended</strong>' : 'Auction Ends: ' + listing.auctionEnd.toUTCString()}</div>
-
-            <p class="description">${listing.description}</p>
-
-            <div class="actions">
-              <label for="bidAmount-${listing.id}">Bid Amount (min £${listing.priceMinBid})</label>
-              <input type="number" id="bidAmount-${listing.id}" name="bidAmount" min="${listing.priceMinBid}" step="1" placeholder="Enter bid amount" ${ended ? 'disabled' : ''} />
-              <button id="bidBtn-${listing.id}" ${ended ? 'disabled' : ''}>Place Bid</button>
-
-              <button id="buyNowBtn-${listing.id}" ${ended ? 'disabled' : ''}>Buy It Now £${listing.priceBuyNow}</button>
-
-              ${
-                listing.live
-                  ? `<button id="contactSellerBtn-${listing.id}" data-whatsapp="${listing.whatsappNumber}">Contact Seller</button>`
-                  : `<button disabled style="background:#555; cursor:not-allowed;">Auction Ended</button>`
-              }
-            </div>
-          </div>
-        `;
-
-        listingsContainer.appendChild(listingEl);
-      });
-
-      setupGalleryClicks();
-      setupButtons();
-    }
-
-    // Setup gallery thumbnails click
-    function setupGalleryClicks() {
-      const thumbs = document.querySelectorAll('.thumbs img');
       thumbs.forEach(thumb => {
         thumb.addEventListener('click', () => {
-          const listingId = thumb.getAttribute('data-listingid');
-          const mainImg = document.getElementById(`mainImage-${listingId}`);
-          if (!mainImg) return;
-
           mainImg.src = thumb.src;
-
-          // Update selected class
-          const siblings = thumb.parentElement.querySelectorAll('img');
-          siblings.forEach(s => s.classList.remove('selected'));
+          thumbs.forEach(t => t.classList.remove('selected'));
           thumb.classList.add('selected');
         });
-        // keyboard accessible
-        thumb.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            thumb.click();
-          }
-        });
       });
 
-      // Zoom toggle on main image
-      document.querySelectorAll('.gallery #mainImage').forEach(img => {
-        img.addEventListener('click', () => {
-          img.classList.toggle('zoomed');
-        });
+      // Initialize first thumbnail as selected
+      if (thumbs.length > 0) thumbs[0].classList.add('selected');
+
+      // Zoom toggle on main image click
+      mainImg.addEventListener('click', () => {
+        mainImg.classList.toggle('zoomed');
       });
+    });
+
+    // Require login for bid and buy buttons only if NOT ended listings
+    function requireLoginAction(actionName) {
+      alert(`You must be logged in to ${actionName}. Please log in first.`);
     }
 
-    // Setup bid, buy now and contact buttons
-    function setupButtons() {
-      listings.forEach(listing => {
-        const ended = new Date() > listing.auctionEnd || !listing.live;
-        if (ended) return;
+    document.querySelectorAll('.bid-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        if (button.disabled) return; // ignore disabled buttons
 
-        // Bid button
-        const bidBtn = document.getElementById(`bidBtn-${listing.id}`);
-        const bidInput = document.getElementById(`bidAmount-${listing.id}`);
-        if (bidBtn && bidInput) {
-          bidBtn.addEventListener('click', () => {
-            const bidValue = parseInt(bidInput.value);
-            if (isNaN(bidValue) || bidValue < listing.priceMinBid) {
-              alert(`Please enter a valid bid amount at least £${listing.priceMinBid}`);
-              return;
-            }
-            alert(`Bid of £${bidValue} placed on ${listing.title}. (Demo only)`);
-          });
+        if (!isLoggedIn) {
+          requireLoginAction('place a bid');
+          return;
         }
-
-        // Buy now button
-        const buyBtn = document.getElementById(`buyNowBtn-${listing.id}`);
-        if (buyBtn) {
-          buyBtn.addEventListener('click', () => {
-            alert(`You have bought the ${listing.title} for £${listing.priceBuyNow}. (Demo only)`);
-          });
+        const listing = button.dataset.listing;
+        const input = button.parentElement.querySelector('input[type=number]');
+        const bidValue = input.value;
+        if (!bidValue || bidValue <= 0) {
+          alert('Please enter a valid bid amount.');
+          return;
         }
-
-        // Contact seller button (Whatsapp integration)
-        const contactBtn = document.getElementById(`contactSellerBtn-${listing.id}`);
-        if (contactBtn) {
-          contactBtn.addEventListener('click', () => {
-            currentContactListing = listing;
-            contactModal.showModal();
-          });
-        }
+        alert(`Your bid of £${bidValue} has been placed on "${listing}".`);
       });
-    }
+    });
 
-    // Filter form submit
-    filterForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = new FormData(filterForm);
-      const filters = {};
-      for (const [key, value] of formData.entries()) {
-        filters[key] = value.trim();
+    document.querySelectorAll('.buy-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        if (button.disabled) return;
+
+        if (!isLoggedIn) {
+          requireLoginAction('buy the vehicle');
+          return;
+        }
+        const listing = button.dataset.listing;
+        alert(`You have chosen to buy "${listing}" at the Buy It Now price.`);
+      });
+    });
+
+    // Contact Seller modal logic
+    const contactModal = document.getElementById('contactModal');
+    const contactForm = document.getElementById('contactForm');
+    const listingNameInput = document.getElementById('listingName');
+    const modalCloseBtn = contactModal.querySelector('.close-btn');
+
+    // Open modal on contact seller click - NO login required
+    document.querySelectorAll('.contact-seller').forEach(button => {
+      button.addEventListener('click', () => {
+        const listingName = button.dataset.listing;
+        listingNameInput.value = listingName;
+        contactForm.reset();
+        contactModal.classList.add('active');
+        document.getElementById('contactName').focus();
+      });
+    });
+
+    // Close modal
+    modalCloseBtn.addEventListener('click', () => {
+      contactModal.classList.remove('active');
+    });
+
+    // Close modal on overlay click outside content
+    contactModal.addEventListener('click', (e) => {
+      if (e.target === contactModal) {
+        contactModal.classList.remove('active');
       }
-      renderListings(filters);
     });
 
-    // Clear filters
-    clearFiltersBtn.addEventListener('click', () => {
-      filterForm.reset();
-      renderListings();
-    });
-
-    // Contact modal cancel button
-    contactCancelBtn.addEventListener('click', () => {
-      contactModal.close();
-      currentContactListing = null;
-    });
-
-    // Contact form submit - open WhatsApp link
+    // Submit contact form - opens WhatsApp with pre-filled message
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      if (!currentContactListing) {
-        alert('No listing selected.');
-        contactModal.close();
-        return;
-      }
-      const name = document.getElementById('contactName').value.trim();
-      const phone = document.getElementById('contactPhone').value.trim();
+      const name = contactForm.contactName.value.trim();
+      const phone = contactForm.contactPhone.value.trim();
+      const listing = contactForm.listingName.value;
+
       if (!name || !phone) {
-        alert('Please fill in all fields.');
+        alert('Please fill in your name and phone number.');
         return;
       }
-      // WhatsApp message encode
+
+      // WhatsApp number in international format without spaces/leading zero
+      const waNumber = '447553899955';
+
+      // Encode message
       const message = encodeURIComponent(
-        `Hello, I am ${name}. I am interested in your listing: ${currentContactListing.title}. Please contact me at ${phone}.`
+        `Hello, I am interested in your listing: "${listing}".\n` +
+        `My name is ${name} and my phone number is ${phone}.\n` +
+        `Please get back to me.`
       );
-      const whatsappUrl = `https://wa.me/${currentContactListing.whatsappNumber.replace(/\D/g,'')}?text=${message}`;
-      window.open(whatsappUrl, '_blank');
-      contactModal.close();
-      currentContactListing = null;
-      contactForm.reset();
+
+      const waURL = `https://wa.me/${waNumber}?text=${message}`;
+
+      // Open WhatsApp link in new tab/window
+      window.open(waURL, '_blank');
+
+      // Close modal
+      contactModal.classList.remove('active');
     });
 
-    // Initial render
-    renderListings();
+    // Filter logic
+    document.getElementById('applyFiltersBtn').addEventListener('click', () => {
+      const category = document.getElementById('filterCategory').value;
+      const brand = document.getElementById('filterBrand').value;
+      const fuel = document.getElementById('filterFuel').value;
+      const engineType = document.getElementById('filterEngineType').value;
+
+      document.querySelectorAll('#listingsContainer .listing').forEach(listing => {
+        const matchCategory = !category || listing.dataset.category === category;
+        const matchBrand = !brand || listing.dataset.brand === brand;
+        const matchFuel = !fuel || listing.dataset.fuel === fuel;
+        const matchEngine = !engineType || listing.dataset.engineType === engineType;
+
+        if (matchCategory && matchBrand && matchFuel && matchEngine) {
+          listing.style.display = 'flex';
+        } else {
+          listing.style.display = 'none';
+        }
+      });
+    });
+
+    document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+      ['filterCategory','filterBrand','filterFuel','filterEngineType'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      document.querySelectorAll('#listingsContainer .listing').forEach(listing => {
+        listing.style.display = 'flex';
+      });
+    });
   </script>
 </body>
 </html>
