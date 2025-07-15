@@ -1,12 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Torque Bay - Online Car Auctions</title>
+  <title>About Us - Torque Bay</title>
+
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* Reset */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
       background: #1a1c20;
@@ -15,16 +22,23 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
     }
+
+    /* Header */
     .top-header {
       background: #000;
+      width: 100%;
       padding: 12px 40px;
       display: flex;
       justify-content: center;
       align-items: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      position: relative;
       z-index: 1000;
+      user-select: none;
     }
+
     .top-header .logo {
       max-width: 220px;
       cursor: pointer;
@@ -40,6 +54,8 @@
       background: transparent !important;
       display: block;
     }
+
+    /* Navigation Bar */
     nav {
       width: 100%;
       background: rgba(20, 20, 24, 0.9);
@@ -58,6 +74,7 @@
       border-top: 1px solid #3a3a3a;
       border-bottom: 1px solid #3a3a3a;
     }
+
     nav a {
       color: #bbb;
       text-decoration: none;
@@ -77,254 +94,187 @@
       pointer-events: none;
       cursor: default;
     }
-    .badge {
-      border-radius: 14px;
-      padding: 5px 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 600;
-      color: white;
+
+    /* Content Container */
+    main {
+      max-width: 980px;
+      margin: 40px auto 100px;
+      padding: 0 25px;
+      color: #bbb;
     }
-    .badge.runner {
-      background: #28a745;
+
+    main h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      color: #e02828;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      user-select: none;
+      border-bottom: none;
+      padding-bottom: 0;
+      max-width: 320px;
     }
-    .badge.not-runner {
-      background: #cc2222;
-    }
-    .badge.mot-valid {
-      background: #28a745;
-    }
-    .badge.mot-expired {
-      background: #cc2222;
-    }
-    .filter-bar {
-      margin: 20px auto;
-      max-width: 900px;
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-    }
-    .filter-bar select {
-      padding: 10px;
-      background: #2a2c30;
-      color: #eee;
-      border: none;
-      border-radius: 6px;
-      font-size: 0.95rem;
-    }
-    .listing-grid {
+
+    /* Values / Features Grid */
+    .values-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-      padding: 30px;
-      max-width: 1200px;
-      margin: 0 auto 80px;
-      flex-grow: 1;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
     }
+
     .card {
       background: #272a2f;
-      padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.4);
-      color: #ddd;
+      padding: 16px 20px;
+      box-shadow: none;
+      cursor: default;
+      transition: background-color 0.3s ease;
     }
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      object-fit: cover;
-      height: 180px;
+
+    .card:hover {
+      background-color: #3a3b40;
     }
-    .card h3 {
-      font-size: 1.4rem;
-      margin: 12px 0;
+
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 14px;
       color: #e02828;
-    }
-    .card p {
-      font-size: 0.95rem;
-      line-height: 1.4;
-      margin: 6px 0;
-    }
-    .card .buttons {
-      margin-top: 10px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .card button {
-      padding: 8px 12px;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .card button.place-bid {
-      background-color: #e59428; /* orange */
-      color: #fff;
-    }
-    .card button.buy-now {
-      background-color: #e02828; /* red */
-      color: white;
-    }
-    .card button.contact-seller {
-      background-color: #28a745; /* green */
-      color: white;
-    }
-    .card button:disabled {
-      background-color: #555;
-      cursor: not-allowed;
-    }
-    footer {
-      background: #111;
-      color: #666;
-      text-align: center;
-      padding: 12px 0;
-      font-size: 0.9rem;
       user-select: none;
     }
 
+    .card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+      color: #f44336;
+      user-select: none;
+    }
+
+    .card p {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.4;
+      color: #ccc;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px 10px;
+      font-weight: 300;
+      font-size: 0.9rem;
+      color: #555;
+      user-select: none;
+      border-top: 1px solid #2a2a2a;
+      margin-top: auto;
+      background: #121318;
+    }
+
     /* Responsive */
-    @media (max-width: 480px) {
-      .filter-bar {
-        flex-direction: column;
-        gap: 12px;
+    @media (max-width: 768px) {
+      main {
+        margin: 30px 25px 50px;
+      }
+      main h2 {
+        font-size: 2.8rem;
+        max-width: 100%;
+        margin-bottom: 28px;
       }
       nav {
-        gap: 20px;
-        font-size: 0.9rem;
+        gap: 32px;
+        font-size: 0.95rem;
+      }
+      .values-grid {
+        gap: 22px;
+      }
+      .card {
+        padding: 14px 16px;
+      }
+      .card-icon {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+      .card h3 {
+        font-size: 1.15rem;
+        margin-bottom: 6px;
+      }
+      .card p {
+        font-size: 0.95rem;
+        line-height: 1.35;
+      }
+    }
+    @media (max-width: 480px) {
+      nav {
+        gap: 18px;
+        font-size: 0.85rem;
+        padding: 8px 0;
+      }
+      main {
+        padding: 0 15px;
+        margin: 20px 15px 40px;
+      }
+      .values-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
       }
     }
   </style>
 </head>
 <body>
+
   <header class="top-header">
-    <div class="logo">
+    <div class="logo" onclick="window.location.href='index.html'">
       <img src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" />
     </div>
   </header>
+
   <nav>
-    <a href="#" class="active">Home</a>
-    <a href="login.html">Login</a>
+    <a href="index.html">Home</a>
     <a href="register.html">Register</a>
-    <a href="about-us.html">About Us</a>
+    <a href="login.html">Login</a>
+    <a href="about.html" class="active">About Us</a>
+    <a href="contact.html">Contact Us</a>
   </nav>
-  <div class="filter-bar">
-    <select name="category">
-      <option value="">All Categories</option>
-      <option value="runner">Runner</option>
-      <option value="nonrunner">Non Runner</option>
-    </select>
-    <select name="brand">
-      <option value="">All Brands</option>
-      <option value="astra">Astra</option>
-      <option value="bmw">BMW</option>
-      <option value="fiesta">Fiesta</option>
-    </select>
-    <select name="fuel">
-      <option value="">All Fuels</option>
-      <option value="petrol">Petrol</option>
-      <option value="diesel">Diesel</option>
-    </select>
-    <button id="applyFilterBtn" style="padding:10px 16px; background:#e02828; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">
-      Filter
-    </button>
-  </div>
-  <main class="listing-grid">
-    <!-- Astra J Listing -->
-    <div class="card" data-category="runner" data-brand="astra" data-fuel="petrol">
-      <img src="https://i.ibb.co/HpkjZvVL/2025-07-05-18-30-42-743.jpg" alt="Astra J" />
-      <h3>Vauxhall Astra J</h3>
-      <p><span class="badge runner">Runner</span> <span class="badge mot-valid">MOT: Valid</span></p>
-      <p>Petrol | 1.4 Turbo | 2010 | 89,905 miles</p>
-      <p><strong>Current Bid:</strong> £750 | <strong>Buy It Now:</strong> £1850</p>
-      <p><strong>Auction ends in: <span id="astra-countdown">Loading...</span></strong></p>
-      <div class="buttons">
-        <button class="place-bid">Place Bid</button>
-        <button class="buy-now">Buy It Now</button>
-        <button class="contact-seller">Contact Seller</button>
-      </div>
-    </div>
-    <!-- BMW Listing -->
-    <div class="card" data-category="runner" data-brand="bmw" data-fuel="diesel">
-      <img src="https://i.ibb.co/0RRx7dxH/1000067109.jpg" alt="BMW" />
-      <h3>BMW 330D M57</h3>
-      <p><span class="badge runner">Runner</span> <span class="badge mot-expired">MOT: Expired</span></p>
-      <p>Diesel | 3.0 Turbo | 2007 | 120,000 miles</p>
-      <p><em>Mapped stage 1 with custom exhaust and popcorn limiter</em></p>
-      <div class="buttons">
-        <button class="place-bid" disabled>Place Bid</button>
-        <button class="buy-now" disabled>Buy It Now</button>
-        <button class="contact-seller">Contact Seller</button>
-      </div>
-    </div>
-    <!-- Fiesta Listing -->
-    <div class="card" data-category="nonrunner" data-brand="fiesta" data-fuel="petrol">
-      <img src="https://i.ibb.co/d0LhNS0v/fiesta.jpg" alt="Fiesta" />
-      <h3>Ford Fiesta</h3>
-      <p><span class="badge not-runner">Non Runner</span> <span class="badge mot-expired">MOT: Expired</span></p>
-      <p>Petrol | 1.25 NA | 2013 | 95,000 miles</p>
-      <p>Auction ended: Sold for £759</p>
-      <div class="buttons">
-        <button class="place-bid" disabled>Place Bid</button>
-        <button class="buy-now" disabled>Buy It Now</button>
-        <button class="contact-seller">Contact Seller</button>
-      </div>
-    </div>
+
+  <main>
+    <h2>About Torque Bay</h2>
+    <p>Torque Bay is the ultimate online car auction platform dedicated to connecting buyers and sellers with an unmatched experience. We blend cutting-edge technology with a passion for automotive culture to bring you the most exciting and secure auctions.</p>
+    <p>Whether you’re an enthusiast, collector, or simply looking for your next ride, Torque Bay offers an extensive selection, transparent bidding, and expert support every step of the way.</p>
+
+    <section class="values-grid" aria-label="Our values">
+      <article class="card" tabindex="0">
+        <div class="card-icon" aria-hidden="true">🚗</div>
+        <h3>Extensive Selection</h3>
+        <p>From classic muscle cars to the latest supercars, find a wide range of vehicles carefully curated to suit every taste and budget.</p>
+      </article>
+
+      <article class="card" tabindex="0">
+        <div class="card-icon" aria-hidden="true">🔒</div>
+        <h3>Secure Bidding</h3>
+        <p>Our platform uses industry-leading security measures ensuring your bids and transactions are safe and trustworthy.</p>
+      </article>
+
+      <article class="card" tabindex="0">
+        <div class="card-icon" aria-hidden="true">⚡</div>
+        <h3>Fast & Transparent</h3>
+        <p>Enjoy a seamless auction process with real-time updates, transparent pricing, and no hidden fees.</p>
+      </article>
+
+      <article class="card" tabindex="0">
+        <div class="card-icon" aria-hidden="true">🤝</div>
+        <h3>Dedicated Support</h3>
+        <p>Our expert team is here to assist you from registration to final sale, providing personalized customer service.</p>
+      </article>
+    </section>
   </main>
 
   <footer>
-    &copy; 2025 Torque Bay - All Rights Reserved
+    &copy; 2025 Torque Bay. All rights reserved.
   </footer>
 
-  <script>
-    // Filter functionality on button click
-    document.getElementById('applyFilterBtn').addEventListener('click', () => {
-      const category = document.querySelector('select[name="category"]').value.toLowerCase();
-      const brand = document.querySelector('select[name="brand"]').value.toLowerCase();
-      const fuel = document.querySelector('select[name="fuel"]').value.toLowerCase();
-
-      document.querySelectorAll('.listing-grid .card').forEach(card => {
-        const cardCategory = card.dataset.category.toLowerCase();
-        const cardBrand = card.dataset.brand.toLowerCase();
-        const cardFuel = card.dataset.fuel.toLowerCase();
-
-        const matchCategory = !category || cardCategory === category;
-        const matchBrand = !brand || cardBrand === brand;
-        const matchFuel = !fuel || cardFuel === fuel;
-
-        if (matchCategory && matchBrand && matchFuel) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-
-    // Countdown timer for Astra auction ending 18 July 2025, 4:00 PM
-    function updateCountdown() {
-      const countdownElem = document.getElementById('astra-countdown');
-      const endDate = new Date('July 18, 2025 16:00:00').getTime();
-      const now = new Date().getTime();
-      const distance = endDate - now;
-
-      if (distance < 0) {
-        countdownElem.textContent = 'Auction ended';
-        return;
-      }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      countdownElem.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
-
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-
-  </script>
 </body>
 </html>
