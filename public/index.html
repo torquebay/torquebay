@@ -86,18 +86,10 @@
       font-weight: 600;
       color: white;
     }
-    .badge.runner {
-      background: #28a745;
-    }
-    .badge.not-runner {
-      background: #cc2222;
-    }
-    .badge.mot-valid {
-      background: #28a745;
-    }
-    .badge.mot-expired {
-      background: #cc2222;
-    }
+    .badge.runner { background: #28a745; }
+    .badge.not-runner { background: #cc2222; }
+    .badge.mot-valid { background: #28a745; }
+    .badge.mot-expired { background: #cc2222; }
     .filter-bar {
       margin: 20px auto;
       max-width: 900px;
@@ -160,21 +152,19 @@
       border-radius: 6px;
       cursor: pointer;
     }
-    .card button.place-bid {
-      background-color: #e59428; /* orange */
+    .card button.place-bid { background-color: #e59428; color: #fff; }
+    .card button.buy-now { background-color: #e02828; color: white; }
+    .card button.contact-seller { background-color: #28a745; color: white; }
+    .card button:disabled { background-color: #555; cursor: not-allowed; }
+    .auction-countdown { font-weight: bold; color: #28a745; font-size: 1.1rem; }
+    .bid-input { display: flex; gap: 8px; margin: 10px 0; }
+    .bid-input input {
+      width: 100px;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #888;
+      background: #222;
       color: #fff;
-    }
-    .card button.buy-now {
-      background-color: #e02828; /* red */
-      color: white;
-    }
-    .card button.contact-seller {
-      background-color: #28a745; /* green */
-      color: white;
-    }
-    .card button:disabled {
-      background-color: #555;
-      cursor: not-allowed;
     }
     footer {
       background: #111;
@@ -184,7 +174,6 @@
       font-size: 0.9rem;
       user-select: none;
     }
-
     /* Responsive */
     @media (max-width: 480px) {
       .filter-bar {
@@ -195,6 +184,63 @@
         gap: 20px;
         font-size: 0.9rem;
       }
+    }
+    /* Modal styles */
+    #contactModal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0; top: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+    #contactModal .modal-content {
+      background: #222;
+      padding: 20px;
+      border-radius: 8px;
+      width: 320px;
+      color: #eee;
+      box-shadow: 0 0 12px #e02828;
+      font-family: 'Poppins', sans-serif;
+    }
+    #contactModal h3 {
+      margin-bottom: 12px;
+      color: #e02828;
+      text-align: center;
+      font-weight: 700;
+    }
+    #contactModal label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    #contactModal input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 14px;
+      border-radius: 6px;
+      border: 1px solid #555;
+      background: #333;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 400;
+      font-family: 'Poppins', sans-serif;
+    }
+    #contactModal button {
+      background: #e02828;
+      border: none;
+      color: white;
+      padding: 12px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    #contactModal button:hover {
+      background: #b21f1f;
     }
   </style>
 </head>
@@ -232,47 +278,71 @@
     </button>
   </div>
   <main class="listing-grid">
-    <!-- Astra J Listing -->
+
+    <!-- Astra J Listing (LIVE) -->
     <div class="card" data-category="runner" data-brand="astra" data-fuel="petrol">
       <img src="https://i.ibb.co/HpkjZvVL/2025-07-05-18-30-42-743.jpg" alt="Astra J" />
       <h3>Vauxhall Astra J</h3>
       <p><span class="badge runner">Runner</span> <span class="badge mot-valid">MOT: Valid</span></p>
       <p>Petrol | 1.4 Turbo | 2010 | 89,905 miles</p>
-      <p><strong>Current Bid:</strong> £750 | <strong>Buy It Now:</strong> £1850</p>
-      <p><strong>Auction ends in: <span id="astra-countdown">Loading...</span></strong></p>
-      <div class="buttons">
+      <p><strong>Current Bid: £<span id="astra-current-bid">750</span></strong> | <strong>Buy It Now: £1850</strong></p>
+      <p><strong>Auction ends in: <span id="astra-countdown" class="auction-countdown">Loading...</span></strong></p>
+      <div class="bid-input">
+        <input type="number" id="astra-bid-input" min="751" placeholder="Your bid £" />
         <button class="place-bid">Place Bid</button>
+      </div>
+      <div class="buttons">
         <button class="buy-now">Buy It Now</button>
         <button class="contact-seller">Contact Seller</button>
       </div>
     </div>
-    <!-- BMW Listing -->
+
+    <!-- BMW Listing (ENDED) -->
     <div class="card" data-category="runner" data-brand="bmw" data-fuel="diesel">
       <img src="https://i.ibb.co/qYpgLfw9/YG56-OPMjpg.jpg" alt="BMW" />
       <h3>BMW 320d 2006</h3>
       <p><span class="badge runner">Runner</span> <span class="badge mot-expired">MOT: Expired</span></p>
       <p>Diesel | 2.0 Turbo | 2007 | 120,000 miles</p>
       <p><em>Mapped Stage 1 with custom exhaust and popcorn limiter</em></p>
+      <p><strong>Auction ended: SOLD FOR £2,000</strong></p>
       <div class="buttons">
         <button class="place-bid" disabled>Place Bid</button>
         <button class="buy-now" disabled>Buy It Now</button>
-        <button class="contact-seller">Contact Seller</button>
+        <button class="contact-seller" disabled>Contact Seller</button>
       </div>
     </div>
-    <!-- Fiesta Listing -->
+
+    <!-- Fiesta Listing (ENDED) -->
     <div class="card" data-category="nonrunner" data-brand="fiesta" data-fuel="petrol">
       <img src="https://i.ibb.co/d0LhNS0v/fiesta.jpg" alt="Fiesta" />
       <h3>Ford Fiesta</h3>
       <p><span class="badge not-runner">Non Runner</span> <span class="badge mot-expired">MOT: Expired</span></p>
       <p>Petrol | 1.25 NA | 2013 | 95,000 miles</p>
-      <p>Auction ended: Sold for £759</p>
+      <p><strong>Auction ended: SOLD FOR £780</strong></p>
       <div class="buttons">
         <button class="place-bid" disabled>Place Bid</button>
         <button class="buy-now" disabled>Buy It Now</button>
-        <button class="contact-seller">Contact Seller</button>
+        <button class="contact-seller" disabled>Contact Seller</button>
       </div>
     </div>
+
   </main>
+
+  <!-- Contact Seller Modal -->
+  <div id="contactModal">
+    <div class="modal-content">
+      <h3>Contact Seller</h3>
+      <form id="contactForm">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" required placeholder="Your full name" autocomplete="name" />
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" required placeholder="Your phone number" autocomplete="tel" />
+
+        <button type="submit">Send via WhatsApp</button>
+      </form>
+    </div>
+  </div>
 
   <footer>
     &copy; 2025 Torque Bay - All Rights Reserved
@@ -321,10 +391,86 @@
 
       countdownElem.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
-
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
+    // Login check dummy function (replace with real auth)
+    function isLoggedIn() {
+      // Placeholder: returns false for demo
+      return false;
+    }
+
+    // Bid functionality for Astra
+    const currentBidSpan = document.getElementById('astra-current-bid');
+    const bidInput = document.getElementById('astra-bid-input');
+    const placeBidBtn = document.querySelector('.card[data-brand="astra"] .place-bid');
+    const buyNowBtn = document.querySelector('.card[data-brand="astra"] .buy-now');
+    const contactSellerBtn = document.querySelector('.card[data-brand="astra"] .contact-seller');
+
+    // Enable/disable bid button based on input
+    bidInput.addEventListener('input', () => {
+      const currentBid = parseInt(currentBidSpan.textContent);
+      const enteredBid = parseInt(bidInput.value);
+      placeBidBtn.disabled = isNaN(enteredBid) || enteredBid <= currentBid;
+    });
+
+    placeBidBtn.addEventListener('click', () => {
+      const currentBid = parseInt(currentBidSpan.textContent);
+      const newBid = parseInt(bidInput.value);
+      if (newBid > currentBid) {
+        if (!isLoggedIn()) {
+          alert('Please log in to place a bid.');
+          window.location.href = 'login.html';
+          return;
+        }
+        currentBidSpan.textContent = newBid;
+        alert(`Bid placed successfully: £${newBid}`);
+        bidInput.value = '';
+        placeBidBtn.disabled = true;
+      } else {
+        alert(`Bid must be higher than current bid (£${currentBid}).`);
+      }
+    });
+
+    buyNowBtn.addEventListener('click', () => {
+      if (!isLoggedIn()) {
+        alert('Please log in to buy the car now.');
+        window.location.href = 'login.html';
+        return;
+      }
+      alert('You chose to buy it now for £1850. Proceed to payment (not implemented).');
+    });
+
+    // Contact Seller modal logic (allowed without login)
+    const contactModal = document.getElementById('contactModal');
+    const contactForm = document.getElementById('contactForm');
+
+    contactSellerBtn.addEventListener('click', () => {
+      contactModal.style.display = 'flex';
+    });
+
+    contactForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const fullName = document.getElementById('fullName').value.trim();
+      const phoneNumber = document.getElementById('phoneNumber').value.trim();
+      if (!fullName || !phoneNumber) {
+        alert('Please fill in all fields.');
+        return;
+      }
+      const listingName = 'Vauxhall Astra J';
+      const message = encodeURIComponent(`Hello, I am ${fullName} (${phoneNumber}). I am interested in your listing: ${listingName}. Please contact me.`);
+      const whatsappURL = `https://api.whatsapp.com/send?phone=077553899955&text=${message}`;
+      contactModal.style.display = 'none';
+      contactForm.reset();
+      window.open(whatsappURL, '_blank');
+    });
+
+    // Close modal on click outside form
+    contactModal.addEventListener('click', e => {
+      if (e.target === contactModal) {
+        contactModal.style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
