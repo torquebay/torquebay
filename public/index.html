@@ -5,57 +5,46 @@
   <title>Torque Bay Auctions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700;900&display=swap');
-
+    /* Base styling */
     body {
-      font-family: 'Oswald', 'Arial Black', Arial, sans-serif;
-      padding: 1rem;
+      background: #121212;
+      color: #eee;
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
       max-width: 1100px;
-      margin: auto;
-      background: #111;
-      color: #fff;
+      margin-left: auto;
+      margin-right: auto;
     }
 
+    /* Header */
     header {
-      background: black;
-      padding: 10px 15px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-
-    header div {
+      background: #1e1e1e;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
-      gap: 15px;
-      max-width: 1100px;
-      margin: auto;
+      justify-content: space-between;
+      user-select: none;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     #logo {
       max-height: 60px;
-      user-select: none;
-    }
-
-    header h1 {
-      color: #FF3B3F;
-      font-weight: 900;
-      font-size: 1.8rem;
-      user-select: none;
-      margin: 0;
-      white-space: nowrap;
-      flex-shrink: 0;
     }
 
     nav {
-      margin-left: auto;
-      font-size: 0.9rem;
-      font-weight: 600;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     nav a {
-      margin-left: 18px;
       color: #FF3B3F;
       text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
     }
 
     nav a:hover,
@@ -63,62 +52,125 @@
       text-decoration: underline;
     }
 
+    #loginStatus {
+      color: #FF6F00;
+      font-weight: 600;
+      font-size: 1rem;
+      user-select: none;
+    }
+
+    /* Subtle top banner */
     .banner-text {
-  font-family: 'Oswald', 'Arial Black', Arial, sans-serif; /* matches logo font */
-  background: black;
-  border: 3px solid white;
-  margin-bottom: 25px;
-  padding: 8px 15px;
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
-  font-weight: 900;
-  font-size: 1.15rem;
-  color: white;
-  overflow: hidden;
-  white-space: nowrap;
-  position: relative;
-  height: 32px;
-  user-select: none;
+      background: #1e1e1e;
+      border-top: 3px solid #FF3B3F;
+      border-bottom: 3px solid #FF3B3F;
+      padding: 10px 0;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #FF3B3F;
+      user-select: none;
+      margin-bottom: 20px;
     }
 
-    .banner-text span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: scroll 14s linear infinite;
-    }
-
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-
-    .listing {
+    /* Main layout with sidebar filter and listings */
+    .main-content {
       display: flex;
-      gap: 15px;
+      gap: 20px;
+      padding: 0 20px 40px 20px;
+    }
+
+    /* Filter sidebar styling */
+    #filterSidebar {
+      flex: 0 0 220px;
       background: #222;
       border-radius: 6px;
       padding: 15px;
-      margin-bottom: 30px;
       border: 1px solid #444;
-      color: #ddd;
-      align-items: flex-start;
+      color: #ccc;
+      display: none; /* Initially hidden, only show if multiple listings */
     }
 
+    #filterSidebar h3 {
+      color: #FF3B3F;
+      margin-top: 0;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    #filterSidebar label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #eee;
+    }
+
+    #filterSidebar input[type="text"],
+    #filterSidebar select,
+    #filterSidebar input[type="number"] {
+      width: 100%;
+      padding: 6px 8px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background: #121212;
+      color: #eee;
+      font-size: 1rem;
+    }
+
+    #filterSidebar button {
+      width: 100%;
+      background-color: #FF3B3F;
+      border: none;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    #filterSidebar button:hover,
+    #filterSidebar button:focus {
+      background-color: #e63338;
+      outline: none;
+    }
+
+    /* Listings container */
+    #listingsContainer {
+      flex: 1;
+    }
+
+    /* Single listing card */
+    .listing {
+      display: flex;
+      gap: 15px;
+      background: #1e1e1e;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 30px;
+      border: 1px solid #333;
+      color: #ddd;
+    }
+
+    /* Gallery inside listing */
     .gallery {
-      flex: 1 1 450px;
+      flex: 0 0 250px;
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
 
     .gallery #mainImage {
-      width: 100%;
+      width: 250px;
+      height: 140px;
       border-radius: 6px;
+      object-fit: cover;
       cursor: zoom-in;
       transition: transform 0.3s ease;
-      max-height: 320px;
-      object-fit: cover;
       user-select: none;
     }
 
@@ -137,8 +189,8 @@
     }
 
     .gallery .thumbs img {
-      width: 70px;
-      height: 50px;
+      width: 60px;
+      height: 40px;
       object-fit: cover;
       border-radius: 4px;
       cursor: pointer;
@@ -151,18 +203,18 @@
       border-color: #FF3B3F;
     }
 
+    /* Details section */
     .details {
-      flex: 1 1 350px;
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 10px;
       color: #eee;
     }
 
     .details h2 {
-      margin: 0;
+      margin: 0 0 10px 0;
       color: #FF3B3F;
-      font-weight: 900;
+      font-weight: bold;
       font-size: 1.7rem;
       user-select: none;
     }
@@ -208,7 +260,7 @@
     }
 
     #auctionEnds {
-      color: white;
+      color: #eee;
       font-weight: 700;
       text-align: center;
       font-size: 1.25rem;
@@ -218,22 +270,25 @@
 
     .actions {
       display: flex;
-      flex-direction: column;
       gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
 
     .actions label {
       font-weight: 600;
       user-select: none;
+      flex: 1 0 100%;
     }
 
     .actions input[type=number] {
       padding: 6px 8px;
       border-radius: 4px;
       border: 1px solid #444;
-      background: #111;
+      background: #121212;
       color: #eee;
       font-size: 1rem;
+      flex: 1 0 120px;
     }
 
     .actions button {
@@ -245,6 +300,7 @@
       user-select: none;
       transition: background-color 0.3s ease;
       font-size: 1rem;
+      flex: 1 0 120px;
     }
 
     #bidBtn {
@@ -305,7 +361,7 @@
       max-width: 400px;
       width: 90%;
       box-shadow: 0 0 20px rgba(0,0,0,0.7);
-      font-family: 'Oswald', 'Arial Black', Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     dialog#contactModal h2 {
@@ -355,23 +411,28 @@
       margin-top: 10px;
     }
 
-    /* Responsive adjustments */
-    @media (max-width: 800px) {
+    /* Responsive */
+    @media (max-width: 850px) {
+      .main-content {
+        flex-direction: column;
+        padding: 0 10px 40px 10px;
+      }
+      #filterSidebar {
+        flex: none;
+        width: 100%;
+        margin-bottom: 25px;
+      }
       .listing {
         flex-direction: column;
       }
-      .gallery,
-      .details {
+      .gallery {
         flex: none;
         width: 100%;
+        margin-bottom: 15px;
       }
-      header div {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-      }
-      nav {
-        margin-left: 0;
+      .gallery #mainImage {
+        width: 100%;
+        height: auto;
       }
     }
   </style>
@@ -379,74 +440,48 @@
 <body>
 
 <header>
-  <div>
-    <img id="logo" src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" />
-  
-    <nav>
-      <a href="login.html" aria-label="Login">Login</a>
-      <a href="register.html" aria-label="Register">Register</a>
-    </nav>
-  </div>
+  <img id="logo" src="https://i.ibb.co/tdfVWT7/file-000000003fbc6243981f1c2e906b6319.png" alt="Torque Bay Logo" />
+  <nav>
+    <a href="index.html" aria-label="Home">Home</a>
+    <a href="login.html" aria-label="Login">Login</a>
+    <a href="register.html" aria-label="Register">Register</a>
+    <a href="about-us.html" aria-label="About Us">About Us</a>
+  </nav>
+  <div id="loginStatus" aria-live="polite"></div>
 </header>
 
 <div class="banner-text" role="region" aria-live="polite" aria-atomic="true">
-  <span>🚗 💨 Updates Coming Soon! – Email TorqueBay@gmail.com for enquiries & Membership Information . Stay tuned! 🚀</span>
+  Updates Coming Soon! – Email TorqueBay@gmail.com for enquiries & Membership Information. Stay tuned!
 </div>
 
-<section class="listing" data-title="2010 Astra J 1.4 Turbo" data-condition="runner" data-miles="89905" id="listingsContainer">
-  <div class="gallery" aria-label="Car image gallery">
-    <img src="https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg" alt="Astra J front view large image" id="mainImage" />
-    <div class="thumbs" role="list">
-      <!-- Removed duplicate first image -->
-      <img src="https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg" alt="Astra J side view thumbnail" role="listitem" tabindex="0" />
-      <img src="https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg" alt="Astra J interior thumbnail" role="listitem" tabindex="0" />
-      <img src="https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg" alt="Astra J engine thumbnail" role="listitem" tabindex="0" />
-    </div>
-  </div>
+<div class="main-content">
 
-  <div class="details" role="region" aria-labelledby="carTitle" tabindex="0">
-    <h2 id="carTitle">Astra J 1.4 Turbo 2010 A14NET</h2>
+  <!-- Filter sidebar (hidden initially if only one listing) -->
+  <aside id="filterSidebar" aria-label="Filter listings">
+    <h3>Filter Listings</h3>
+    <label for="filterTitle">Title contains:</label>
+    <input type="text" id="filterTitle" placeholder="e.g. Astra" />
 
-    <div class="badges" aria-label="Car condition, MOT status and mileage">
-  <div class="badge" aria-label="Runner condition">
-    <span class="tick" aria-hidden="true"></span> Runner
-  </div>
-  <div class="badge" aria-label="MOT status">
-    <span class="tick" aria-hidden="true"></span> MOT
-  </div>
-  <div class="badge" aria-label="Low mileage status">
-    <span class="tick" aria-hidden="true"></span> Low mileage
-  </div>
+    <label for="filterCondition">Condition:</label>
+    <select id="filterCondition">
+      <option value="">Any</option>
+      <option value="runner">Runner</option>
+      <option value="not runner">Not Runner</option>
+    </select>
+
+    <label for="filterMaxMiles">Max Mileage:</label>
+    <input type="number" id="filterMaxMiles" min="0" placeholder="e.g. 90000" />
+
+    <button id="applyFilterBtn">Apply Filter</button>
+    <button id="clearFilterBtn" style="margin-top: 8px; background-color: #444;">Clear Filter</button>
+  </aside>
+
+  <!-- Listings container -->
+  <main id="listingsContainer" aria-live="polite" aria-atomic="true">
+    <!-- Listings inserted by JS -->
+  </main>
+
 </div>
-  
-
-    <div id="auctionEnds" aria-live="polite" aria-atomic="true" aria-label="Auction countdown">
-      Auction ends in: <span id="countdown">Loading...</span>
-    </div>
-
-    <div class="actions" aria-label="Bidding and buying options">
-      <label for="bidAmount">Your Bid (£):</label>
-      <input type="number" id="bidAmount" min="750" step="10" aria-describedby="bidHelp" />
-     <button id="contactSellerBtn">Contact Seller Directly</button>
-      
-      <button id="bidBtn" aria-describedby="bidHelp">Place Bid</button>
-
-      <button id="buyNowBtn" aria-describedby="buyNowHelp">Buy It Now - £1850</button>
-
-      
-    </div>
-    <p id="bidHelp" style="font-size:0.8rem;color:#aaa;margin-top:-8px;margin-bottom:6px;">
-      Minimum bid £750. Must be logged in to bid or buy.
-    </p>
-    <p id="buyNowHelp" style="font-size:0.8rem;color:#aaa;margin-top:-12px;margin-bottom:12px;">
-      Buy now price: £1850
-    </p>
-
-    <div class="description" tabindex="0">
-      <strong>Description:</strong> The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm torque. Known for its impressive fuel economy of around 47-50 mpg and brisk acceleration, it's a perfect blend of performance and efficiency for everyday driving.
-    </div>
-  </div>
-</section>
 
 <footer>
   &copy; TorqueBay 2025 All Rights Reserved
@@ -455,12 +490,12 @@
 <!-- Contact Seller Modal -->
 <dialog id="contactModal" aria-modal="true" role="dialog" aria-labelledby="contactModalTitle">
   <h2 id="contactModalTitle">Arrange Viewing</h2>
-  <p>Enter your full name and phone number below.
-After messaging the seller on WhatsApp, please send them a screenshot of this listing from our site.
-The seller will get back to you as soon as possible to arrange a viewing.
-
+  <p>
+    Enter your full name and phone number below.<br/>
+    After messaging the seller on WhatsApp, please send them a screenshot of this listing from our site.<br/>
+    The seller will get back to you as soon as possible to arrange a viewing.<br/><br/>
     -TorqueBay
-</p>
+  </p>
   <form id="contactForm">
     <label for="contactName">Name:</label>
     <input type="text" id="contactName" name="contactName" required autocomplete="name" />
@@ -474,88 +509,293 @@ The seller will get back to you as soon as possible to arrange a viewing.
 </dialog>
 
 <script>
-  // Image gallery logic
-  const galleryImages = document.querySelectorAll('.gallery .thumbs img');
-  const mainImage = document.getElementById('mainImage');
+  // TODO: Replace these with your actual Supabase login/session management
+  // Simulated login status:
+  let isLoggedIn = false;      // false means not logged in, true means logged in
+  let currentUser = null;      // example: { email: 'user@example.com', username: 'torquebayuser' }
 
-  galleryImages.forEach(img => {
-    img.addEventListener('click', () => {
-      galleryImages.forEach(i => i.classList.remove('selected'));
-      img.classList.add('selected');
-      mainImage.src = img.src;
-      mainImage.alt = img.alt.replace('thumbnail', 'large');
+  // For demo, try to read from localStorage (simulate login persistence)
+  if(localStorage.getItem('loggedInUser')) {
+    isLoggedIn = true;
+    currentUser = JSON.parse(localStorage.getItem('loggedInUser'));
+  }
+
+  // Update login status text in header
+  const loginStatusDiv = document.getElementById('loginStatus');
+  function updateLoginStatus() {
+    if (isLoggedIn && currentUser && currentUser.username) {
+      loginStatusDiv.textContent = `Logged in as ${currentUser.username}`;
+    } else {
+      loginStatusDiv.textContent = 'Not logged in';
+    }
+  }
+  updateLoginStatus();
+
+  // Listings data
+  const listings = [
+    {
+      id: 1,
+      title: 'Astra J 1.4 Turbo 2010 A14NET',
+      condition: 'runner',
+      miles: 89905,
+      images: [
+        'https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg',
+        'https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg',
+        'https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg',
+        'https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg',
+      ],
+      auctionEnd: new Date(Date.UTC(2025, 6, 24, 0, 0, 0)),
+      minBid: 750,
+      buyNowPrice: 1850,
+      description: 'The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm torque. Known for its impressive fuel economy of around 47-50 mpg and brisk acceleration, it\'s a perfect blend of performance and efficiency for everyday driving.',
+      whatsapp: 'https://wa.me/447123456789?text=Is%20the%20Astra%20still%20available%3F'
+    }
+  ];
+
+  if (listings.length > 1) {
+    document.getElementById('filterSidebar').style.display = 'block';
+  }
+
+  const listingsContainer = document.getElementById('listingsContainer');
+
+  function createListingElement(listing) {
+    const listingEl = document.createElement('section');
+    listingEl.className = 'listing';
+    listingEl.setAttribute('data-title', listing.title.toLowerCase());
+    listingEl.setAttribute('data-condition', listing.condition);
+    listingEl.setAttribute('data-miles', listing.miles);
+
+    // Gallery
+    const gallery = document.createElement('div');
+    gallery.className = 'gallery';
+    gallery.setAttribute('aria-label', `Image gallery for ${listing.title}`);
+
+    const mainImage = document.createElement('img');
+    mainImage.id = 'mainImage';
+    mainImage.src = listing.images[0];
+    mainImage.alt = `${listing.title} main image`;
+    gallery.appendChild(mainImage);
+
+    const thumbs = document.createElement('div');
+    thumbs.className = 'thumbs';
+    listing.images.forEach((img, i) => {
+      const thumb = document.createElement('img');
+      thumb.src = img;
+      thumb.alt = `${listing.title} thumbnail ${i + 1}`;
+      if (i === 0) thumb.classList.add('selected');
+      thumb.tabIndex = 0; // keyboard accessible
+      thumb.setAttribute('role', 'button');
+      thumb.setAttribute('aria-label', `View image ${i + 1}`);
+      thumb.addEventListener('click', () => {
+        mainImage.src = img;
+        thumbs.querySelectorAll('img').forEach(t => t.classList.remove('selected'));
+        thumb.classList.add('selected');
+      });
+      thumb.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          thumb.click();
+        }
+      });
+      thumbs.appendChild(thumb);
+    });
+    gallery.appendChild(thumbs);
+
+    // Zoom effect on main image
+    mainImage.addEventListener('click', () => {
+      mainImage.classList.toggle('zoomed');
+    });
+
+    // Details
+    const details = document.createElement('div');
+    details.className = 'details';
+
+    const title = document.createElement('h2');
+    title.textContent = listing.title;
+    details.appendChild(title);
+
+    // Badges (e.g. condition)
+    const badges = document.createElement('div');
+    badges.className = 'badges';
+
+    const runnerBadge = document.createElement('span');
+    runnerBadge.className = 'badge';
+    runnerBadge.innerHTML = listing.condition === 'runner' ? '&#x2714; Runner' : '&#x274C; Not Runner';
+    badges.appendChild(runnerBadge);
+
+    details.appendChild(badges);
+
+    // Auction countdown
+    const auctionEnds = document.createElement('div');
+    auctionEnds.id = 'auctionEnds';
+    auctionEnds.setAttribute('aria-live', 'polite');
+    auctionEnds.setAttribute('aria-atomic', 'true');
+    details.appendChild(auctionEnds);
+
+    // Description
+    const desc = document.createElement('p');
+    desc.className = 'description';
+    desc.textContent = listing.description;
+    details.appendChild(desc);
+
+    // Actions
+    const actions = document.createElement('div');
+    actions.className = 'actions';
+
+    // Bid label and input
+    const bidLabel = document.createElement('label');
+    bidLabel.setAttribute('for', `bidInput-${listing.id}`);
+    bidLabel.textContent = 'Your Bid (£):';
+    actions.appendChild(bidLabel);
+
+    const bidInput = document.createElement('input');
+    bidInput.type = 'number';
+    bidInput.min = listing.minBid;
+    bidInput.id = `bidInput-${listing.id}`;
+    bidInput.value = listing.minBid;
+    actions.appendChild(bidInput);
+
+    // Place Bid button
+    const bidBtn = document.createElement('button');
+    bidBtn.textContent = 'Place Bid';
+    bidBtn.id = 'bidBtn';
+    bidBtn.type = 'button';
+    bidBtn.setAttribute('aria-label', `Place a bid on ${listing.title}`);
+    actions.appendChild(bidBtn);
+
+    // Buy Now button
+    const buyNowBtn = document.createElement('button');
+    buyNowBtn.textContent = `Buy Now (£${listing.buyNowPrice})`;
+    buyNowBtn.id = 'buyNowBtn';
+    buyNowBtn.type = 'button';
+    buyNowBtn.setAttribute('aria-label', `Buy ${listing.title} now for £${listing.buyNowPrice}`);
+    actions.appendChild(buyNowBtn);
+
+    // Contact Seller button
+    const contactBtn = document.createElement('button');
+    contactBtn.textContent = 'Arrange Viewing';
+    contactBtn.id = 'contactSellerBtn';
+    contactBtn.type = 'button';
+    contactBtn.setAttribute('aria-label', `Contact seller to arrange viewing for ${listing.title}`);
+    actions.appendChild(contactBtn);
+
+    details.appendChild(actions);
+
+    listingEl.appendChild(gallery);
+    listingEl.appendChild(details);
+
+    // Countdown logic
+    function updateCountdown() {
+      const now = new Date();
+      const diff = listing.auctionEnd - now;
+      if (diff <= 0) {
+        auctionEnds.textContent = 'Auction ended';
+        bidBtn.disabled = true;
+        buyNowBtn.disabled = true;
+        clearInterval(countdownInterval);
+      } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+        auctionEnds.textContent = `Auction ends in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+    }
+    updateCountdown();
+    const countdownInterval = setInterval(updateCountdown, 1000);
+
+    // Bid button click - requires login, else redirect
+    bidBtn.addEventListener('click', () => {
+      if (!isLoggedIn) {
+        alert('You must be logged in to place a bid. Redirecting to login page...');
+        window.location.href = 'login.html';
+        return;
+      }
+      const bidVal = Number(bidInput.value);
+      if (bidVal >= listing.minBid) {
+        alert(`Your bid of £${bidVal} for ${listing.title} has been placed!`);
+        // TODO: Connect this with backend/Supabase bidding logic
+      } else {
+        alert(`Bid must be at least £${listing.minBid}`);
+      }
+    });
+
+    // Buy now button click - requires login, else redirect
+    buyNowBtn.addEventListener('click', () => {
+      if (!isLoggedIn) {
+        alert('You must be logged in to buy now. Redirecting to login page...');
+        window.location.href = 'login.html';
+        return;
+      }
+      alert(`You have chosen to Buy Now for £${listing.buyNowPrice}. Please contact the seller.`);
+      // TODO: Add payment or purchase logic
+    });
+
+    // Contact Seller button click - opens modal (no login required)
+    contactBtn.addEventListener('click', () => {
+      openContactModal(listing.whatsapp);
+    });
+
+    return listingEl;
+  }
+
+  // Render all listings
+  function renderListings(filter = {}) {
+    listingsContainer.innerHTML = '';
+    let filtered = listings;
+
+    if (filter.title) {
+      filtered = filtered.filter(l => l.title.toLowerCase().includes(filter.title.toLowerCase()));
+    }
+    if (filter.condition) {
+      filtered = filtered.filter(l => l.condition === filter.condition);
+    }
+    if (filter.maxMiles) {
+      filtered = filtered.filter(l => l.miles <= filter.maxMiles);
+    }
+
+    if (filtered.length === 0) {
+      listingsContainer.innerHTML = '<p>No listings match your filter.</p>';
+      return;
+    }
+
+    filtered.forEach(listing => {
+      listingsContainer.appendChild(createListingElement(listing));
+    });
+  }
+
+  renderListings();
+
+  // Filter UI
+  document.getElementById('applyFilterBtn').addEventListener('click', () => {
+    const title = document.getElementById('filterTitle').value.trim();
+    const condition = document.getElementById('filterCondition').value;
+    const maxMiles = Number(document.getElementById('filterMaxMiles').value);
+    renderListings({
+      title: title || null,
+      condition: condition || null,
+      maxMiles: maxMiles || null
     });
   });
 
-  // Zoom on main image
-  mainImage.addEventListener('click', () => {
-    if(mainImage.classList.contains('zoomed')) {
-      mainImage.classList.remove('zoomed');
-    } else {
-      mainImage.classList.add('zoomed');
-    }
-  });
-  mainImage.addEventListener('mouseleave', () => {
-    mainImage.classList.remove('zoomed');
+  document.getElementById('clearFilterBtn').addEventListener('click', () => {
+    document.getElementById('filterTitle').value = '';
+    document.getElementById('filterCondition').value = '';
+    document.getElementById('filterMaxMiles').value = '';
+    renderListings();
   });
 
-  // Auction countdown to 24 July 2025 midnight UTC
-  const countdownEl = document.getElementById('countdown');
-  const auctionEnd = new Date(Date.UTC(2025, 6, 24, 0, 0, 0)); // July is month 6 (0-based)
-
-  function updateCountdown() {
-    const now = new Date();
-    const diff = auctionEnd - now;
-    if (diff <= 0) {
-      countdownEl.textContent = "Auction ended";
-      clearInterval(countdownInterval);
-      return;
-    }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-    countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-  }
-  updateCountdown();
-  const countdownInterval = setInterval(updateCountdown, 1000);
-
-  // Dummy logged-in state (false = not logged in)
-  let loggedIn = false; // TODO: Replace with real auth state
-
-  // Bid and Buy Now buttons require login
-  document.getElementById('bidBtn').addEventListener('click', () => {
-    if (!loggedIn) {
-      alert('You must be logged in to place a bid.');
-      return;
-    }
-    const bidAmount = parseInt(document.getElementById('bidAmount').value, 10);
-    if (isNaN(bidAmount) || bidAmount < 1500) {
-      alert('Please enter a valid bid of at least £1500.');
-      return;
-    }
-    alert(`Bid placed: £${bidAmount}. Thank you for your interest!`);
-  });
-
-  document.getElementById('buyNowBtn').addEventListener('click', () => {
-    if (!loggedIn) {
-      alert('You must be logged in to buy the car now.');
-      return;
-    }
-    if (confirm('Are you sure you want to buy this car for £1999?')) {
-      alert('Thank you for your purchase! The seller will contact you shortly.');
-    }
-  });
-
-  // Contact seller modal logic
-  const contactBtn = document.getElementById('contactSellerBtn');
+  // Contact modal logic
   const contactModal = document.getElementById('contactModal');
   const contactForm = document.getElementById('contactForm');
   const cancelContactBtn = document.getElementById('cancelContact');
+  let whatsappUrl = '';
 
-  contactBtn.addEventListener('click', () => {
+  function openContactModal(url) {
+    whatsappUrl = url;
     contactModal.showModal();
-  });
+    contactForm.reset();
+  }
 
   cancelContactBtn.addEventListener('click', () => {
     contactModal.close();
@@ -569,17 +809,13 @@ The seller will get back to you as soon as possible to arrange a viewing.
       alert('Please enter both name and phone number.');
       return;
     }
-    // Encode message for WhatsApp
-    const message = encodeURIComponent(`Hello, my name is ${name}. I am interested in the 2010 Astra J 1.4 Turbo listing. Please contact me at ${phone} to arrange a viewing.`);
-    const whatsappUrl = `https://wa.link/lul7rp?text=${message}`;
-    window.open(whatsappUrl, '_blank');
-
-    alert('Thank you! The seller will contact you shortly to arrange a viewing.');
+    // Open WhatsApp chat with pre-filled message
+    const message = encodeURIComponent(`Hi, my name is ${name} and my phone number is ${phone}. I am interested in the listing you have on Torque Bay.`);
+    const fullUrl = whatsappUrl.includes('?') ? `${whatsappUrl}&text=${message}` : `${whatsappUrl}?text=${message}`;
+    window.open(fullUrl, '_blank');
     contactModal.close();
-    contactForm.reset();
   });
 </script>
-
 
 </body>
 </html>
