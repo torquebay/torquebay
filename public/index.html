@@ -73,7 +73,6 @@
       user-select: none;
       border-top: 1px solid #3a3a3a;
       border-bottom: 1px solid #3a3a3a;
-      flex-wrap: wrap;
     }
 
     nav a {
@@ -82,7 +81,6 @@
       padding-bottom: 4px;
       border-bottom: 3px solid transparent;
       transition: color 0.3s ease, border-color 0.3s ease;
-      white-space: nowrap;
     }
     nav a:hover,
     nav a:focus {
@@ -295,7 +293,6 @@
       font-size: 0.9rem;
       color: #a0a0a0;
       user-select: none;
-      flex-wrap: wrap;
     }
 
     .badge {
@@ -391,7 +388,7 @@
     }
 
     #bidBtn {
-      background-color: #e02828; /* red */
+      background-color: #e02828;
       color: white;
     }
     #bidBtn:hover,
@@ -401,7 +398,7 @@
     }
 
     #buyNowBtn {
-      background-color: #ff6f00; /* orange */
+      background-color: #ff6f00;
       color: white;
     }
     #buyNowBtn:hover,
@@ -411,7 +408,7 @@
     }
 
     #contactSellerBtn {
-      background-color: #28a745; /* green */
+      background-color: #28a745;
       color: white;
     }
     #contactSellerBtn:hover,
@@ -520,10 +517,6 @@
       .listing {
         flex-direction: column;
       }
-      nav {
-        gap: 12px;
-        font-size: 0.9rem;
-      }
     }
   </style>
 </head>
@@ -590,13 +583,13 @@
         <label for="filterPriceMax">Price (Max £)</label>
         <input type="number" id="filterPriceMax" name="priceMax" placeholder="Buy Now" min="0" />
 
-        <button type="submit" aria-label="Apply Filters">Apply Filters</button>
-        <button type="button" id="clearFilters" class="clear-btn" aria-label="Clear Filters">Clear</button>
+        <button type="submit">Apply Filters</button>
+        <button type="button" class="clear-btn" id="clearFiltersBtn">Clear Filters</button>
       </form>
     </aside>
 
-    <main id="listingsContainer" aria-live="polite" aria-atomic="true" aria-relevant="additions removals">
-      <!-- Listings will be rendered here by JS -->
+    <main id="listingsContainer" aria-live="polite" aria-relevant="additions">
+      <!-- Listings injected by JS -->
     </main>
   </div>
 
@@ -604,407 +597,316 @@
     &copy; 2025 Torque Bay. All rights reserved.
   </footer>
 
-  <dialog id="contactModal" aria-modal="true" role="dialog" aria-labelledby="contactTitle" aria-describedby="contactDesc">
-    <h2 id="contactTitle">Contact Seller</h2>
+  <!-- Contact Seller Modal -->
+  <dialog id="contactModal" aria-modal="true" role="dialog" aria-labelledby="contactModalTitle" aria-describedby="contactModalDesc">
+    <h2 id="contactModalTitle">Contact Seller</h2>
     <form id="contactForm">
       <label for="contactName">Your Name</label>
-      <input type="text" id="contactName" name="name" required placeholder="John Doe" />
-
-      <label for="contactPhone">Phone Number</label>
-      <input type="tel" id="contactPhone" name="phone" required placeholder="+44 7123 456789" />
-
-      <button type="submit">Send</button>
+      <input type="text" id="contactName" name="contactName" required placeholder="Enter your name" />
+      <label for="contactPhone">Your Phone Number</label>
+      <input type="tel" id="contactPhone" name="contactPhone" required placeholder="e.g. +447123456789" />
+      <button type="submit">Send WhatsApp Message</button>
+      <button type="button" id="contactCancelBtn" style="margin-top:10px; background:#555;">Cancel</button>
     </form>
   </dialog>
 
   <script>
-    // Dummy Listings Data including some ended auctions with endPrice
+    // Listings data with updated Astra J images & live/dummy distinction
     const listings = [
       {
         id: 1,
-        brand: "Vauxhall",
-        model: "Astra",
-        year: 2006,
-        fuelType: "Petrol",
-        condition: "runner",
-        mileage: 125000,
+        title: 'Astra J 1.4 Turbo 2010 A14NET',
+        brand: 'Astra',
+        model: 'J',
+        year: 2010,
+        condition: 'runner',
+        fuelType: 'Petrol',
+        miles: 89905,
+        priceMinBid: 750,
+        priceBuyNow: 1850,
+        auctionEnd: new Date(Date.UTC(2025, 6, 30, 23, 59, 59)),
+        description: 'The 2010 Astra J 1.4 Turbo features a 1.4L turbocharged petrol engine producing 138bhp and 200Nm of torque. Well maintained with a clean interior, low mileage, and an MOT valid until October 2025.',
         images: [
-          "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=500&q=80",
-          "https://images.unsplash.com/photo-1511914265871-7e0f8626a6cc?auto=format&fit=crop&w=500&q=80",
-          "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=500&q=80"
+          "https://i.ibb.co/5x4fty6V/2025-07-05-18-30-25-401.jpg",
+          "https://i.ibb.co/20LT3MMB/2025-07-05-18-30-42-743.jpg",
+          "https://i.ibb.co/k692dv4t/2025-07-05-18-31-00-391.jpg",
+          "https://i.ibb.co/PzPSzjVq/2025-07-05-18-31-07-371.jpg"
         ],
-        description: "A trusty Vauxhall Astra 2006 petrol, runs smoothly and well-maintained. Great daily driver!",
-        currentBid: 725,
-        buyNowPrice: 850,
-        auctionEnds: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // 2 hours from now
-        ended: false
+        whatsappNumber: "+447700900123",
+        live: true,
+        userCanBid: true
       },
+      // Dummy ended listings
       {
         id: 2,
-        brand: "BMW",
-        model: "320d",
+        title: 'BMW 320d E90 M47',
+        brand: 'BMW',
+        model: '320d',
         year: 2012,
-        fuelType: "Diesel",
-        condition: "runner",
-        mileage: 98000,
+        condition: 'runner',
+        fuelType: 'Diesel',
+        miles: 125000,
+        priceMinBid: 1200,
+        priceBuyNow: 2300,
+        auctionEnd: new Date(Date.UTC(2024, 0, 15, 23, 59, 59)),
+        description: 'BMW 320d with M47 engine, stage 1 remap, EGR off, swirl flaps deleted, straight pipe exhaust. A solid runner with a great history.',
         images: [
-          "https://images.unsplash.com/photo-1517949908118-5bdf6f46f4c2?auto=format&fit=crop&w=500&q=80",
-          "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=500&q=80",
-          "https://images.unsplash.com/photo-1517949908118-5bdf6f46f4c2?auto=format&fit=crop&w=500&q=80"
+          "https://via.placeholder.com/280x160?text=BMW+320d+Front",
+          "https://via.placeholder.com/280x160?text=BMW+320d+Side",
+          "https://via.placeholder.com/280x160?text=BMW+320d+Interior"
         ],
-        description: "BMW 320d in excellent condition, stage 1 remap, and clean interior. Ready for immediate sale.",
-        currentBid: 8500,
-        buyNowPrice: 10000,
-        auctionEnds: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24 hours from now
-        ended: false
+        whatsappNumber: "+447700900124",
+        live: false,
+        userCanBid: false
       },
       {
         id: 3,
-        brand: "Ford",
-        model: "Fiesta",
-        year: 2008,
-        fuelType: "Petrol",
-        condition: "not-runner",
-        mileage: 180000,
+        title: 'Ford Fiesta MK7 2011',
+        brand: 'Ford',
+        model: 'Fiesta',
+        year: 2011,
+        condition: 'not-runner',
+        fuelType: 'Petrol',
+        miles: 130000,
+        priceMinBid: 300,
+        priceBuyNow: 600,
+        auctionEnd: new Date(Date.UTC(2024, 1, 10, 23, 59, 59)),
+        description: 'Ford Fiesta MK7 with 1.25L petrol engine, needs work but great project car.',
         images: [
-          "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=500&q=80",
-          "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=500&q=80"
+          "https://via.placeholder.com/280x160?text=Ford+Fiesta+Front",
+          "https://via.placeholder.com/280x160?text=Ford+Fiesta+Side",
+          "https://via.placeholder.com/280x160?text=Ford+Fiesta+Interior"
         ],
-        description: "Ford Fiesta that needs some engine work. Ideal for parts or project car.",
-        currentBid: 120,
-        buyNowPrice: 350,
-        auctionEnds: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // Ended 24h ago
-        ended: true,
-        endPrice: 300
-      },
-      {
-        id: 4,
-        brand: "Volkswagen",
-        model: "Golf",
-        year: 2010,
-        fuelType: "Diesel",
-        condition: "runner",
-        mileage: 150000,
-        images: [
-          "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=500&q=80"
-        ],
-        description: "Volkswagen Golf, well cared for, smooth running diesel with low tax.",
-        currentBid: 1500,
-        buyNowPrice: 1800,
-        auctionEnds: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // Ended 5h ago
-        ended: true,
-        endPrice: 1750
-      },
-      {
-        id: 5,
-        brand: "Vauxhall",
-        model: "Corsa",
-        year: 2015,
-        fuelType: "Petrol",
-        condition: "runner",
-        mileage: 68000,
-        images: [
-          "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=500&q=80",
-          "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=500&q=80"
-        ],
-        description: "Vauxhall Corsa in great condition, ideal first car or daily runaround.",
-        currentBid: 4200,
-        buyNowPrice: 4800,
-        auctionEnds: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(), // 3 hours from now
-        ended: false
+        whatsappNumber: "+447700900125",
+        live: false,
+        userCanBid: false
       }
     ];
 
-    // State variables for filter
-    let filters = {
-      condition: "",
-      brand: "",
-      model: "",
-      fuelType: "",
-      yearMin: null,
-      yearMax: null,
-      priceMin: null,
-      priceMax: null,
-    };
-
+    // Cached elements
     const listingsContainer = document.getElementById('listingsContainer');
     const filterForm = document.getElementById('filterForm');
-    const clearFiltersBtn = document.getElementById('clearFilters');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+    const contactModal = document.getElementById('contactModal');
+    const contactForm = document.getElementById('contactForm');
+    const contactCancelBtn = document.getElementById('contactCancelBtn');
 
-    // Function to format numbers as GBP currency
-    function formatGBP(amount) {
-      return "£" + amount.toLocaleString();
-    }
+    let currentContactListing = null;
 
-    // Render listings according to filters
-    function renderListings() {
-      listingsContainer.innerHTML = "";
+    // Render listings based on filters
+    function renderListings(filter = {}) {
+      listingsContainer.innerHTML = '';
 
+      // Filter logic
       const filtered = listings.filter(listing => {
-        if (filters.condition && listing.condition !== filters.condition) return false;
-        if (filters.brand && listing.brand.toLowerCase() !== filters.brand.toLowerCase()) return false;
-        if (filters.model && !listing.model.toLowerCase().includes(filters.model.toLowerCase())) return false;
-        if (filters.fuelType && listing.fuelType.toLowerCase() !== filters.fuelType.toLowerCase()) return false;
-        if (filters.yearMin && listing.year < filters.yearMin) return false;
-        if (filters.yearMax && listing.year > filters.yearMax) return false;
-        if (filters.priceMin && listing.currentBid < filters.priceMin) return false;
-        if (filters.priceMax && listing.buyNowPrice > filters.priceMax) return false;
+        if (filter.condition && filter.condition !== '' && listing.condition !== filter.condition) {
+          return false;
+        }
+        if (filter.brand && filter.brand !== '' && listing.brand.toLowerCase() !== filter.brand.toLowerCase()) {
+          return false;
+        }
+        if (filter.model && filter.model !== '' && !listing.model.toLowerCase().includes(filter.model.toLowerCase())) {
+          return false;
+        }
+        if (filter.fuelType && filter.fuelType !== '' && listing.fuelType.toLowerCase() !== filter.fuelType.toLowerCase()) {
+          return false;
+        }
+        if (filter.yearMin && filter.yearMin !== '' && listing.year < parseInt(filter.yearMin)) {
+          return false;
+        }
+        if (filter.yearMax && filter.yearMax !== '' && listing.year > parseInt(filter.yearMax)) {
+          return false;
+        }
+        if (filter.priceMin && filter.priceMin !== '' && listing.priceMinBid < parseInt(filter.priceMin)) {
+          return false;
+        }
+        if (filter.priceMax && filter.priceMax !== '' && listing.priceBuyNow > parseInt(filter.priceMax)) {
+          return false;
+        }
         return true;
       });
 
       if (filtered.length === 0) {
-        listingsContainer.innerHTML = "<p style='text-align:center; color:#e02828; font-weight:700;'>No listings found with current filters.</p>";
+        listingsContainer.innerHTML = `<p style="color:#eee; font-size:1.3rem; text-align:center; user-select:none;">No listings found with current filters.</p>`;
         return;
       }
 
       filtered.forEach(listing => {
-        const listingDiv = document.createElement("article");
-        listingDiv.className = "listing";
-        if (listing.ended) listingDiv.classList.add("ended");
-        listingDiv.setAttribute("tabindex", "0");
-        listingDiv.setAttribute("aria-label", `${listing.brand} ${listing.model} ${listing.year} listing`);
+        const ended = new Date() > listing.auctionEnd || !listing.live;
 
-        // Images gallery
-        const galleryDiv = document.createElement("section");
-        galleryDiv.className = "gallery";
+        const listingEl = document.createElement('article');
+        listingEl.className = 'listing' + (ended ? ' ended' : '');
+        listingEl.setAttribute('tabindex', '0');
 
-        const mainImg = document.createElement("img");
-        mainImg.id = "mainImage";
-        mainImg.src = listing.images[0];
-        mainImg.alt = `${listing.brand} ${listing.model} main image`;
-        mainImg.loading = "lazy";
-        mainImg.addEventListener("click", () => {
-          if (mainImg.classList.contains("zoomed")) {
-            mainImg.classList.remove("zoomed");
-          } else {
-            mainImg.classList.add("zoomed");
+        listingEl.innerHTML = `
+          <div class="gallery" aria-label="Images of ${listing.title}">
+            <img src="${listing.images[0]}" alt="${listing.title} main image" id="mainImage-${listing.id}" />
+            <div class="thumbs" role="list" aria-label="Thumbnail images">
+              ${listing.images.map((img, i) =>
+                `<img src="${img}" alt="${listing.title} image ${i + 1}" role="listitem" tabindex="0" data-listingid="${listing.id}" data-index="${i}" class="${i === 0 ? 'selected' : ''}" />`
+              ).join('')}
+            </div>
+          </div>
+          <div class="details">
+            <h2>${listing.title}</h2>
+            <div class="badges">
+              <div class="badge ${listing.condition === 'runner' ? '' : 'not-runner'}" aria-label="Condition: ${listing.condition}">
+                ${listing.condition === 'runner' ? 'Runner' : 'Not Runner'}
+              </div>
+              <div class="badge">Year: ${listing.year}</div>
+              <div class="badge">Fuel: ${listing.fuelType}</div>
+              <div class="badge">Miles: ${listing.miles.toLocaleString()}</div>
+            </div>
+
+            <div id="auctionEnds">${ended ? '<strong>Auction Ended</strong>' : 'Auction Ends: ' + listing.auctionEnd.toUTCString()}</div>
+
+            <p class="description">${listing.description}</p>
+
+            <div class="actions">
+              <label for="bidAmount-${listing.id}">Bid Amount (min £${listing.priceMinBid})</label>
+              <input type="number" id="bidAmount-${listing.id}" name="bidAmount" min="${listing.priceMinBid}" step="1" placeholder="Enter bid amount" ${ended ? 'disabled' : ''} />
+              <button id="bidBtn-${listing.id}" ${ended ? 'disabled' : ''}>Place Bid</button>
+
+              <button id="buyNowBtn-${listing.id}" ${ended ? 'disabled' : ''}>Buy It Now £${listing.priceBuyNow}</button>
+
+              ${
+                listing.live
+                  ? `<button id="contactSellerBtn-${listing.id}" data-whatsapp="${listing.whatsappNumber}">Contact Seller</button>`
+                  : `<button disabled style="background:#555; cursor:not-allowed;">Auction Ended</button>`
+              }
+            </div>
+          </div>
+        `;
+
+        listingsContainer.appendChild(listingEl);
+      });
+
+      setupGalleryClicks();
+      setupButtons();
+    }
+
+    // Setup gallery thumbnails click
+    function setupGalleryClicks() {
+      const thumbs = document.querySelectorAll('.thumbs img');
+      thumbs.forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          const listingId = thumb.getAttribute('data-listingid');
+          const mainImg = document.getElementById(`mainImage-${listingId}`);
+          if (!mainImg) return;
+
+          mainImg.src = thumb.src;
+
+          // Update selected class
+          const siblings = thumb.parentElement.querySelectorAll('img');
+          siblings.forEach(s => s.classList.remove('selected'));
+          thumb.classList.add('selected');
+        });
+        // keyboard accessible
+        thumb.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            thumb.click();
           }
         });
-        galleryDiv.appendChild(mainImg);
+      });
 
-        // Thumbnails
-        const thumbsDiv = document.createElement("div");
-        thumbsDiv.className = "thumbs";
-
-        listing.images.forEach((imgSrc, idx) => {
-          const thumb = document.createElement("img");
-          thumb.src = imgSrc;
-          thumb.alt = `${listing.brand} ${listing.model} thumbnail ${idx + 1}`;
-          thumb.loading = "lazy";
-          if (idx === 0) thumb.classList.add("selected");
-          thumb.addEventListener("click", () => {
-            mainImg.src = imgSrc;
-            thumbsDiv.querySelectorAll("img").forEach(i => i.classList.remove("selected"));
-            thumb.classList.add("selected");
-            mainImg.classList.remove("zoomed");
-          });
-          thumbsDiv.appendChild(thumb);
+      // Zoom toggle on main image
+      document.querySelectorAll('.gallery #mainImage').forEach(img => {
+        img.addEventListener('click', () => {
+          img.classList.toggle('zoomed');
         });
-
-        galleryDiv.appendChild(thumbsDiv);
-
-        // Details section
-        const detailsDiv = document.createElement("section");
-        detailsDiv.className = "details";
-
-        const title = document.createElement("h2");
-        title.textContent = `${listing.brand} ${listing.model} ${listing.year}`;
-        detailsDiv.appendChild(title);
-
-        // Badges for condition and fuel type
-        const badgesDiv = document.createElement("div");
-        badgesDiv.className = "badges";
-
-        const condBadge = document.createElement("span");
-        condBadge.className = "badge " + (listing.condition === "runner" ? "" : "not-runner");
-        condBadge.textContent = listing.condition === "runner" ? "Runner" : "Not Runner";
-        badgesDiv.appendChild(condBadge);
-
-        const fuelBadge = document.createElement("span");
-        fuelBadge.className = "badge";
-        fuelBadge.textContent = listing.fuelType;
-        badgesDiv.appendChild(fuelBadge);
-
-        detailsDiv.appendChild(badgesDiv);
-
-        // Mileage and description
-        const mileage = document.createElement("p");
-        mileage.style.fontWeight = "600";
-        mileage.textContent = `Mileage: ${listing.mileage.toLocaleString()} miles`;
-        detailsDiv.appendChild(mileage);
-
-        const desc = document.createElement("p");
-        desc.className = "description";
-        desc.textContent = listing.description;
-        detailsDiv.appendChild(desc);
-
-        // Auction status and price
-        const auctionStatus = document.createElement("div");
-        auctionStatus.id = "auctionEnds";
-
-        if (listing.ended) {
-          auctionStatus.textContent = `Auction Ended at ${formatGBP(listing.endPrice || listing.buyNowPrice)}`;
-          detailsDiv.appendChild(auctionStatus);
-        } else {
-          // Countdown timer placeholder
-          auctionStatus.textContent = "Auction ends soon";
-          detailsDiv.appendChild(auctionStatus);
-
-          // Countdown function
-          const endTime = new Date(listing.auctionEnds);
-          function updateCountdown() {
-            const now = new Date();
-            let diff = endTime - now;
-            if (diff <= 0) {
-              auctionStatus.textContent = `Auction Ended at ${formatGBP(listing.currentBid)}`;
-              listing.ended = true;
-              listingDiv.classList.add("ended");
-              clearInterval(timerInterval);
-              // Disable inputs/buttons here if desired
-              bidInput.disabled = true;
-              bidBtn.disabled = true;
-              buyNowBtn.disabled = true;
-              return;
-            }
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            auctionStatus.textContent = `Auction ends in ${hours}h ${minutes}m ${seconds}s`;
-          }
-          updateCountdown();
-          const timerInterval = setInterval(updateCountdown, 1000);
-
-          // Actions
-          const actionsDiv = document.createElement("div");
-          actionsDiv.className = "actions";
-
-          const bidLabel = document.createElement("label");
-          bidLabel.setAttribute("for", `bidInput${listing.id}`);
-          bidLabel.textContent = "Place Bid (£):";
-          actionsDiv.appendChild(bidLabel);
-
-          const bidInput = document.createElement("input");
-          bidInput.type = "number";
-          bidInput.min = (listing.currentBid + 1).toString();
-          bidInput.id = `bidInput${listing.id}`;
-          bidInput.name = "bidAmount";
-          bidInput.value = listing.currentBid + 1;
-          bidInput.required = true;
-          actionsDiv.appendChild(bidInput);
-
-          const bidBtn = document.createElement("button");
-          bidBtn.textContent = "Place Bid";
-          bidBtn.id = "bidBtn";
-          bidBtn.setAttribute("aria-label", `Place bid for ${listing.brand} ${listing.model}`);
-          bidBtn.addEventListener("click", () => {
-            const newBid = parseInt(bidInput.value);
-            if (isNaN(newBid) || newBid <= listing.currentBid) {
-              alert(`Your bid must be higher than the current bid of ${formatGBP(listing.currentBid)}`);
-              return;
-            }
-            listing.currentBid = newBid;
-            bidInput.min = (newBid + 1).toString();
-            bidInput.value = newBid + 1;
-            alert(`Your bid of ${formatGBP(newBid)} has been placed successfully.`);
-            renderListings();
-          });
-          actionsDiv.appendChild(bidBtn);
-
-          const buyNowBtn = document.createElement("button");
-          buyNowBtn.textContent = "Buy It Now";
-          buyNowBtn.id = "buyNowBtn";
-          buyNowBtn.setAttribute("aria-label", `Buy ${listing.brand} ${listing.model} now for ${formatGBP(listing.buyNowPrice)}`);
-          buyNowBtn.addEventListener("click", () => {
-            const confirmed = confirm(`Are you sure you want to Buy It Now for ${formatGBP(listing.buyNowPrice)}? This will end the auction immediately.`);
-            if (confirmed) {
-              listing.ended = true;
-              listing.currentBid = listing.buyNowPrice;
-              alert(`You have successfully bought the ${listing.brand} ${listing.model} for ${formatGBP(listing.buyNowPrice)}.`);
-              renderListings();
-            }
-          });
-          actionsDiv.appendChild(buyNowBtn);
-
-          const contactBtn = document.createElement("button");
-          contactBtn.textContent = "Contact Seller";
-          contactBtn.id = "contactSellerBtn";
-          contactBtn.setAttribute("aria-label", `Contact seller of ${listing.brand} ${listing.model}`);
-          contactBtn.addEventListener("click", () => {
-            openContactModal(listing);
-          });
-          actionsDiv.appendChild(contactBtn);
-
-          detailsDiv.appendChild(actionsDiv);
-        }
-
-        listingDiv.appendChild(galleryDiv);
-        listingDiv.appendChild(detailsDiv);
-
-        listingsContainer.appendChild(listingDiv);
       });
     }
 
-    // Filter form submission
-    filterForm.addEventListener("submit", e => {
-      e.preventDefault();
+    // Setup bid, buy now and contact buttons
+    function setupButtons() {
+      listings.forEach(listing => {
+        const ended = new Date() > listing.auctionEnd || !listing.live;
+        if (ended) return;
 
-      filters.condition = filterForm.condition.value;
-      filters.brand = filterForm.brand.value;
-      filters.model = filterForm.model.value.trim();
-      filters.fuelType = filterForm.fuelType.value;
-      filters.yearMin = filterForm.yearMin.value ? parseInt(filterForm.yearMin.value) : null;
-      filters.yearMax = filterForm.yearMax.value ? parseInt(filterForm.yearMax.value) : null;
-      filters.priceMin = filterForm.priceMin.value ? parseInt(filterForm.priceMin.value) : null;
-      filters.priceMax = filterForm.priceMax.value ? parseInt(filterForm.priceMax.value) : null;
+        // Bid button
+        const bidBtn = document.getElementById(`bidBtn-${listing.id}`);
+        const bidInput = document.getElementById(`bidAmount-${listing.id}`);
+        if (bidBtn && bidInput) {
+          bidBtn.addEventListener('click', () => {
+            const bidValue = parseInt(bidInput.value);
+            if (isNaN(bidValue) || bidValue < listing.priceMinBid) {
+              alert(`Please enter a valid bid amount at least £${listing.priceMinBid}`);
+              return;
+            }
+            alert(`Bid of £${bidValue} placed on ${listing.title}. (Demo only)`);
+          });
+        }
 
-      renderListings();
-    });
+        // Buy now button
+        const buyBtn = document.getElementById(`buyNowBtn-${listing.id}`);
+        if (buyBtn) {
+          buyBtn.addEventListener('click', () => {
+            alert(`You have bought the ${listing.title} for £${listing.priceBuyNow}. (Demo only)`);
+          });
+        }
 
-    // Clear filters button
-    clearFiltersBtn.addEventListener("click", () => {
-      filterForm.reset();
-      filters = {
-        condition: "",
-        brand: "",
-        model: "",
-        fuelType: "",
-        yearMin: null,
-        yearMax: null,
-        priceMin: null,
-        priceMax: null,
-      };
-      renderListings();
-    });
-
-    // Contact modal logic
-    const contactModal = document.getElementById("contactModal");
-    const contactForm = document.getElementById("contactForm");
-    let currentListingContact = null;
-
-    function openContactModal(listing) {
-      currentListingContact = listing;
-      contactModal.showModal();
-      contactForm.reset();
-      contactForm.contactName.focus();
+        // Contact seller button (Whatsapp integration)
+        const contactBtn = document.getElementById(`contactSellerBtn-${listing.id}`);
+        if (contactBtn) {
+          contactBtn.addEventListener('click', () => {
+            currentContactListing = listing;
+            contactModal.showModal();
+          });
+        }
+      });
     }
 
-    contactForm.addEventListener("submit", e => {
+    // Filter form submit
+    filterForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      // You can extend to send data to backend or email service here
-
-      alert(`Thank you ${contactForm.contactName.value}, the seller of the ${currentListingContact.brand} ${currentListingContact.model} will contact you soon.`);
-      contactModal.close();
+      const formData = new FormData(filterForm);
+      const filters = {};
+      for (const [key, value] of formData.entries()) {
+        filters[key] = value.trim();
+      }
+      renderListings(filters);
     });
 
-    contactModal.addEventListener("click", e => {
-      if (e.target === contactModal) {
+    // Clear filters
+    clearFiltersBtn.addEventListener('click', () => {
+      filterForm.reset();
+      renderListings();
+    });
+
+    // Contact modal cancel button
+    contactCancelBtn.addEventListener('click', () => {
+      contactModal.close();
+      currentContactListing = null;
+    });
+
+    // Contact form submit - open WhatsApp link
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!currentContactListing) {
+        alert('No listing selected.');
         contactModal.close();
+        return;
       }
+      const name = document.getElementById('contactName').value.trim();
+      const phone = document.getElementById('contactPhone').value.trim();
+      if (!name || !phone) {
+        alert('Please fill in all fields.');
+        return;
+      }
+      // WhatsApp message encode
+      const message = encodeURIComponent(
+        `Hello, I am ${name}. I am interested in your listing: ${currentContactListing.title}. Please contact me at ${phone}.`
+      );
+      const whatsappUrl = `https://wa.me/${currentContactListing.whatsappNumber.replace(/\D/g,'')}?text=${message}`;
+      window.open(whatsappUrl, '_blank');
+      contactModal.close();
+      currentContactListing = null;
+      contactForm.reset();
     });
 
     // Initial render
     renderListings();
   </script>
-
 </body>
 </html>
